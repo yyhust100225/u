@@ -19,4 +19,5 @@ Route::get('/', function () {
 
 Route::namespace('Admin')->group(function(){
     Route::get('home', 'HomeController@index')->name('home');
+    Route::get('main', 'HomeController@main')->name('main');
 });

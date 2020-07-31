@@ -20,4 +20,10 @@ class HomeController extends CommonController
     {
         return view('admin.home.index');
     }
+
+    public function main(Request $request)
+    {
+        dd(url()->previous());
+        // return view('admin.home.main');
+    }
 }

@@ -8,8 +8,8 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="{{ asset('layui.css') }}" media="all">
-    <link rel="stylesheet" href="../layuiadmin/style/admin.css" media="all">
+    <link rel="stylesheet" href="{{ asset('layuiadmin/layui/css/layui.css') }}" media="all">
+    <link rel="stylesheet" href="{{ asset('layuiadmin/style/admin.css') }}" media="all">
 
     <script>
         /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
@@ -406,6 +406,7 @@
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="set/system/website.html">网站设置</a></dd>
                                     <dd><a lay-href="set/system/email.html">邮件服务</a></dd>
+                                    <dd><a lay-href="{{ route('main') }}">主页</a></dd>
                                 </dl>
                             </dd>
                             <dd class="layui-nav-itemed">
@@ -436,7 +437,7 @@
                     <li class="layui-nav-item" lay-unselect>
                         <a href="javascript:;"></a>
                         <dl class="layui-nav-child layui-anim-fadein">
-                            <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
+                            <dd layadmin-event="closeThisTabs"><a href="javascript:void(0);">关闭当前标签页</a></dd>
                             <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
                             <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
                         </dl>
@@ -454,7 +455,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="home/console.html" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="http://www.baidu.com" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 
