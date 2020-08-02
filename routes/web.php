@@ -20,4 +20,9 @@ Route::get('/', function () {
 Route::namespace('Admin')->group(function(){
     Route::get('home', 'HomeController@index')->name('home');
     Route::get('main', 'HomeController@main')->name('main');
+
+    Route::get('login', 'LoginController@login')->name('login');
+    Route::post('login/validated', 'LoginController@loginValidated')->name('login.validated');
+
+    Route::get('user/list', 'UserController@list')->name('user.list');
 });
