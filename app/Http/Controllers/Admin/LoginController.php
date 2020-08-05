@@ -17,7 +17,6 @@ class LoginController extends Controller
     public function loginValidated(Request $request)
     {
         $credentials = $request->all();
-        dd($credentials);
 
         return response()->json(['message' => 'socket success'], 200);
     }
