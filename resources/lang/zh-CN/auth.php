@@ -1,0 +1,20 @@
+<?php
+
+return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Language Lines
+    |--------------------------------------------------------------------------
+    |
+    | The following language lines are used during authentication for various
+    | messages that we need to display to the user. You are free to modify
+    | these language lines according to your application's requirements.
+    |
+    */
+
+    'success' => '登录成功',
+    'failed' => '登录失败, 请重新检查用户名及密码',
+    'logout' => '账户已登出',
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+];

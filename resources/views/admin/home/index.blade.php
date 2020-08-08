@@ -7,13 +7,12 @@
     <title>layuiAdmin std - 通用后台管理模板系统（iframe标准版）</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="{{ asset('layuiadmin/layui/css/layui.css') }}" media="all">
     <link rel="stylesheet" href="{{ asset('layuiadmin/style/admin.css') }}" media="all">
+    <link rel="stylesheet" href="{{ asset('layuiadmin/style/app.css') }}" media="all">
 
-    <script>
-        /^http(s*):\/\//.test(location.href) || alert('请先部署到 localhost 下再访问');
-    </script>
 </head>
 <body class="layui-layout-body">
 
@@ -68,13 +67,13 @@
                 </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;">
-                        <cite>贤心</cite>
+                        <cite>{{ request()->user()->username }}</cite>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a lay-href="set/user/info.html">基本资料</a></dd>
                         <dd><a lay-href="set/user/password.html">修改密码</a></dd>
                         <hr>
-                        <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                        <dd id="logout" style="text-align: center;"><a>退出</a></dd>
                     </dl>
                 </li>
 
@@ -468,9 +467,27 @@
 <script>
     layui.config({
         base: 'layuiadmin/' //静态资源所在路径
+
     }).extend({
         index: 'lib/index' //主入口模块
     }).use('index');
+
+    layui.use('jquery', function(){
+        var $ = layui.$;
+
+        $('#logout').click(function(){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.post('{{ route("logout") }}', {}, function(res){
+                layer.msg(res.message, {time: 2000}, function(){
+                    window.location.href = "{{ route('login.form') }}";
+                })
+            }, 'json');
+        });
+    });
 </script>
 </body>
 </html>

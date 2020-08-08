@@ -18,11 +18,15 @@ Route::get('/', function () {
 });
 
 Route::namespace('Admin')->group(function(){
-    Route::get('home', 'HomeController@index')->name('home');
-    Route::get('main', 'HomeController@main')->name('main');
+    Route::get('login/form', 'LoginController@showLoginForm')->name('login.form');
+    Route::post('login', 'LoginController@login')->name('login');
+    Route::post('logout', 'LoginController@logout')->name('logout');
+    Route::middleware(['web.auth'])->group(function(){
+        Route::get('/', 'HomeController@index');
+        Route::get('home', 'HomeController@home')->name('home');
+        Route::get('main', 'HomeController@main')->name('main');
 
-    Route::get('login', 'LoginController@login')->name('login');
-    Route::post('login/validated', 'LoginController@loginValidated')->name('login.validated');
-
-    Route::get('user/list', 'UserController@list')->name('user.list');
+        Route::get('users', 'UserController@list')->name('users.list');
+        Route::get('users/data', 'UserController@users')->name('users.data');
+    });
 });

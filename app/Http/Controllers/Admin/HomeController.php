@@ -13,10 +13,19 @@ class HomeController extends CommonController
     }
 
     /**
+     * 根目录跳转登录页
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function index()
+    {
+        return redirect()->route('login.form');
+    }
+
+    /**
      * 后台主页
      * @param Request $request
      */
-    public function index(Request $request)
+    public function home(Request $request)
     {
         return view('admin.home.index');
     }

@@ -32,7 +32,7 @@
                                 @csrf
                                 <div class="form-group">
                                     <label for="email">Email</label>
-                                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+                                    <input id="username" class="form-control" name="username" tabindex="1" required autofocus>
                                     <div class="invalid-feedback">
                                         Please fill in your email
                                     </div>
@@ -63,21 +63,6 @@
                                     </button>
                                 </div>
                             </form>
-                            <div class="text-center mt-4 mb-3">
-                                <div class="text-job text-muted">Login With Social</div>
-                            </div>
-                            <div class="row sm-gutters">
-                                <div class="col-6">
-                                    <a class="btn btn-block btn-social btn-facebook">
-                                        <span class="fab fa-facebook"></span> Facebook
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a class="btn btn-block btn-social btn-twitter">
-                                        <span class="fab fa-twitter"></span> Twitter
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="mt-5 text-muted text-center">
@@ -107,12 +92,27 @@
         $('.submit-login-form').on('click', function(){
             $.ajax({
                 type: 'POST',
-                url: "{{ route('login.validated') }}",
+                url: "{{ route('login') }}",
                 data: $('form').serialize(),
                 dataType: 'json',
                 async: false,
                 success: function(res){
-                    layer.msg(res.message);
+                    // 登录成功
+                    layer.msg(res.message, {time: 1000}, function(){
+                        window.location.href = "{{ route('home') }}";
+                    });
+                },
+                error: function(e) {
+                    // 登录失败
+                    if(e.status === 401)
+                        layer.msg(e.responseJSON.message);
+                    // 表单验证失败
+                    else if(e.status === 422){
+                        $.each(e.responseJSON.errors, function(k,v){
+                            layer.msg(v[0]);
+                            return false;
+                        })
+                    }
                 }
             });
         });
