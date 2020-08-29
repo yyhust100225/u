@@ -101,6 +101,13 @@ class RoleController extends CommonController
         return $this->returnOperationResponse($role->save(), $request);
     }
 
+    /**
+     * 删除新角色
+     * @param Request $request
+     * @param Role $role
+     * @return \Illuminate\Http\JsonResponse
+     * @throws DataNotExistsException
+     */
     public function delete(Request $request, Role $role)
     {
         try {
