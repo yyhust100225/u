@@ -70,8 +70,8 @@
                         <cite>{{ request()->user()->username }}</cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                        <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <dd style="text-align: center;"><a lay-href="set/user/info.html">基本资料</a></dd>
+                        <dd style="text-align: center;"><a lay-href="set/user/password.html">修改密码</a></dd>
                         <hr>
                         <dd id="logout" style="text-align: center;"><a>退出</a></dd>
                     </dl>
@@ -97,6 +97,24 @@
                     <li data-name="home" class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
+                            <cite>权限设置</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="console" class="layui-this">
+                                <a lay-href="{{ route('users.list') }}">用户列表</a>
+                            </dd>
+                            <dd data-name="console">
+                                <a lay-href="{{ route('roles.list') }}">角色列表</a>
+                            </dd>
+                            <dd data-name="console">
+                                <a lay-href="home/homepage2.html">主页二</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
                             <cite>主页</cite>
                         </a>
                         <dl class="layui-nav-child">
@@ -111,6 +129,7 @@
                             </dd>
                         </dl>
                     </li>
+
                     <li data-name="component" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="组件" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>

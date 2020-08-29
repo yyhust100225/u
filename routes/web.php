@@ -27,6 +27,14 @@ Route::namespace('Admin')->group(function(){
         Route::get('main', 'HomeController@main')->name('main');
 
         Route::get('users', 'UserController@list')->name('users.list');
-        Route::get('users/data', 'UserController@users')->name('users.data');
+        Route::get('users/data', 'UserController@data')->name('users.data');
+
+        Route::get('roles', 'RoleController@list')->name('roles.list');
+        Route::get('roles/data', 'RoleController@data')->name('roles.data');
+        Route::get('roles/create', 'RoleController@create')->name('roles.create');
+        Route::post('roles/store', 'RoleController@store')->name('roles.store');
+        Route::get('roles/edit/{id}', 'RoleController@edit')->name('roles.edit');
+        Route::put('roles/update', 'RoleController@update')->name('roles.update');
+        Route::delete('roles/delete', 'RoleController@delete')->name('roles.delete');
     });
 });
