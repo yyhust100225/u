@@ -6,9 +6,18 @@ use App\Exceptions\DataNotExistsException;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class RoleController extends CommonController
 {
+    public function __construct(Request $request)
+    {
+        $action = $request->route()->getActionMethod();
+        $this->middleware('can:' . $action . ',' . Role::class);
+        parent::__construct();
+    }
+
     /**
      * 角色列表页
      * @param Request $request

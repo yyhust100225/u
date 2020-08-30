@@ -60,8 +60,34 @@ class User extends Authenticatable
         return $this->count();
     }
 
+    /**
+     * 用户表唯一角色关联
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    /**
+     * 判断用户是否有相应操作控制器方法权限
+     * @param User $user
+     * @param $controller
+     * @param $action
+     * @return bool
+     */
+    public function hasPrivilege(User $user, $controller, $action)
+    {
+        if(!$aim_permission = Permission::where('controller', $controller)->where('action', $action)->first()) {
+            abort(404);
+        }
+
+        if($aim_permission->level == AUTHORIZATION_LEVEL_ALL_DENIED)
+            return false;
+
+        if($aim_permission->level == AUTHORIZATION_LEVEL_ALL_ALLOWED)
+            return true;
+
+        return !is_null($user->role->permissions->find($aim_permission->id));
     }
 }
