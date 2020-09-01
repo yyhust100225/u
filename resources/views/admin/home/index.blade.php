@@ -107,7 +107,7 @@
                                 <a lay-href="{{ route('roles.list') }}">角色列表</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="home/homepage2.html">主页二</a>
+                                <a lay-href="{{ route('permissions.list') }}">权限列表</a>
                             </dd>
                         </dl>
                     </li>

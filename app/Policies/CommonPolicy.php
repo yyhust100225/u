@@ -28,17 +28,17 @@ class CommonPolicy
     /**
      * 用户查看表数据权限
      * @param User $user
-     * @return bool
+     * @return Response
      */
     public function list(User $user)
     {
-        return true;
+        return $user->hasPrivilege($user, $this->controller_name, 'list') ? Response::allow() : Response::deny('没有查看角色数据的授权');
     }
 
     /**
      * 获取表数据权限(同步查看表数据权限)
      * @param User $user
-     * @return bool
+     * @return Response
      */
     public function data(User $user)
     {

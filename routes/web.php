@@ -36,5 +36,13 @@ Route::namespace('Admin')->group(function(){
         Route::get('roles/edit/{id}', 'RoleController@edit')->name('roles.edit');
         Route::put('roles/update', 'RoleController@update')->name('roles.update');
         Route::delete('roles/delete', 'RoleController@delete')->name('roles.delete');
+
+        Route::get('permissions', 'PermissionController@list')->name('permissions.list');
+        Route::get('permissions/data', 'PermissionController@data')->name('permissions.data');
+        Route::get('permissions/create', 'PermissionController@create')->name('permissions.create');
+        Route::post('permissions/store', 'PermissionController@store')->name('permissions.store');
+        Route::get('permissions/edit/{id}', 'PermissionController@edit')->name('permissions.edit');
+        Route::put('permissions/update', 'PermissionController@update')->name('permissions.update');
+        Route::delete('permissions/delete', 'PermissionController@delete')->name('permissions.delete');
     });
 });
