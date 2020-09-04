@@ -94,25 +94,8 @@
                 </div>
 
                 <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
-                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
-                            <i class="layui-icon layui-icon-home"></i>
-                            <cite>权限设置</cite>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd data-name="console" class="layui-this">
-                                <a lay-href="{{ route('users.list') }}">用户列表</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="{{ route('roles.list') }}">角色列表</a>
-                            </dd>
-                            <dd data-name="console">
-                                <a lay-href="{{ route('permissions.list') }}">权限列表</a>
-                            </dd>
-                        </dl>
-                    </li>
 
-                    <li data-name="home" class="layui-nav-item">
+                    <li data-name="home" class="layui-nav-item layui-nav-itemed">
                         <a href="javascript:;" lay-tips="主页" lay-direction="2">
                             <i class="layui-icon layui-icon-home"></i>
                             <cite>主页</cite>
@@ -126,6 +109,24 @@
                             </dd>
                             <dd data-name="console">
                                 <a lay-href="home/homepage2.html">主页二</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="主页" lay-direction="2">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <cite>权限设置</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="users">
+                                <a lay-href="users">用户列表</a>
+                            </dd>
+                            <dd data-name="roles">
+                                <a lay-href="roles">角色列表</a>
+                            </dd>
+                            <dd data-name="permissions">
+                                <a lay-href="permissions">权限列表</a>
                             </dd>
                         </dl>
                     </li>

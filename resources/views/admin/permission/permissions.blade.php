@@ -83,6 +83,7 @@
                         case 3 : return '<span style="color: green">全部通行</span>';
                     }
                 }},
+                {field:'remark', title: '备注', width:'25%'},
                 {field:'created_at', title: '创建时间'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],

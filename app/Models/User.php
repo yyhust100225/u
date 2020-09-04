@@ -78,6 +78,7 @@ class User extends Authenticatable
      */
     public function hasPrivilege(User $user, $controller, $action)
     {
+        // 找不到指定路由
         if(!$aim_permission = Permission::where('controller', $controller)->where('action', $action)->first()) {
             abort(404);
         }

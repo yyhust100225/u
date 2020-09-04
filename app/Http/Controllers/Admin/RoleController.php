@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
+use App\Models\Maps\MapRoleToPermissions;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\DB;
 
 class RoleController extends CommonController
 {
@@ -51,26 +52,43 @@ class RoleController extends CommonController
     /**
      * 创建新角色
      * @param Request $request
+     * @param Permission $permission
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create(Request $request)
+    public function create(Request $request, Permission $permission)
     {
-        return view('admin.role.create');
+        $permission_list = $permission->all();
+
+        $permissions = [];
+        foreach($permission_list as $var) {
+            $permissions[$var['controller']][] = $var;
+        }
+
+        return view('admin.role.create', [
+            'permissions' => array_values($permissions),
+        ]);
     }
 
     /**
      * 存储新角色
      * @param Request $request
      * @param Role $role
+     * @param MapRoleToPermissions $mrtp
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, Role $role)
+    public function store(Request $request, Role $role, MapRoleToPermissions $mrtp)
     {
         $role->name = $request->input('name');
         $role->status = $request->has('status') ? 1 : 0;
         $role->remark = $request->input('remark');
 
-        return $this->returnOperationResponse($role->save(), $request);
+        $ret = true;
+        DB::transaction(function() use($request, $role, $mrtp, &$ret){
+            if(!$role->save()) $ret = false;
+            if(!$mrtp->saveRoleToPermissions($role->id, $request->input('permission'))) $ret = false;
+        });
+
+        return $this->returnOperationResponse($ret, $request);
     }
 
     /**
@@ -80,11 +98,27 @@ class RoleController extends CommonController
      * @param Role $role
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($id, Request $request, Role $role)
+    public function edit($id, Request $request, Role $role, Permission $permission, MapRoleToPermissions $mrtp)
     {
         $role = $role->find($id);
+        $permission_list = $permission->all();
+
+        // 角色权限
+        $my_permissions = [];
+        foreach($role->permissions as $my_permission) {
+            $my_permissions[] = $my_permission->id;
+        }
+
+        // 全部权限
+        $permissions = [];
+        foreach($permission_list as $var) {
+            $permissions[$var['controller']][] = $var;
+        }
+
         return view('admin.role.edit', [
             'role' => $role,
+            'permissions' => array_values($permissions),
+            'my_permissions' => $my_permissions,
         ]);
     }
 
@@ -95,7 +129,7 @@ class RoleController extends CommonController
      * @return \Illuminate\Http\JsonResponse
      * @throws DataNotExistsException
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Role $role, MapRoleToPermissions $mrtp)
     {
         try {
             $role = $role->find($request->input('id'));
@@ -106,6 +140,12 @@ class RoleController extends CommonController
         $role->name = $request->input('name');
         $role->status = $request->has('status') ? 1 : 0;
         $role->remark = $request->input('remark');
+
+        $ret = true;
+        DB::transaction(function() use($request, $role, $mrtp, &$ret){
+            if(!$role->save()) $ret = false;
+            if(!$mrtp->saveRoleToPermissions($role->id, $request->input('permission'))) $ret = false;
+        });
 
         return $this->returnOperationResponse($role->save(), $request);
     }

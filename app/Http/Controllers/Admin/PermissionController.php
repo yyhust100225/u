@@ -65,7 +65,9 @@ class PermissionController extends CommonController
     public function store(Request $request, Permission $permission)
     {
         $permission->name = $request->input('name');
-        $permission->status = $request->has('status') ? 1 : 0;
+        $permission->controller = $request->input('controller');
+        $permission->action = $request->input('action');
+        $permission->level = $request->input('level');
         $permission->remark = $request->input('remark');
 
         return $this->returnOperationResponse($permission->save(), $request);
@@ -102,7 +104,9 @@ class PermissionController extends CommonController
         }
 
         $permission->name = $request->input('name');
-        $permission->status = $request->has('status') ? 1 : 0;
+        $permission->controller = $request->input('controller');
+        $permission->action = $request->input('action');
+        $permission->level = $request->input('level');
         $permission->remark = $request->input('remark');
 
         return $this->returnOperationResponse($permission->save(), $request);

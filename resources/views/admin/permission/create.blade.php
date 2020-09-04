@@ -16,28 +16,46 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">创建新角色</div>
+                <div class="layui-card-header">创建新权限</div>
                 <div class="layui-card-body">
                 <form class="layui-form" action="">
                     @csrf
                     <div class="layui-form-item">
-                        <label class="layui-form-label">角色名称</label>
+                        <label class="layui-form-label">权限名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" autocomplete="off" placeholder="请输入角色名称" class="layui-input">
+                            <input type="text" name="name" autocomplete="off" placeholder="请输入权限名称" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">角色状态</label>
+                        <label class="layui-form-label">权限控制器</label>
                         <div class="layui-input-block">
-                            <input value="1" type="checkbox" checked="" name="status" lay-skin="switch" lay-text="启用|禁用">
+                            <input type="text" name="controller" autocomplete="off" placeholder="请输入权限控制器" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">权限方法</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="action" autocomplete="off" placeholder="请输入权限方法" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">权限等级</label>
+                        <div class="layui-input-inline">
+                            <select name="level">
+                                <option value="1">禁止</option>
+                                <option value="2">验证</option>
+                                <option value="3">通行</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">角色备注</label>
+                        <label class="layui-form-label">权限备注</label>
                         <div class="layui-input-block">
-                            <textarea placeholder="请输入角色备注" name="remark" class="layui-textarea"></textarea>
+                            <textarea placeholder="请输入权限备注" name="remark" class="layui-textarea"></textarea>
                         </div>
                     </div>
                     <div class="layui-form-item">
@@ -64,14 +82,14 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'POST',
-                url: "{{ route('roles.store') }}",
+                url: "{{ route('permissions.store') }}",
                 data: obj.field,
                 dataType: 'json',
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
                         layer.msg(res.message, {time: 1000}, function(){
-                            window.location.href = "{{ route('roles.list') }}";
+                            window.location.href = "{{ route('permissions.list') }}";
                         });
                     } else {
                         layer.msg(res.message);

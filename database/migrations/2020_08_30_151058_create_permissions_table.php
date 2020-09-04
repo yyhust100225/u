@@ -15,6 +15,7 @@ class CreatePermissionsTable extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('name', 255)->comment('权限标题');
             $table->string('controller', 255)->comment('权限控制器名称');
             $table->string('action', 255)->comment('权限方法名称');
             $table->tinyInteger('level')->default(2)->comment('权限等级 1全部拒绝 2用户权限 3全部通过');

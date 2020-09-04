@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Common extends Model
 {
+    protected $table;
+
     /**
      * 查询分页数据
      * @param $page integer 当前查询页码

@@ -32,7 +32,7 @@ class CommonPolicy
      */
     public function list(User $user)
     {
-        return $user->hasPrivilege($user, $this->controller_name, 'list') ? Response::allow() : Response::deny('没有查看角色数据的授权');
+        return $this->checkAuthorization($user, 'list');
     }
 
     /**
@@ -52,26 +52,56 @@ class CommonPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPrivilege($user, $this->controller_name, 'create') ? Response::allow() : Response::deny('没有创建数据授权');
+        return $this->checkAuthorization($user, 'create');
     }
 
+    /**
+     * 存储数据权限
+     * @param User $user
+     * @return Response
+     */
     public function store(User $user)
     {
         return $this->create($user);
     }
 
+    /**
+     * 编辑数据表单权限
+     * @param User $user
+     * @return Response
+     */
     public function edit(User $user)
     {
-        return true;
+        return $this->checkAuthorization($user, 'edit');
     }
 
+    /**
+     * 更新数据权限
+     * @param User $user
+     * @return Response
+     */
     public function update(User $user)
     {
         return $this->edit($user);
     }
 
-    public function delete()
+    /**
+     * 删除数据权限
+     * @return Response
+     */
+    public function delete(User $user)
     {
-        return true;
+        return $this->checkAuthorization($user, 'delete');
+    }
+
+    /**
+     * 验证指定用户是否有当前操作权限
+     * @param User $user
+     * @param $action
+     * @return Response
+     */
+    private function checkAuthorization(User $user, $action)
+    {
+        return $user->hasPrivilege($user, $this->controller_name, $action) ? Response::allow() : Response::deny(trans('auth.no authority'));
     }
 }

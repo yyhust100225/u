@@ -34,6 +34,18 @@
                         </div>
                     </div>
 
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">角色权限</label>
+                        <div class="layui-input-block">
+                            @foreach($permissions as $key => $group)
+                                @if($key !== 0) <hr> @endif
+                                @foreach($group as $permission)
+                                    <input type="checkbox" name="permission[]" value="{{ $permission->id }}" title="{{ $permission->name }}">
+                                @endforeach
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label">角色备注</label>
                         <div class="layui-input-block">

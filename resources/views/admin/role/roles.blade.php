@@ -54,7 +54,8 @@
     // 页面路由
     var routes = {
         roles: {
-            edit: '{{ route_uri('roles.edit') }}'
+            edit: '{{ route_uri('roles.edit') }}',
+            delete: '{{ route_uri('roles.delete') }}'
         }
     };
 
@@ -105,7 +106,7 @@
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: "{{ route('roles.delete') }}",
+                            url: route(routes.roles.delete, {id: obj.data.id}),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,
@@ -121,6 +122,9 @@
                             }, error: function(e){
                                 if(e.status === 404)
                                     layer.msg(e.responseJSON.message);
+                                else if(e.status === 403) {
+                                    layer.msg(e.responseJSON.message);
+                                }
                             }
                         });
                         layer.close(index);
