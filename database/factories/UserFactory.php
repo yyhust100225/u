@@ -25,5 +25,6 @@ $factory->define(User::class, function (Faker $faker) {
         'password' => \Illuminate\Support\Facades\Hash::make('123456'),
         'role_id' => 1,
         'remember_token' => Str::random(10),
+        'remark' => $faker->text,
     ];
 });

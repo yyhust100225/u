@@ -38,7 +38,19 @@
                         <button class="layui-btn" data-type="reload">搜索</button>
                     </div>
 
-                    <table class="layui-hide" id="table-data"></table>
+                    <table class="layui-hide" id="data-table" lay-filter="data-table"></table>
+
+                    <script type="text/html" id="table-toolbar">
+                        <div class="layui-btn-container">
+                            <button class="layui-btn layui-btn-sm" lay-event="create">新增用户</button>
+                        </div>
+                    </script>
+
+                    <script type="text/html" id="table-bar">
+                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+                    </script>
+
                 </div>
             </div>
         </div>
@@ -46,7 +58,19 @@
 </div>
 
 <script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
+<script src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
+
+    // 页面路由
+    var routes = {
+        users: {
+            data: '{{ route_uri('users.data') }}',
+            create: '{{ route_uri('users.create') }}',
+            edit: '{{ route_uri('users.edit') }}',
+            delete: '{{ route_uri('users.delete') }}'
+        }
+    };
+
     layui.config({
         base: '../../../layuiadmin/' //静态资源所在路径
     }).extend({
@@ -56,8 +80,9 @@
 
         //方法级渲染
         table.render({
-            elem: '#table-data',
-            url: "{{ route('users.data') }}",
+            elem: '#data-table',
+            url: route(routes.users.data),
+            toolbar: '#table-toolbar',
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: true},
                 {field:'username', title: '用户名', width:'15%'},
@@ -65,11 +90,59 @@
                     return data.role.name;
                 }},
                 {field:'email', title: '邮箱', width:'20%', sort: true},
-                {field:'created_at', title: '创建时间'}
+                {field:'created_at', title: '创建时间'},
+                {field:'email', title: '备注', width:'20%', sort: true},
+                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
             limits: [14, 28, 50]
+        });
+
+        table.on('toolbar(data-table)', function(obj){
+            switch (obj.event) {
+                case 'create': {
+                    window.location.href = route(routes.users.create);
+                }break;
+                default: break;
+            }
+        });
+
+        table.on('tool(data-table)', function(obj){
+            switch (obj.event) {
+                case 'edit': {
+                    window.location.href = route(routes.users.edit, {id: obj.data.id});
+                }break;
+                case 'delete': {
+                    layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
+                        $.ajax({
+                            type: 'DELETE',
+                            url: route(routes.roles.delete, {id: obj.data.id}),
+                            data: {id: obj.data.id},
+                            dataType: 'json',
+                            async: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(res){
+                                if(res.code === {{ REQUEST_SUCCESS }}){
+                                    layer.msg(res.message, {time: 1000}, function(){
+                                        obj.del();
+                                    });
+                                }
+                            }, error: function(e){
+                                if(e.status === 404)
+                                    layer.msg(e.responseJSON.message);
+                                else if(e.status === 403) {
+                                    layer.msg(e.responseJSON.message);
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }break;
+                default:break;
+            }
         });
 
         var $ = layui.$, active = {

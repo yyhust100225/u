@@ -28,6 +28,11 @@ Route::namespace('Admin')->group(function(){
 
         Route::get('users', 'UserController@list')->name('users.list');
         Route::get('users/data', 'UserController@data')->name('users.data');
+        Route::get('users/create', 'UserController@create')->name('users.create');
+        Route::post('users/store', 'UserController@store')->name('users.store');
+        Route::get('users/edit/{id}', 'UserController@edit')->name('users.edit');
+        Route::put('users/update', 'UserController@update')->name('users.update');
+        Route::delete('users/delete', 'UserController@delete')->name('users.delete');
 
         Route::get('roles', 'RoleController@list')->name('roles.list');
         Route::get('roles/data', 'RoleController@data')->name('roles.data');

@@ -25,4 +25,10 @@ class Role extends Common
     {
         return $this->hasMany(MapRoleToPermissions::class, 'role_id', 'id');
     }
+
+    // 查询可用状态角色数据
+    public function roles($fields = ['id', 'name'])
+    {
+        return $this->where('status', 1)->get($fields);
+    }
 }

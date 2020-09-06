@@ -10,6 +10,8 @@ class MapRoleToPermissions extends Common
     // 保存角色和权限映射
     public function saveRoleToPermissions($role_id, $permissions)
     {
+        if(is_null($permissions)) return false;
+
         $role_to_permissions = [];
         foreach($permissions as $permission) {
             $role_to_permissions[] = ['role_id' => $role_id, 'permission_id' => $permission];
