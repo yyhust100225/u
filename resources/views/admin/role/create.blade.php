@@ -69,6 +69,14 @@
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
 
+    // 页面路由
+    var routes = {
+        roles: {
+            list: '{{ route_uri('roles.list') }}',
+            store: '{{ route_uri('roles.store') }}',
+        }
+    };
+
     layui.use(['form'], function(){
         var form = layui.form;
         var $ = layui.$;
@@ -76,14 +84,14 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'POST',
-                url: "{{ route('roles.store') }}",
+                url: route(routes.roles.store),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
                         layer.msg(res.message, {time: 1000}, function(){
-                            window.location.href = "{{ route('roles.list') }}";
+                            window.location.href = route(routes.roles.list);
                         });
                     } else {
                         layer.msg(res.message);

@@ -68,7 +68,7 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <button lay-submit type="button" class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -83,6 +83,14 @@
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
 
+    // 页面路由
+    var routes = {
+        users: {
+            list: '{{ route_uri('users.list') }}',
+            store: '{{ route_uri('users.store') }}',
+        }
+    };
+
     layui.use(['form'], function(){
         var form = layui.form;
         var $ = layui.$;
@@ -90,14 +98,14 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'POST',
-                url: "{{ route('users.store') }}",
+                url: route(routes.users.store),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
                         layer.msg(res.message, {time: 1000}, function(){
-                            window.location.href = "{{ route('users.list') }}";
+                            window.location.href = route(routes.users.list);
                         });
                     } else {
                         layer.msg(res.message);

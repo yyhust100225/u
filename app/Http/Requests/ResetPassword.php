@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\passwordVerify;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUser extends FormRequest
+class ResetPassword extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +25,9 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|min:4',
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-            '_password' => 'same:password',
+            'o_password' => ['required', new passwordVerify($this->user())],
+            'n_password' => 'required|min:8',
+            '_password' => 'same:n_password',
         ];
     }
 }

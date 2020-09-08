@@ -44,11 +44,15 @@ class User extends Authenticatable
      * 查询用户列表数据
      * @param $page integer 查询页
      * @param $limit integer 每页数据量
+     * @param $with array|string 关联查询
      * @return mixed 查询数据
      */
-    public function data($page, $limit)
+    public function data($page, $limit, $with = '')
     {
-        return $this->offset(($page - 1) * $limit)->limit($limit)->get();
+        if($with == '')
+            return $this->offset(($page - 1) * $limit)->limit($limit)->get();
+        else
+            return $this->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
     }
 
     /**

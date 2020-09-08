@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>数据表格的重载 - 数据表格</title>
     <meta name="renderer" content="webkit">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <link rel="stylesheet" href="{{ asset('layuiadmin/layui/css/layui.css') }}" media="all">
@@ -90,9 +91,9 @@
                     return data.role.name;
                 }},
                 {field:'email', title: '邮箱', width:'20%', sort: true},
-                {field:'created_at', title: '创建时间'},
-                {field:'email', title: '备注', width:'20%', sort: true},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                {field:'created_at', width:'20%', title: '创建时间'},
+                {field:'email', title: '备注', sort: true},
+                {fixed: 'right', title: '操作', width:"8%", align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
@@ -117,7 +118,7 @@
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: route(routes.roles.delete, {id: obj.data.id}),
+                            url: route(routes.users.delete),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,

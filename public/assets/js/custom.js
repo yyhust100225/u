@@ -7,6 +7,19 @@
 
 "use strict";
 
+
+//去除字符串头部空格或指定字符
+String.prototype.TrimStart = function (c) {
+    if (c == null || c == "") {
+        var str = this.replace(/^s*/, '');
+        return str;
+    } else {
+        var rg = new RegExp("^" + c + "*");
+        var str = this.replace(rg, '');
+        return str;
+    }
+}
+
 // js带参路由获取
 let route = (routeUrl, param) => {
     let append = [];
@@ -21,7 +34,7 @@ let route = (routeUrl, param) => {
         }
     }
 
-    let url = routeUrl.trimStart();
+    let url = '/' + routeUrl.trimStart();
 
     if (append.length === 0) {
         return url;

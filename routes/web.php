@@ -33,6 +33,8 @@ Route::namespace('Admin')->group(function(){
         Route::get('users/edit/{id}', 'UserController@edit')->name('users.edit');
         Route::put('users/update', 'UserController@update')->name('users.update');
         Route::delete('users/delete', 'UserController@delete')->name('users.delete');
+        Route::get('users/password', 'UserController@password')->name('users.password');
+        Route::put('users/reset', 'UserController@reset')->name('users.reset');
 
         Route::get('roles', 'RoleController@list')->name('roles.list');
         Route::get('roles/data', 'RoleController@data')->name('roles.data');

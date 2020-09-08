@@ -118,6 +118,8 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
+    'check_password' => '新密码 需与 :attribute 一致',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -147,7 +149,12 @@ return [
     */
 
     'attributes' => [
-
+        'username' => '用户名',
+        'email' => '邮箱',
+        'password' => '密码',
+        'o_password' => '旧密码',
+        'n_password' => '新密码',
+        '_password' => '密码确认',
     ],
 
 ];

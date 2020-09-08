@@ -54,7 +54,10 @@
     // 页面路由
     var routes = {
         roles: {
-            edit: '{{ route_uri('permissions.edit') }}'
+            data: '{{ route_uri('permissions.data') }}',
+            create: '{{ route_uri('permissions.create') }}',
+            edit: '{{ route_uri('permissions.edit') }}',
+            delete: '{{ route_uri('permissions.delete') }}',
         }
     };
 
@@ -71,9 +74,10 @@
         table.render({
             elem: '#data-table',
             toolbar: '#table-toolbar',
-            url: "{{ route('permissions.data') }}",
+            url: route(routes.roles.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: true},
+                {field:'name', title: '权限名称', width:'15%'},
                 {field:'controller', title: '控制器名称', width:'15%'},
                 {field:'action', title: '方法名称', width:'15%'},
                 {field:'level', title: '权限等级', width:'10%', templet: function(data){
@@ -95,7 +99,7 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    window.location.href = "{{ route('permissions.create') }}";
+                    window.location.href = route(routes.roles.create);
                 }break;
                 default: break;
             }
@@ -110,7 +114,7 @@
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: "{{ route('permissions.delete') }}",
+                            url: route(routes.roles.delete),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,

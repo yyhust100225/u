@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exceptions\DataNotExistsException;
+use App\Http\Requests\ResetPassword;
 use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateUser;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends CommonController
@@ -30,12 +35,8 @@ class UserController extends CommonController
      */
     public function data(Request $request, User $user)
     {
-        $users = $user->data($request->input('page'), $request->input('limit'));
+        $users = $user->data($request->input('page'), $request->input('limit'), 'role');
         $count = $user->num();
-
-        foreach($users as $user) {
-            $user->role;
-        }
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
@@ -60,6 +61,12 @@ class UserController extends CommonController
         ]);
     }
 
+    /**
+     * 存储新用户
+     * @param StoreUser $request
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StoreUser $request, User $user)
     {
         $user->username = $request->input('username');
@@ -68,6 +75,88 @@ class UserController extends CommonController
         $user->role_id = $request->input('role_id');
         $user->remark = $request->input('remark');
 
+        return $this->returnOperationResponse($user->save(), $request);
+    }
+
+    /**
+     * 编辑用户信息
+     * @param $id
+     * @param Request $request
+     * @param User $user
+     * @param Role $role
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($id, Request $request, User $user, Role $role)
+    {
+        $user = $user->find($id);
+        $roles = $role->roles();
+        return view('admin.user.edit', [
+            'user' => $user,
+            'roles' => $roles,
+        ]);
+    }
+
+    /**
+     * 更新用户信息
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     * @throws DataNotExistsException
+     */
+    public function update(UpdateUser $request, User $user)
+    {
+        try {
+            $user = $user->find($request->input('id'));
+        } catch(ModelNotFoundException $exception) {
+            throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
+        }
+
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->role_id = $request->input('role_id');
+        $user->remark = $request->input('remark');
+
+        return $this->returnOperationResponse($user->save(), $request);
+    }
+
+    /**
+     * 删除用户
+     * @param Request $request
+     * @param Role $role
+     * @return \Illuminate\Http\JsonResponse
+     * @throws DataNotExistsException
+     */
+    public function delete(Request $request, User $user)
+    {
+        try {
+            $role = $user->find($request->input('id'));
+        } catch(ModelNotFoundException $exception) {
+            throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
+        }
+
+        return $this->returnOperationResponse($role->delete(), $request);
+    }
+
+    /**
+     * 重置用户密码页
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function password(Request $request)
+    {
+        return view('admin.user.password');
+    }
+
+    /**
+     * 重置密码
+     * @param ResetPassword $request
+     * @param User $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reset(ResetPassword $request, User $user)
+    {
+        $user = $request->user();
+        $user->password = Hash::make($request->input('n_password'));
         return $this->returnOperationResponse($user->save(), $request);
     }
 }

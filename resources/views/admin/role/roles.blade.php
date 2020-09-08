@@ -54,6 +54,8 @@
     // 页面路由
     var routes = {
         roles: {
+            data: '{{ route_uri('roles.data') }}',
+            create: '{{ route_uri('roles.create') }}',
             edit: '{{ route_uri('roles.edit') }}',
             delete: '{{ route_uri('roles.delete') }}'
         }
@@ -72,7 +74,7 @@
         table.render({
             elem: '#data-table',
             toolbar: '#table-toolbar',
-            url: "{{ route('roles.data') }}",
+            url: route(routes.roles.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: true},
                 {field:'name', title: '角色名称', width:'15%'},
@@ -91,7 +93,7 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    window.location.href = "{{ route('roles.create') }}";
+                    window.location.href = route(routes.roles.create);
                 }break;
                 default: break;
             }

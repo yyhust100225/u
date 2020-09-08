@@ -71,7 +71,7 @@
                     </a>
                     <dl class="layui-nav-child">
                         <dd style="text-align: center;"><a lay-href="set/user/info.html">基本资料</a></dd>
-                        <dd style="text-align: center;"><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <dd style="text-align: center;"><a lay-href="{{ route('users.password') }}">修改密码</a></dd>
                         <hr>
                         <dd id="logout" style="text-align: center;"><a>退出</a></dd>
                     </dl>
@@ -485,6 +485,14 @@
 
 <script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
 <script>
+
+    // 页面路由
+    var routes = {
+        users: {
+            password: '{{ route_uri('users.password') }}',
+        }
+    };
+
     layui.config({
         base: 'layuiadmin/' //静态资源所在路径
 
@@ -507,6 +515,8 @@
                 })
             }, 'json');
         });
+
+
     });
 </script>
 </body>

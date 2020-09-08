@@ -76,6 +76,14 @@
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
 
+    // 页面路由
+    var routes = {
+        permissions: {
+            list: '{{ route_uri('permissions.list') }}',
+            update: '{{ route_uri('permissions.update') }}',
+        }
+    };
+
     layui.use(['form'], function(){
         var form = layui.form;
         var $ = layui.$;
@@ -83,14 +91,14 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'PUT',
-                url: "{{ route('permissions.update') }}",
+                url: route(routes.permissions.update),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
                         layer.msg(res.message, {time: 1000}, function(){
-                            window.location.href = "{{ route('permissions.list') }}";
+                            window.location.href = route(routes.permissions.list);
                         });
                     } else {
                         layer.msg(res.message);
