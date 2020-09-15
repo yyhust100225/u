@@ -88,6 +88,7 @@ class UserController extends CommonController
      */
     public function edit($id, Request $request, User $user, Role $role)
     {
+        $user = $user->newQuery();
         $user = $user->find($id);
         $roles = $role->roles();
         return view('admin.user.edit', [
@@ -106,6 +107,7 @@ class UserController extends CommonController
     public function update(UpdateUser $request, User $user)
     {
         try {
+            $user = $user->newQuery();
             $user = $user->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
@@ -129,6 +131,7 @@ class UserController extends CommonController
     public function delete(Request $request, User $user)
     {
         try {
+            $user = $user->newQuery();
             $role = $user->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
