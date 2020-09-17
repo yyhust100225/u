@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use Illuminate\Http\Request;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Http\Request;
 
-class PermissionPolicy extends CommonPolicy
+class DepartmentPolicy extends CommonPolicy
 {
     use HandlesAuthorization;
 

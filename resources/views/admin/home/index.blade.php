@@ -131,6 +131,18 @@
                         </dl>
                     </li>
 
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="行政结构" lay-direction="2">
+                            <i class="layui-icon layui-icon-component"></i>
+                            <cite>行政结构</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="departments">
+                                <a lay-href="departments">行政部门</a>
+                            </dd>
+                        </dl>
+                    </li>
+
                     <li data-name="component" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="组件" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>

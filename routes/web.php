@@ -51,5 +51,13 @@ Route::namespace('Admin')->group(function(){
         Route::get('permissions/edit/{id}', 'PermissionController@edit')->name('permissions.edit');
         Route::put('permissions/update', 'PermissionController@update')->name('permissions.update');
         Route::delete('permissions/delete', 'PermissionController@delete')->name('permissions.delete');
+
+        Route::get('departments', 'DepartmentController@list')->name('departments.list');
+        Route::get('departments/data', 'DepartmentController@data')->name('departments.data');
+        Route::get('departments/create', 'DepartmentController@create')->name('departments.create');
+        Route::post('departments/store', 'DepartmentController@store')->name('departments.store');
+        Route::get('departments/edit/{id}', 'DepartmentController@edit')->name('departments.edit');
+        Route::put('departments/update', 'DepartmentController@update')->name('departments.update');
+        Route::delete('departments/delete', 'DepartmentController@delete')->name('departments.delete');
     });
 });

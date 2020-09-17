@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>数据表格的重载 - 数据表格</title>
+    <title>部门列表</title>
     <meta name="renderer" content="webkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,7 +17,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">数据表格的重载</div>
+                <div class="layui-card-header">部门列表</div>
                 <div class="layui-card-body">
 
                     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
@@ -32,7 +32,7 @@
 
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="create">新增权限</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="create">新增部门</button>
                         </div>
                     </script>
 
@@ -53,11 +53,11 @@
 
     // 页面路由
     var routes = {
-        permissions: {
-            data: '{{ route_uri('permissions.data') }}',
-            create: '{{ route_uri('permissions.create') }}',
-            edit: '{{ route_uri('permissions.edit') }}',
-            delete: '{{ route_uri('permissions.delete') }}',
+        departments: {
+            data: '{{ route_uri('departments.data') }}',
+            create: '{{ route_uri('departments.create') }}',
+            edit: '{{ route_uri('departments.edit') }}',
+            delete: '{{ route_uri('departments.delete') }}',
         }
     };
 
@@ -73,20 +73,13 @@
         //方法级渲染
         table.render({
             elem: '#data-table',
+            id: 'data-table',
             toolbar: '#table-toolbar',
-            url: route(routes.permissions.data),
+            url: route(routes.departments.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: true},
-                {field:'name', title: '权限名称', width:'15%'},
-                {field:'controller', title: '控制器名称', width:'15%'},
-                {field:'action', title: '方法名称', width:'15%'},
-                {field:'level', title: '权限等级', width:'10%', templet: function(data){
-                    switch(data.level) {
-                        case 1 : return '<span style="color: red">全部禁止</span>';
-                        case 2 : return '<span style="color: deepskyblue">验证权限</span>';
-                        case 3 : return '<span style="color: green">全部通行</span>';
-                    }
-                }},
+                {field:'name', title: '部门名称', width:'15%'},
+                {field:'p_name', title: '上级部门名称', width:'15%'},
                 {field:'remark', title: '备注', width:'25%'},
                 {field:'created_at', title: '创建时间'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
@@ -99,7 +92,9 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    window.location.href = route(routes.permissions.create);
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.departments.create), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 default: break;
             }
@@ -108,13 +103,15 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    window.location.href = route(routes.permissions.edit, {id: obj.data.id});
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.departments.edit, {id: obj.data.id}), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: route(routes.permissions.delete),
+                            url: route(routes.departments.delete),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,
