@@ -117,6 +117,10 @@
                             return false;
                         });
                     }
+                    else {
+                        console.log(e);
+                        layer.msg(e.responseJSON.message);
+                    }
                 }
             });
             return false;

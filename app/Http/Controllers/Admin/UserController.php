@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends CommonController
 {
+    public function __construct(Request $request)
+    {
+        $action = $request->route()->getActionMethod();
+        $this->middleware('can:' . $action . ',' . User::class);
+        parent::__construct();
+    }
 
     /**
      * 账户列表页
@@ -107,8 +113,7 @@ class UserController extends CommonController
     public function update(UpdateUser $request, User $user)
     {
         try {
-            $user = $user->newQuery();
-            $user = $user->find($request->input('id'));
+            $user = $user->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
@@ -131,13 +136,21 @@ class UserController extends CommonController
     public function delete(Request $request, User $user)
     {
         try {
-            $user = $user->newQuery();
-            $role = $user->find($request->input('id'));
+            $user = $user->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        return $this->returnOperationResponse($role->delete(), $request);
+        // 删除正在登录账户
+        if(Auth::user()->getAuthIdentifier() == $user->id) {
+            return response()->json([
+                'success' => false,
+                'code' => REQUEST_FAILED,
+                'message' => trans('request.delete logged in account'),
+            ], 403);
+        }
+
+        return $this->returnOperationResponse($user->delete(), $request);
     }
 
     /**
