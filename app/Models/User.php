@@ -50,7 +50,7 @@ class User extends Authenticatable
     public function data($page, $limit, $with = '')
     {
         if($with == '')
-            return $this->offset(($page - 1) * $limit)->limit($limit)->get();
+            return $this->newQuery()->offset(($page - 1) * $limit)->limit($limit)->get();
         else
             return $this->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
     }
@@ -61,7 +61,7 @@ class User extends Authenticatable
      */
     public function num()
     {
-        return $this->count();
+        return $this->newQuery()->count();
     }
 
     /**
@@ -83,7 +83,7 @@ class User extends Authenticatable
     public function hasPrivilege(User $user, $controller, $action)
     {
         // 找不到指定路由
-        if(!$aim_permission = Permission::where('controller', $controller)->where('action', $action)->first()) {
+        if(!$aim_permission = Permission::query()->where('controller', $controller)->where('action', $action)->first()) {
             abort(404);
         }
 

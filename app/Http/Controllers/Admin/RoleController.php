@@ -100,6 +100,7 @@ class RoleController extends CommonController
      */
     public function edit($id, Request $request, Role $role, Permission $permission, MapRoleToPermissions $mrtp)
     {
+        $role = $role->newQuery();
         $role = $role->find($id);
         $permission_list = $permission->all();
 
@@ -132,6 +133,7 @@ class RoleController extends CommonController
     public function update(Request $request, Role $role, MapRoleToPermissions $mrtp)
     {
         try {
+            $role = $role->newQuery();
             $role = $role->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
@@ -160,6 +162,7 @@ class RoleController extends CommonController
     public function delete(Request $request, Role $role)
     {
         try {
+            $role = $role->newQuery();
             $role = $role->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);

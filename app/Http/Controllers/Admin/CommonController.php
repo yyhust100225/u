@@ -16,6 +16,13 @@ class CommonController extends Controller
 
     }
 
+    /**
+     * 返回ajax响应结果
+     * @param $operation
+     * @param Request $request
+     * @param int $status
+     * @return \Illuminate\Http\JsonResponse
+     */
     protected function returnOperationResponse($operation, Request $request, $status = 200)
     {
         if($operation) {
@@ -31,7 +38,6 @@ class CommonController extends Controller
                 'message' => trans('request.failed'),
             ];
         }
-
         return response()->json($response, $status);
     }
 }

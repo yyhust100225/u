@@ -100,7 +100,7 @@ class CommonPolicy
      * @param $action
      * @return Response
      */
-    private function checkAuthorization(User $user, $action)
+    protected function checkAuthorization(User $user, $action)
     {
         return $user->hasPrivilege($user, $this->controller_name, $action) ? Response::allow() : Response::deny(trans('auth.no authority'));
     }

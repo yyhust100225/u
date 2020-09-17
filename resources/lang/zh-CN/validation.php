@@ -119,6 +119,8 @@ return [
     'uuid' => 'The :attribute must be a valid UUID.',
 
     'check_password' => '新密码 需与 :attribute 一致',
+    'username_unique' => '账户名已存在, 请更换重试',
+    'email_unique' => '邮箱已存在, 请更换重试',
 
     /*
     |--------------------------------------------------------------------------

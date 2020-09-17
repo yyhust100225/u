@@ -82,7 +82,8 @@ class PermissionController extends CommonController
      */
     public function edit($id, Request $request, Permission $permission)
     {
-        $permission = $permission->find($id);
+        $permission = $permission->newQuery()->find($id);
+
         return view('admin.permission.edit', [
             'permission' => $permission,
         ]);
@@ -98,7 +99,7 @@ class PermissionController extends CommonController
     public function update(Request $request, Permission $permission)
     {
         try {
-            $permission = $permission->find($request->input('id'));
+            $permission = $permission->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
@@ -122,11 +123,10 @@ class PermissionController extends CommonController
     public function delete(Request $request, Permission $permission)
     {
         try {
-            $permission = $permission->find($request->input('id'));
+            $permission = $permission->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
-
         return $this->returnOperationResponse($permission->delete(), $request);
     }
 }
