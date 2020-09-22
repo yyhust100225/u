@@ -143,6 +143,24 @@
                         </dl>
                     </li>
 
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="项目部" lay-direction="2">
+                            <i class="layui-icon layui-icon-component"></i>
+                            <cite>项目部</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="books">
+                                <a lay-href="books">书籍库存</a>
+                            </dd>
+                        </dl>
+
+                        <dl class="layui-nav-child">
+                            <dd data-name="materiels">
+                                <a lay-href="materiels">物料库存</a>
+                            </dd>
+                        </dl>
+                    </li>
+
                     <li data-name="component" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="组件" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>

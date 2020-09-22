@@ -92,7 +92,7 @@ return [
     ],
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
-    'numeric' => 'The :attribute must be a number.',
+    'numeric' => ':attribute 必须为数字',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
@@ -158,6 +158,18 @@ return [
         'o_password' => '旧密码',
         'n_password' => '新密码',
         '_password' => '密码确认',
+
+        'book_name' => '书籍名称',
+        'quantity_total' => '总数',
+        'quantity_sold' => '出售量',
+        'quantity_give' => '赠送量',
+        'quantity_return' => '返还数量',
+        'quantity_supplement' => '补充数量',
+
+        'materiel_name' => '物料名称',
+        'quantity_scrap' => '报废数量',
+        'quantity_consume' => '消耗数量',
+        'quantity_incomplete' => '残缺数量',
     ],
 
 ];

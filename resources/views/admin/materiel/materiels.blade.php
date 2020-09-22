@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>数据表格的重载 - 数据表格</title>
+    <title>部门列表</title>
     <meta name="renderer" content="webkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,7 +17,7 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">数据表格的重载</div>
+                <div class="layui-card-header">物料列表</div>
                 <div class="layui-card-body">
 
                     <div class="test-table-reload-btn" style="margin-bottom: 10px;">
@@ -32,12 +32,15 @@
 
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="create">新增权限</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="create">新增物料</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="refresh" ><i class="layui-icon layui-icon-refresh-3"></i></button>
                         </div>
                     </script>
 
                     <script type="text/html" id="table-bar">
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="increase">补充</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-primary" lay-event="decrease">消耗</a>
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
 
@@ -53,11 +56,13 @@
 
     // 页面路由
     var routes = {
-        permissions: {
-            data: '{{ route_uri('permissions.data') }}',
-            create: '{{ route_uri('permissions.create') }}',
-            edit: '{{ route_uri('permissions.edit') }}',
-            delete: '{{ route_uri('permissions.delete') }}',
+        materiels: {
+            data: '{{ route_uri('materiels.data') }}',
+            create: '{{ route_uri('materiels.create') }}',
+            edit: '{{ route_uri('materiels.edit') }}',
+            increase: '{{ route_uri('materiels.increase') }}',
+            decrease: '{{ route_uri('materiels.decrease') }}',
+            delete: '{{ route_uri('materiels.delete') }}',
         }
     };
 
@@ -73,33 +78,35 @@
         //方法级渲染
         table.render({
             elem: '#data-table',
+            id: 'data-table',
             toolbar: '#table-toolbar',
-            url: route(routes.permissions.data),
+            url: route(routes.materiels.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: true},
-                {field:'name', title: '权限名称', width:'15%'},
-                {field:'controller', title: '控制器名称', width:'15%'},
-                {field:'action', title: '方法名称', width:'15%'},
-                {field:'level', title: '权限等级', width:'10%', templet: function(data){
-                    switch(data.level) {
-                        case 1 : return '<span style="color: red">全部禁止</span>';
-                        case 2 : return '<span style="color: deepskyblue">验证权限</span>';
-                        case 3 : return '<span style="color: green">全部通行</span>';
-                    }
-                }},
-                {field:'remark', title: '备注'},
-                {field:'created_at', title: '创建时间', width: "12%"},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                {field:'name', title: '物料名称', width:'13%'},
+                {field:'department_name', title: '所属部门', width:'10%'},
+                {field:'quantity_total', title: '物料总数', width:'10%'},
+                {field:'quantity_scrap', title: '报废数量', width:'10%'},
+                {field:'quantity_consume', title: '消耗数量', width:'10%'},
+                {field:'quantity_incomplete', title: '残缺数量', width:'10%'},
+                {field:'quantity_usable', title: '可用数量', width:'10%'},
+                {field:'created_at', title: '创建时间'},
+                {fixed: 'right', title: '操作', width:220, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
-            limits: [14, 28, 50]
+            limits: [5, 14, 28, 50]
         });
 
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    window.location.href = route(routes.permissions.create);
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.materiels.create), function(){
+                        table.reload('data-table');
+                    });
+                }break;
+                case 'refresh': {
+                    table.reload('data-table');
                 }break;
                 default: break;
             }
@@ -108,13 +115,25 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    window.location.href = route(routes.permissions.edit, {id: obj.data.id});
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.materiels.edit, {id: obj.data.id}), function(){
+                        table.reload('data-table');
+                    });
+                }break;
+                case 'increase': {
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.materiels.increase, {id: obj.data.id}), function(){
+                        table.reload('data-table');
+                    });
+                }break;
+                case 'decrease': {
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.materiels.decrease, {id: obj.data.id}), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: route(routes.permissions.delete),
+                            url: route(routes.materiels.delete),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,
@@ -138,30 +157,6 @@
                 default:break;
             }
         });
-
-        active = {
-            reload: function(){
-                var demoReload = $('#test-table-demoReload');
-
-                //执行重载
-                table.reload('test-table-reload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                });
-            }
-        };
-
-        $('.test-table-reload-btn .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
     });
 </script>
 </body>

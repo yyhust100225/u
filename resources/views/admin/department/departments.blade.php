@@ -33,6 +33,7 @@
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
                             <button class="layui-btn layui-btn-sm" lay-event="create">新增部门</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="refresh" ><i class="layui-icon layui-icon-refresh-3"></i></button>
                         </div>
                     </script>
 
@@ -86,7 +87,7 @@
             ]],
             page: true,
             limit: 14,
-            limits: [14, 28, 50]
+            limits: [5, 14, 28, 50]
         });
 
         table.on('toolbar(data-table)', function(obj){
@@ -95,6 +96,9 @@
                     makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.departments.create), function(){
                         table.reload('data-table');
                     });
+                }break;
+                case 'refresh': {
+                    table.reload('data-table');
                 }break;
                 default: break;
             }
@@ -135,30 +139,6 @@
                 default:break;
             }
         });
-
-        active = {
-            reload: function(){
-                var demoReload = $('#test-table-demoReload');
-
-                //执行重载
-                table.reload('test-table-reload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                });
-            }
-        };
-
-        $('.test-table-reload-btn .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
-        });
-
     });
 </script>
 </body>

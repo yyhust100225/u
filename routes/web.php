@@ -59,5 +59,30 @@ Route::namespace('Admin')->group(function(){
         Route::get('departments/edit/{id}', 'DepartmentController@edit')->name('departments.edit');
         Route::put('departments/update', 'DepartmentController@update')->name('departments.update');
         Route::delete('departments/delete', 'DepartmentController@delete')->name('departments.delete');
+
+        Route::get('books', 'BookController@list')->name('books.list');
+        Route::get('books/data', 'BookController@data')->name('books.data');
+        Route::get('books/create', 'BookController@create')->name('books.create');
+        Route::post('books/store', 'BookController@store')->name('books.store');
+        Route::get('books/edit/{id}', 'BookController@edit')->name('books.edit');
+        Route::put('books/update', 'BookController@update')->name('books.update');
+        Route::delete('books/delete', 'BookController@delete')->name('books.delete');
+        Route::get('books/increase/{id}', 'BookController@increase')->name('books.increase');
+        Route::put('books/supplement', 'BookController@supplement')->name('books.supplement');
+        Route::get('books/decrease/{id}', 'BookController@decrease')->name('books.decrease');
+        Route::put('books/consume', 'BookController@consume')->name('books.consume');
+
+        Route::get('materiels', 'MaterielController@list')->name('materiels.list');
+        Route::get('materiels/data', 'MaterielController@data')->name('materiels.data');
+        Route::get('materiels/create', 'MaterielController@create')->name('materiels.create');
+        Route::post('materiels/store', 'MaterielController@store')->name('materiels.store');
+        Route::get('materiels/edit/{id}', 'MaterielController@edit')->name('materiels.edit');
+        Route::put('materiels/update', 'MaterielController@update')->name('materiels.update');
+        Route::delete('materiels/delete', 'MaterielController@delete')->name('materiels.delete');
+        Route::get('materiels/increase/{id}', 'MaterielController@increase')->name('materiels.increase');
+        Route::put('materiels/supplement', 'MaterielController@supplement')->name('materiels.supplement');
+        Route::get('materiels/decrease/{id}', 'MaterielController@decrease')->name('materiels.decrease');
+        Route::put('materiels/consume', 'MaterielController@consume')->name('materiels.consume');
+
     });
 });

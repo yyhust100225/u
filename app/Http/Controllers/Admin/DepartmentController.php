@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDepartment;
 use App\Http\Requests\UpdateDepartment;
-use App\Http\Resources\DepartmentCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\Department;

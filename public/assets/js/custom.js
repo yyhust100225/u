@@ -55,6 +55,7 @@ let route = (routeUrl, param) => {
 var makeLayerForm = function(layer, title, content_url, end){
     return layer.open({
         type: 2,
+        skin: 'layui-layer-lan',
         area: ['90%', '90%'],
         fixed: false, //不固定
         maxmin: true,
