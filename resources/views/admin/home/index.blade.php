@@ -163,6 +163,11 @@
                                 <a lay-href="printers">印刷厂</a>
                             </dd>
                         </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="printed_matters">
+                                <a lay-href="printed_matters">印刷品</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     <li data-name="component" class="layui-nav-item">

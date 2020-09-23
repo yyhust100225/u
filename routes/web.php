@@ -91,5 +91,13 @@ Route::namespace('Admin')->group(function(){
         Route::get('printers/edit/{id}', 'PrinterController@edit')->name('printers.edit');
         Route::put('printers/update', 'PrinterController@update')->name('printers.update');
         Route::delete('printers/delete', 'PrinterController@delete')->name('printers.delete');
+
+        Route::get('printed_matters', 'PrintedMatterController@list')->name('printed_matters.list');
+        Route::get('printed_matters/data', 'PrintedMatterController@data')->name('printed_matters.data');
+        Route::get('printed_matters/create', 'PrintedMatterController@create')->name('printed_matters.create');
+        Route::post('printed_matters/store', 'PrintedMatterController@store')->name('printed_matters.store');
+        Route::get('printed_matters/edit/{id}', 'PrintedMatterController@edit')->name('printed_matters.edit');
+        Route::put('printed_matters/update', 'PrintedMatterController@update')->name('printed_matters.update');
+        Route::delete('printed_matters/delete', 'PrintedMatterController@delete')->name('printed_matters.delete');
     });
 });

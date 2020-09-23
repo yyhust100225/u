@@ -172,6 +172,7 @@ return [
         'quantity_incomplete' => '残缺数量',
 
         'printer_name' => '印刷厂名称',
+        'printed_matter_name' => '印刷品名称',
     ],
 
 ];
