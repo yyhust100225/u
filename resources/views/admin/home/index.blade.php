@@ -153,10 +153,14 @@
                                 <a lay-href="books">书籍库存</a>
                             </dd>
                         </dl>
-
                         <dl class="layui-nav-child">
                             <dd data-name="materiels">
                                 <a lay-href="materiels">物料库存</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="printers">
+                                <a lay-href="printers">印刷厂</a>
                             </dd>
                         </dl>
                     </li>

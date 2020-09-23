@@ -36,9 +36,10 @@ class LoginController extends CommonController
         $this->validateLogin($request);
 
         $credentials = $request->only($this->username(), 'password');
+        $remember = (boolean)$request->input('remember', false);
 
         // 执行登录请求
-        if(Auth::attempt($credentials)) {
+        if(Auth::attempt($credentials, $remember)) {
             // 登录成功
             $context = [
                 'id' => Auth::user()->getAuthIdentifier(),
@@ -52,6 +53,17 @@ class LoginController extends CommonController
             // 登录失败, 返回Http响应
             return $this->sendFailedLoginResponse($request);
         }
+    }
+
+    /**
+     * 退出登录
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return $this->loggedOut($request);
     }
 
     /**

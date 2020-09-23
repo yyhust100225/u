@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\Department;
 use App\Http\Resources\DepartmentResource;
+use Illuminate\Support\Facades\Redis;
 
 class DepartmentController extends CommonController
 {

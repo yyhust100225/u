@@ -100,7 +100,6 @@
                         });
                     }
                     else {
-                        console.log(e);
                         layer.msg(e.responseJSON.message);
                     }
                 }

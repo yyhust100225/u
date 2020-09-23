@@ -84,5 +84,12 @@ Route::namespace('Admin')->group(function(){
         Route::get('materiels/decrease/{id}', 'MaterielController@decrease')->name('materiels.decrease');
         Route::put('materiels/consume', 'MaterielController@consume')->name('materiels.consume');
 
+        Route::get('printers', 'PrinterController@list')->name('printers.list');
+        Route::get('printers/data', 'PrinterController@data')->name('printers.data');
+        Route::get('printers/create', 'PrinterController@create')->name('printers.create');
+        Route::post('printers/store', 'PrinterController@store')->name('printers.store');
+        Route::get('printers/edit/{id}', 'PrinterController@edit')->name('printers.edit');
+        Route::put('printers/update', 'PrinterController@update')->name('printers.update');
+        Route::delete('printers/delete', 'PrinterController@delete')->name('printers.delete');
     });
 });

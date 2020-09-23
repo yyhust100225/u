@@ -103,7 +103,9 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    window.location.href = route(routes.users.create);
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.users.create), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 default: break;
             }
@@ -112,7 +114,9 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    window.location.href = route(routes.users.edit, {id: obj.data.id});
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.users.edit, {id: obj.data.id}), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){

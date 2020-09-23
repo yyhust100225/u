@@ -16,45 +16,41 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">编辑新角色</div>
+                <div class="layui-card-header">编辑印刷厂</div>
                 <div class="layui-card-body">
                 <form class="layui-form" action="">
                     @csrf
                     <div class="layui-form-item">
-                        <label class="layui-form-label">角色名称</label>
+                        <label class="layui-form-label">印刷厂名称</label>
                         <div class="layui-input-block">
-                            <input type="text" value="{{ $role->name }}" name="name" autocomplete="off" placeholder="请输入角色名称" class="layui-input">
+                            <input type="text" name="name" value="{{ $printer->name }}" autocomplete="off" placeholder="请输入印刷厂名称" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">角色状态</label>
+                        <label class="layui-form-label">联系方式</label>
                         <div class="layui-input-block">
-                            <input value="1" type="checkbox" @if($role->status == 1)checked=""@endif name="status" lay-skin="switch" lay-text="启用|禁用">
+                            <input type="text" name="tel" value="{{ $printer->tel }}" autocomplete="off" placeholder="请输入联系方式" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">角色权限</label>
+                        <label class="layui-form-label">收款账户</label>
                         <div class="layui-input-block">
-                            @foreach($permissions as $key => $group)
-                                @if($key !== 0) <hr> @endif
-                                @foreach($group as $permission)
-                                    <input type="checkbox" @if(in_array($permission->id, $my_permissions)) checked @endif name="permission[]" value="{{ $permission->id }}" title="{{ $permission->name }}">
-                                @endforeach
-                            @endforeach
+                            <input type="text" name="account" value="{{ $printer->account }}" autocomplete="off" placeholder="请输入收款账户" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">角色备注</label>
+                        <label class="layui-form-label">印刷厂备注</label>
                         <div class="layui-input-block">
-                            <textarea placeholder="请输入角色备注" name="remark" class="layui-textarea">{{ $role->remark }}</textarea>
+                            <textarea placeholder="请输入印刷厂备注" name="remark" class="layui-textarea">{{ $printer->remark }}</textarea>
                         </div>
                     </div>
+
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <input type="hidden" name="id" value="{{ $role->id }}" class="layui-input">
+                            <input type="hidden" name="id" value="{{ $printer->id }}">
                             <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
@@ -72,9 +68,9 @@
 
     // 页面路由
     var routes = {
-        roles: {
-            list: '{{ route_uri('roles.list') }}',
-            update: '{{ route_uri('roles.update') }}',
+        printers: {
+            list: '{{ route_uri('printers.list') }}',
+            update: '{{ route_uri('printers.update') }}',
         }
     };
 
@@ -85,7 +81,7 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'PUT',
-                url: route(routes.roles.update),
+                url: route(routes.printers.update),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
@@ -106,6 +102,7 @@
                         });
                     }
                     else {
+                        console.log(e);
                         layer.msg(e.responseJSON.message);
                     }
                 }
