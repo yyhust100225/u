@@ -173,6 +173,7 @@ return [
 
         'printer_name' => '印刷厂名称',
         'printed_matter_name' => '印刷品名称',
+        'exam_name' => '考试名称',
     ],
 
 ];

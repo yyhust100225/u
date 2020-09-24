@@ -4,12 +4,14 @@ namespace App\Providers;
 
 use App\Models\Book;
 use App\Models\Department;
+use App\Models\Exam;
 use App\Models\Permission;
 use App\Models\Printer;
 use App\Models\Role;
 use App\Models\User;
 use App\Policies\BookPolicy;
 use App\Policies\DepartmentPolicy;
+use App\Policies\ExamPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PrinterPolicy;
 use App\Policies\RolePolicy;
@@ -34,6 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         Book::class => BookPolicy::class,
         Materiel::class => MaterielPolicy::class,
         Printer::class => PrinterPolicy::class,
+        Exam::class => ExamPolicy::class,
     ];
 
     /**

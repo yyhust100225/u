@@ -99,5 +99,13 @@ Route::namespace('Admin')->group(function(){
         Route::get('printed_matters/edit/{id}', 'PrintedMatterController@edit')->name('printed_matters.edit');
         Route::put('printed_matters/update', 'PrintedMatterController@update')->name('printed_matters.update');
         Route::delete('printed_matters/delete', 'PrintedMatterController@delete')->name('printed_matters.delete');
+
+        Route::get('exams', 'ExamController@list')->name('exams.list');
+        Route::get('exams/data', 'ExamController@data')->name('exams.data');
+        Route::get('exams/create', 'ExamController@create')->name('exams.create');
+        Route::post('exams/store', 'ExamController@store')->name('exams.store');
+        Route::get('exams/edit/{id}', 'ExamController@edit')->name('exams.edit');
+        Route::put('exams/update', 'ExamController@update')->name('exams.update');
+        Route::delete('exams/delete', 'ExamController@delete')->name('exams.delete');
     });
 });
