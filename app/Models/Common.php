@@ -11,25 +11,48 @@ class Common extends Model
 
     /**
      * 查询分页数据
-     * @param $page integer 当前查询页码
-     * @param $limit integer 每页数据量
-     * @param $with array|string 关联查询
-     * @return mixed 查询到数据
+     * @param integer $page 查询页
+     * @param integer $limit 每页数据量
+     * @param array $where 查询条件
+     * @param array|string $with 关联查询
+     * @return mixed 查询数据
      */
-    public function data($page, $limit, $with = '')
+    public function select($page, $limit, $where = array(), $with = '')
     {
+        $model = $this->newQuery();
+
+        foreach($where as $field => $value) {
+            if(is_array($value))
+                $model->where($field, $value[0], $value[1]);
+            else
+                $model->where($field, $value);
+        }
+
         if($with == '')
-            return $this->offset(($page - 1) * $limit)->limit($limit)->get();
+            $return['data'] = $model->offset(($page - 1) * $limit)->limit($limit)->get();
         else
-            return $this->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
+            $return['data'] = $model->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
+
+        $return['count'] = $model->count();
+
+        return $return;
     }
 
     /**
      * 查询数据总量
      * @return mixed
      */
-    public function num()
+    public function num($where = array())
     {
-        return $this->count();
+        $model = $this->newQuery();
+
+        foreach($where as $field => $value) {
+            if(is_array($value))
+                $model->where($field, $value[0], $value[1]);
+            else
+                $model->where($field, $value);
+        }
+
+        return $model->count();
     }
 }

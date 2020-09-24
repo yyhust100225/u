@@ -38,14 +38,22 @@ class ExamController extends CommonController
      */
     public function data(Request $request, Exam $exam)
     {
-        $exams = $exam->data($request->input('page'), $request->input('limit'));
-        $count = $exam->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $exams = $exam->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => ExamResource::collection($exams),
+            'count' => $exams['count'],
+            'data' => ExamResource::collection($exams['data']),
         ], 200);
     }
 

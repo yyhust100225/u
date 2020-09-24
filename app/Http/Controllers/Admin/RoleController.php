@@ -38,14 +38,22 @@ class RoleController extends CommonController
      */
     public function data(Request $request, Role $role)
     {
-        $roles = $role->data($request->input('page'), $request->input('limit'));
-        $count = $role->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $roles = $role->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => $roles,
+            'count' => $roles['count'],
+            'data' => $roles['data'],
         ], 200);
     }
 

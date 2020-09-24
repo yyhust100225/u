@@ -42,26 +42,31 @@ class User extends Authenticatable
 
     /**
      * 查询用户列表数据
-     * @param $page integer 查询页
-     * @param $limit integer 每页数据量
-     * @param $with array|string 关联查询
+     * @param integer $page 查询页
+     * @param integer $limit 每页数据量
+     * @param array $where 查询条件
+     * @param array|string $with 关联查询
      * @return mixed 查询数据
      */
-    public function data($page, $limit, $with = '')
+    public function select($page, $limit, $where = array(), $with = '')
     {
-        if($with == '')
-            return $this->newQuery()->offset(($page - 1) * $limit)->limit($limit)->get();
-        else
-            return $this->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
-    }
+        $model = $this->newQuery();
 
-    /**
-     * 查询数据总量
-     * @return mixed
-     */
-    public function num()
-    {
-        return $this->newQuery()->count();
+        foreach($where as $field => $value) {
+            if(is_array($value))
+                $model->where($field, $value[0], $value[1]);
+            else
+                $model->where($field, $value);
+        }
+
+        if($with == '')
+            $return['data'] = $model->newQuery()->offset(($page - 1) * $limit)->limit($limit)->get();
+        else
+            $return['data'] = $model->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
+
+        $return['count'] = $model->count();
+
+        return $return;
     }
 
     /**
