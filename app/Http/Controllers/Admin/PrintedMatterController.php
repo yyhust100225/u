@@ -38,14 +38,22 @@ class PrintedMatterController extends CommonController
      */
     public function data(Request $request, PrintedMatter $printed_matter)
     {
-        $printed_matters = $printed_matter->data($request->input('page'), $request->input('limit'));
-        $count = $printed_matter->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $printed_matters = $printed_matter->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => PrintedMatterResource::collection($printed_matters),
+            'count' => $printed_matters['count'],
+            'data' => PrintedMatterResource::collection($printed_matters['data']),
         ], 200);
     }
 

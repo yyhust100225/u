@@ -20,13 +20,14 @@
                 <div class="layui-card-header">书籍物料列表</div>
                 <div class="layui-card-body">
 
-                    <div class="test-table-reload-btn" style="margin-bottom: 10px;">
-                        搜索ID：
+                    <form class="" id="table-search-form" style="margin-bottom: 10px;">
+
                         <div class="layui-inline">
-                            <input class="layui-input" name="id" id="test-table-demoReload" autocomplete="off">
+                            <input class="layui-input" name="name" autocomplete="off" placeholder="书籍名称">
                         </div>
-                        <button class="layui-btn" data-type="reload">搜索</button>
-                    </div>
+
+                        <button type="button" class="layui-btn" data-type="reload">搜索</button>
+                    </form>
 
                     <table class="layui-hide" id="data-table" lay-filter="data-table"></table>
 
@@ -157,6 +158,22 @@
                 default:break;
             }
         });
+
+        active = {
+            reload: function(){
+                var data = $('#table-search-form').serialize();
+                table.reload('data-table', {
+                    page: {curr: 1},
+                    where: {where:data, action:'search'}
+                }, 'data');
+            }
+        };
+
+        $('#table-search-form .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
     });
 </script>
 </body>

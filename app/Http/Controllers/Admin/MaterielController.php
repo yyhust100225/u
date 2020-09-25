@@ -40,14 +40,22 @@ class MaterielController extends CommonController
      */
     public function data(Request $request, Materiel $materiel)
     {
-        $materiels = $materiel->data($request->input('page'), $request->input('limit'));
-        $count = $materiel->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $materiels = $materiel->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => MaterielResource::collection($materiels),
+            'count' => $materiels['count'],
+            'data' => MaterielResource::collection($materiels['data']),
         ], 200);
     }
 

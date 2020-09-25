@@ -41,14 +41,22 @@ class BookController extends CommonController
      */
     public function data(Request $request, Book $book)
     {
-        $books = $book->data($request->input('page'), $request->input('limit'));
-        $count = $book->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $books = $book->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => BookResource::collection($books),
+            'count' => $books['count'],
+            'data' => BookResource::collection($books['data']),
         ], 200);
     }
 

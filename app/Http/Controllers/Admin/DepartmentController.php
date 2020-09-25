@@ -39,14 +39,22 @@ class DepartmentController extends CommonController
      */
     public function data(Request $request, Department $department)
     {
-        $departments = $department->data($request->input('page'), $request->input('limit'));
-        $count = $department->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $departments = $department->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => DepartmentResource::collection($departments),
+            'count' => $departments['count'],
+            'data' => DepartmentResource::collection($departments['data']),
         ], 200);
     }
 

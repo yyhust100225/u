@@ -35,14 +35,22 @@ class PermissionController extends CommonController
      */
     public function data(Request $request, Permission $permission)
     {
-        $permissions = $permission->data($request->input('page'), $request->input('limit'));
-        $count = $permission->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $permissions = $permission->select($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => $permissions,
+            'count' => $permissions['count'],
+            'data' => $permissions['data'],
         ], 200);
     }
 
