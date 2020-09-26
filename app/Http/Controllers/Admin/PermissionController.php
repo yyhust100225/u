@@ -13,7 +13,7 @@ class PermissionController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Permission::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
@@ -76,7 +76,7 @@ class PermissionController extends CommonController
         $permission->controller = $request->input('controller');
         $permission->action = $request->input('action');
         $permission->level = $request->input('level');
-        $permission->remark = $request->input('remark');
+        $permission->remark = strval($request->input('remark'));
 
         return $this->returnOperationResponse($permission->save(), $request);
     }
@@ -116,7 +116,7 @@ class PermissionController extends CommonController
         $permission->controller = $request->input('controller');
         $permission->action = $request->input('action');
         $permission->level = $request->input('level');
-        $permission->remark = $request->input('remark');
+        $permission->remark = strval($request->input('remark'));
 
         return $this->returnOperationResponse($permission->save(), $request);
     }

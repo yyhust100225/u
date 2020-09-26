@@ -16,7 +16,7 @@ class RoleController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Role::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**

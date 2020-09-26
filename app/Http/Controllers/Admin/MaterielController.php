@@ -6,26 +6,28 @@ use App\Exceptions\DataNotExistsException;
 use App\Http\Requests\OptMateriel;
 use App\Http\Requests\StoreMateriel;
 use App\Http\Requests\UpdateMateriel;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use App\Models\Materiel;
 use App\Http\Resources\MaterielResource;
 use App\Models\Department;
 
-class MaterielController extends CommonController
+class MaterielController extends ProjectDepartmentController
 {
     public function __construct(Request $request)
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Materiel::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
      * 物料物料列表页
      * @param Request $request
      * @param Materiel $materiel
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|\Illuminate\View\View
      */
     public function list(Request $request, Materiel $materiel)
     {
@@ -63,7 +65,7 @@ class MaterielController extends CommonController
      * 创建新物料物料
      * @param Request $request
      * @param Department $department
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|\Illuminate\View\View
      */
     public function create(Request $request, Department $department)
     {
@@ -98,7 +100,7 @@ class MaterielController extends CommonController
      * @param Request $request
      * @param Materiel $materiel
      * @param Department $department
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|\Illuminate\View\View
      */
     public function edit($id, Request $request, Materiel $materiel, Department $department)
     {
@@ -158,7 +160,7 @@ class MaterielController extends CommonController
      * @param $id
      * @param Request $request
      * @param Materiel $materiel
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|\Illuminate\View\View
      */
     public function increase($id, Request $request, Materiel $materiel)
     {
@@ -194,7 +196,7 @@ class MaterielController extends CommonController
      * @param $id
      * @param Request $request
      * @param Materiel $materiel
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|\Illuminate\View\View
      */
     public function decrease($id, Request $request, Materiel $materiel)
     {

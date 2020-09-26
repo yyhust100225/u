@@ -168,6 +168,21 @@
                                 <a lay-href="printed_matters">印刷品</a>
                             </dd>
                         </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="exam_categories">
+                                <a lay-href="exam_categories">考试大类</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="exams">
+                                <a lay-href="exams">考试管理</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="statements">
+                                <a lay-href="statements">对账单</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     <li data-name="component" class="layui-nav-item">

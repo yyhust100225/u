@@ -107,5 +107,22 @@ Route::namespace('Admin')->group(function(){
         Route::get('exams/edit/{id}', 'ExamController@edit')->name('exams.edit');
         Route::put('exams/update', 'ExamController@update')->name('exams.update');
         Route::delete('exams/delete', 'ExamController@delete')->name('exams.delete');
+
+        Route::get('exam_categories', 'ExamCategoryController@list')->name('exam_categories.list');
+        Route::get('exam_categories/data', 'ExamCategoryController@data')->name('exam_categories.data');
+        Route::get('exam_categories/create', 'ExamCategoryController@create')->name('exam_categories.create');
+        Route::post('exam_categories/store', 'ExamCategoryController@store')->name('exam_categories.store');
+        Route::get('exam_categories/edit/{id}', 'ExamCategoryController@edit')->name('exam_categories.edit');
+        Route::put('exam_categories/update', 'ExamCategoryController@update')->name('exam_categories.update');
+        Route::delete('exam_categories/delete', 'ExamCategoryController@delete')->name('exam_categories.delete');
+
+        Route::get('statements', 'StatementController@list')->name('statements.list');
+        Route::get('statements/data', 'StatementController@data')->name('statements.data');
+        Route::get('statements/create', 'StatementController@create')->name('statements.create');
+        Route::post('statements/store', 'StatementController@store')->name('statements.store');
+        Route::get('statements/edit/{id}', 'StatementController@edit')->name('statements.edit');
+        Route::put('statements/update', 'StatementController@update')->name('statements.update');
+        Route::delete('statements/delete', 'StatementController@delete')->name('statements.delete');
+
     });
 });

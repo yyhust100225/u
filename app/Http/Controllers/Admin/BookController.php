@@ -13,13 +13,13 @@ use App\Models\Book;
 use App\Http\Resources\BookResource;
 use App\Models\Department;
 
-class BookController extends CommonController
+class BookController extends ProjectDepartmentController
 {
     public function __construct(Request $request)
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Book::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**

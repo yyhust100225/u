@@ -5,6 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\Common
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Common newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Common newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Common query()
+ * @mixin \Eloquent
+ */
 class Common extends Model
 {
     protected $table;
@@ -28,12 +36,12 @@ class Common extends Model
                 $model->where($field, $value);
         }
 
+        $return['count'] = $model->count();
+
         if($with == '')
             $return['data'] = $model->offset(($page - 1) * $limit)->limit($limit)->get();
         else
             $return['data'] = $model->with($with)->offset(($page - 1) * $limit)->limit($limit)->get();
-
-        $return['count'] = $model->count();
 
         return $return;
     }

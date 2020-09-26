@@ -11,13 +11,13 @@ use App\Models\Printer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class PrinterController extends CommonController
+class PrinterController extends ProjectDepartmentController
 {
     public function __construct(Request $request)
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Printer::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**

@@ -10,8 +10,9 @@ class CommonController extends Controller
     /**
      * 后台控制器基类构造方法
      * CommonController constructor.
+     * @param Request $request
      */
-    public function __construct()
+    public function __construct(Request $request)
     {
 
     }

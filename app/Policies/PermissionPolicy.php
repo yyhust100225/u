@@ -12,7 +12,7 @@ class PermissionPolicy extends CommonPolicy
     /**
      * Create a new policy instance.
      *
-     * @return void
+     * @param Request $request
      */
     public function __construct(Request $request)
     {

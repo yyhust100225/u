@@ -10,13 +10,13 @@ use App\Models\Exam;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class ExamController extends CommonController
+class ExamController extends ProjectDepartmentController
 {
     public function __construct(Request $request)
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Exam::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**

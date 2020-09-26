@@ -10,13 +10,13 @@ use App\Models\PrintedMatter;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class PrintedMatterController extends CommonController
+class PrintedMatterController extends ProjectDepartmentController
 {
     public function __construct(Request $request)
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . PrintedMatter::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
