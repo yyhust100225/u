@@ -49,7 +49,7 @@ class StatementController extends ProjectDepartmentController
             // 搜索条件
         }
 
-        $statements = $statement->select($request->input('page'), $request->input('limit'), $where);
+        $statements = $statement->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
@@ -88,6 +88,10 @@ class StatementController extends ProjectDepartmentController
     public function store(StoreStatement $request, Statement $statement)
     {
         $statement->printer_id = intval($request->input('printer_id'));
+        $statement->printer_id = intval($request->input('printer_id'));
+        $statement->printer_id = intval($request->input('printer_id'));
+        $statement->printer_id = intval($request->input('printer_id'));
 
+        return $this->returnOperationResponse($statement->save(), $request);
     }
 }

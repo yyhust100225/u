@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * App\Models\Statement
  *
- * @property int|mixed printer_id
  * @property int $id
  * @property int $printer_id 印刷厂ID
  * @property int $publisher_id 发稿人ID

@@ -47,7 +47,7 @@ class ExamCategoryController extends ProjectDepartmentController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $exam_categories = $exam_category->select($request->input('page'), $request->input('limit'), $where);
+        $exam_categories = $exam_category->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

@@ -47,7 +47,7 @@ class RoleController extends CommonController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $roles = $role->select($request->input('page'), $request->input('limit'), $where);
+        $roles = $role->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

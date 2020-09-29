@@ -48,7 +48,7 @@ class PrinterController extends ProjectDepartmentController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $printers = $printer->select($request->input('page'), $request->input('limit'), $where);
+        $printers = $printer->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

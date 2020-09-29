@@ -50,7 +50,7 @@ class BookController extends ProjectDepartmentController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $books = $book->select($request->input('page'), $request->input('limit'), $where);
+        $books = $book->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

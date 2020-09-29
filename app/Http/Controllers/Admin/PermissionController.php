@@ -44,7 +44,7 @@ class PermissionController extends CommonController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $permissions = $permission->select($request->input('page'), $request->input('limit'), $where);
+        $permissions = $permission->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

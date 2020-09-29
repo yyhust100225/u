@@ -21,9 +21,102 @@
                 <form class="layui-form" action="">
                     @csrf
                     <div class="layui-form-item">
-                        <label class="layui-form-label">对账单名称</label>
+                        <label class="layui-form-label" for="printer-id">印刷厂名称</label>
+                        <div class="layui-input-inline">
+                            <select name="printer_id" id="printer-id">
+                                @foreach($printers as $printer)
+                                    <option value="{{ $printer->id }}">{{ $printer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="publish-date">发稿日期</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="publish_date" placeholder="yyyy-MM-dd" id="publish-date" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">考试大类</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" autocomplete="off" placeholder="请输入对账单名称" class="layui-input">
+                            @foreach($exam_categories as $exam_category)
+                                <input type="checkbox" name="exams[{{ $exam_category->id }}]" title="{{ $exam_category->name }}" lay-skin="primary" />
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">考试名称</label>
+                        <div class="layui-input-block">
+                            @foreach($exams as $exam)
+                                <input type="checkbox" name="exams[{{ $exam->id }}]" title="{{ $exam->name }}" lay-skin="primary">
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="department-id">隶属部门</label>
+                        <div class="layui-input-inline">
+                            <select name="department_id" id="department-id">
+                                @foreach($departments as $department)
+                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="printed-matter-id">印刷品名称</label>
+                        <div class="layui-input-inline">
+                            <select name="printed_matter_id" id="printed-matter-id">
+                                @foreach($printed_matters as $printed_matter)
+                                    <option value="{{ $printed_matter->id }}">{{ $printed_matter->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="print-detail">印刷明细</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" name="print_detail" id="print-detail"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="quantity-print">数量</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="quantity_print" id="quantity-print" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="price-print">单价</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="price_print" id="price-print" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="designer-quote-price">设计师报价</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="designer_quote_price" id="designer-quote-price" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="designer-quote-price">设计师报价</label>
+                        <div class="layui-input-inline">
+                            <input class="layui-input" type="text" name="designer_quote_price" id="designer-quote-price" />
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="remark">账单备注</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" name="remark" id="remark"></textarea>
                         </div>
                     </div>
 
@@ -45,16 +138,17 @@
 <script>
 
     // 页面路由
-    var routes = {
+    let routes = {
         statements: {
             list: '{{ route_uri('statements.list') }}',
             store: '{{ route_uri('statements.store') }}',
         }
     };
 
-    layui.use(['form'], function(){
-        var form = layui.form;
-        var $ = layui.$;
+    layui.use(['form', 'laydate'], function(){
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let $ = layui.$;
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
@@ -65,7 +159,7 @@
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
-                        var index = parent.layer.getFrameIndex(window.name);
+                        let index = parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
                             parent.layer.close(index);
                         });
@@ -86,6 +180,11 @@
                 }
             });
             return false;
+        });
+
+        laydate.render({
+            elem: '#publish-date',
+            type: 'date'
         });
     });
 </script>

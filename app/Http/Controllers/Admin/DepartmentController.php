@@ -17,7 +17,7 @@ class DepartmentController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Department::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
@@ -48,7 +48,7 @@ class DepartmentController extends CommonController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $departments = $department->select($request->input('page'), $request->input('limit'), $where);
+        $departments = $department->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

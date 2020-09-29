@@ -25,7 +25,7 @@ class Common extends Model
      * @param array|string $with 关联查询
      * @return mixed 查询数据
      */
-    public function select($page, $limit, $where = array(), $with = '')
+    public function selectData($page, $limit, $where = array(), $with = '')
     {
         $model = $this->newQuery();
 

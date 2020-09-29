@@ -47,7 +47,7 @@ class PrintedMatterController extends ProjectDepartmentController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $printed_matters = $printed_matter->select($request->input('page'), $request->input('limit'), $where);
+        $printed_matters = $printed_matter->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,

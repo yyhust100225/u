@@ -19,7 +19,7 @@ class UserController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . User::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**

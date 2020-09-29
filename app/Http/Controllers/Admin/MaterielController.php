@@ -51,7 +51,7 @@ class MaterielController extends ProjectDepartmentController
                 $where['name'] = ['like', '%'.$con['name'].'%'];
         }
 
-        $materiels = $materiel->select($request->input('page'), $request->input('limit'), $where);
+        $materiels = $materiel->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
