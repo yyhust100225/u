@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Maps\MapStatementToExamCategories;
+use App\Models\Maps\MapStatementToExams;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\Models\Statement
@@ -52,4 +53,34 @@ use Illuminate\Database\Eloquent\Model;
 class Statement extends Common
 {
     use HasFactory;
+
+    // 关联对账单所有考试
+    public function exams()
+    {
+        return $this->hasManyThrough(Exam::class, MapStatementToExams::class, 'statement_id', 'id', 'id', 'exam_id');
+    }
+
+    // 关联对账单所有考试大类
+    public function exam_categories()
+    {
+        return $this->hasManyThrough(ExamCategory::class, MapStatementToExamCategories::class, 'statement_id', 'id', 'id', 'exam_category_id');
+    }
+
+    // 关联对账单和印刷厂
+    public function printer()
+    {
+        return $this->belongsTo(Printer::class);
+    }
+
+    // 关联对账单和部门
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    // 关联对账单和印刷品
+    public function printed_matter()
+    {
+        return $this->belongsTo(PrintedMatter::class);
+    }
 }

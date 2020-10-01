@@ -59,7 +59,7 @@ return [
     'image' => 'The :attribute must be an image.',
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field does not exist in :other.',
-    'integer' => 'The :attribute must be an integer.',
+    'integer' => ':attribute 必须填写整数',
     'ip' => 'The :attribute must be a valid IP address.',
     'ipv4' => 'The :attribute must be a valid IPv4 address.',
     'ipv6' => 'The :attribute must be a valid IPv6 address.',
@@ -122,6 +122,9 @@ return [
     'username_unique' => '账户名已存在, 请更换重试',
     'email_unique' => '邮箱已存在, 请更换重试',
     'department_name_unique' => '部门名称已存在, 请更换名称重试',
+    'exams_null' => '请至少选择一项 :attribute',
+    'exam_categories_null' => '请至少选择一项 :attribute',
+    'publish_date_format' => ':attribute 必须是 yyyy-MM-dd 日期格式',
 
     /*
     |--------------------------------------------------------------------------
@@ -135,9 +138,9 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ]
+//        'attribute-name' => [
+//            'rule-name' => 'custom-message',
+//        ]
     ],
 
     /*
@@ -174,6 +177,12 @@ return [
         'printer_name' => '印刷厂名称',
         'printed_matter_name' => '印刷品名称',
         'exam_name' => '考试名称',
+        'exam_categories' => '考试大类',
+        'exams' => '考试',
+        'publish_date' => '发稿日期',
+        'quantity_print' => '印刷品数量',
+        'price_print' => '印刷品单价',
+        'designer_quote_price' => '设计报价',
     ],
 
 ];

@@ -42,17 +42,15 @@
                         <label class="layui-form-label">考试大类</label>
                         <div class="layui-input-block">
                             @foreach($exam_categories as $exam_category)
-                                <input type="checkbox" name="exams[{{ $exam_category->id }}]" title="{{ $exam_category->name }}" lay-skin="primary" />
+                                <input type="checkbox" name="exam_categories[{{ $exam_category->id }}]" title="{{ $exam_category->name }}" lay-skin="primary" />
                             @endforeach
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">考试名称</label>
-                        <div class="layui-input-block">
-                            @foreach($exams as $exam)
-                                <input type="checkbox" name="exams[{{ $exam->id }}]" title="{{ $exam->name }}" lay-skin="primary">
-                            @endforeach
+                        <div class="layui-input-inline">
+                            <div id="exams"></div>
                         </div>
                     </div>
 
@@ -107,13 +105,6 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label" for="designer-quote-price">设计师报价</label>
-                        <div class="layui-input-inline">
-                            <input class="layui-input" type="text" name="designer_quote_price" id="designer-quote-price" />
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
                         <label class="layui-form-label" for="remark">账单备注</label>
                         <div class="layui-input-block">
                             <textarea class="layui-textarea" name="remark" id="remark"></textarea>
@@ -122,7 +113,7 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -135,6 +126,7 @@
 
 <script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/js/xm-select.js') }}"></script>
 <script>
 
     // 页面路由
@@ -187,6 +179,20 @@
             type: 'date'
         });
     });
+
+    let exams_select = xmSelect.render({
+        el: '#exams',
+        language: 'zn',
+        filterable: true,
+        autoRow: true,
+        name: 'exams',
+        data: [
+            @foreach($exams as $exam)
+                {name: '{{ $exam->name }}', value: {{ $exam->id }}},
+            @endforeach
+        ]
+    })
+
 </script>
 
 </body>

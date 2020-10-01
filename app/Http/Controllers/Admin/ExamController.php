@@ -64,7 +64,6 @@ class ExamController extends ProjectDepartmentController
      */
     public function create(Request $request)
     {
-
         return view('admin.exam.create');
     }
 

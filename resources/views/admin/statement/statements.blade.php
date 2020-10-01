@@ -68,9 +68,9 @@
     }).extend({
         index: 'lib/index' //主入口模块
     }).use(['index', 'table', 'layer'], function(){
-        var table = layui.table;
-        var layer = layui.layer;
-        var $ = layui.$;
+        let table = layui.table;
+        let layer = layui.layer;
+        let $ = layui.$;
 
         //方法级渲染
         table.render({
@@ -80,8 +80,31 @@
             url: route(routes.statements.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '对账单名称'},
-                {field:'created_at', title: '创建时间', width:'15%'},
+                {field: 'printer_name', title: '印刷厂', width: '10%'},
+                {field: 'printed_matter_name', title: '印刷品', width: '10%'},
+                {field: 'applicant', title: '发稿人', width: '10%'},
+                {field: 'department_name', title: '所属部门', width: '10%'},
+                {field: 'publish_date', title: '发稿时间', width: '8%'},
+                {field: 'print_detail', title: '印刷明细', width: '15%'},
+                {field: 'quantity_print', title: '印刷品数量', width: '8%'},
+                {field: 'price_print', title: '印刷品单价', width: '8%'},
+                {field: 'designer_quote_price', title: '设计报价', width: '8%'},
+                {field: 'printer_quote_price', title: '印刷厂报价', width: '8%'},
+                {field: 'status', title: '账单状态', width: '8%', templet: function(data){
+                    switch (data.status) {
+                        case {{ STATEMENT_NOT_VERIFIED }}: {
+                            return '<span style="color: dodgerblue">未校验</span>';
+                        }break;
+                        case {{ STATEMENT_VALIDATION_FAILED }}: {
+                            return '<span style="color: red">校验不正确</span>';
+                        }break;
+                        case {{ STATEMENT_VALIDATION_SUCCESSFUL }}: {
+                            return '<span style="color: limegreen">已校验</span>';
+                        }break;
+                    }
+                }},
+                {field: 'remark', title: '备注', width: '15%'},
+                {field: 'created_at', title: '创建时间', width:'12%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
@@ -139,9 +162,9 @@
             }
         });
 
-        active = {
+        let active = {
             reload: function(){
-                var data = $('#table-search-form').serialize();
+                let data = $('#table-search-form').serialize();
                 table.reload('data-table', {
                     page: {curr: 1},
                     where: {where:data, action:'search'}
@@ -150,7 +173,7 @@
         };
 
         $('#table-search-form .layui-btn').on('click', function(){
-            var type = $(this).data('type');
+            let type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
     });
