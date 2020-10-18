@@ -62,6 +62,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label" for="sale-record">销售记录</label>
                         <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="new">新增</button>
                             <table id="sale-record" class="layui-table">
                                 <thead>
                                 <tr>
@@ -72,33 +73,39 @@
                                     <th>销售数量</th>
                                     <th>缴费方式</th>
                                     <th>销售额</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
                                     <td><input class="layui-input" name="name[]"></td>
-                                    <td width="12%">
-                                        <input type="radio" name="gender[]" value="0" title="男" checked>
-                                        <input type="radio" name="gender[]" value="1" title="女">
+                                    <td width="8%">
+                                        <select name="gender[]">
+                                            <option value="0">男</option>
+                                            <option value="1">女</option>
+                                        </select>
                                     </td>
                                     <td><input class="layui-input" name="id_number[]"></td>
                                     <td><input class="layui-input" name="tel[]"></td>
                                     <td><input class="layui-input" name="quantity[]"></td>
                                     <td>
-                                        <input class="layui-input" name="payment_method[]">
+                                        <select name="payment_method[]">
+                                            @foreach($payment_methods as $payment_method)
+                                                <option value="{{ $payment_method->id }}" >{{ $payment_method->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td><input class="layui-input" name="cost[]"></td>
+                                    <td><button type="button" class="layui-btn layui-btn-xs layui-btn-danger delete-tr">删除</button></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-
-
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -122,8 +129,10 @@
     };
 
     layui.use(['form'], function(){
-        var form = layui.form;
-        var $ = layui.$;
+        let form = layui.form;
+        let $ = layui.$;
+
+        deleteTr();
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
@@ -156,7 +165,15 @@
             });
             return false;
         });
+
+        let row = $('#sale-record').children('tbody').children('tr');
+        $('button#new').on('click', function(){;
+            $('tbody').append('<tr>' + row.html() + '</tr>');
+            form.render();
+            deleteTr();
+        });
     });
+
 </script>
 
 </body>

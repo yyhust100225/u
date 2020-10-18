@@ -79,7 +79,7 @@ return [
     'max' => [
         'numeric' => 'The :attribute may not be greater than :max.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',
-        'string' => 'The :attribute may not be greater than :max characters.',
+        'string' => ':attribute 不能超过:max个字符',
         'array' => 'The :attribute may not have more than :max items.',
     ],
     'mimes' => 'The :attribute must be a file of type: :values.',
@@ -118,6 +118,10 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
 
+    // 自定义验证规则消息
+    'verify_unsigned_integer' => ':attribute必须为正整数',
+    'verify_unsigned_float' => ':attribute必须为正数',
+
     'check_password' => '新密码 需与 :attribute 一致',
     'username_unique' => '账户名已存在, 请更换重试',
     'email_unique' => '邮箱已存在, 请更换重试',
@@ -125,6 +129,7 @@ return [
     'exams_null' => '请至少选择一项 :attribute',
     'exam_categories_null' => '请至少选择一项 :attribute',
     'publish_date_format' => ':attribute 必须是 yyyy-MM-dd 日期格式',
+    'book_sale_name_null' => '销售记录姓名不能为空, 如不需要, 请删除该行',
 
     /*
     |--------------------------------------------------------------------------
@@ -186,6 +191,11 @@ return [
 
         // 支付设置
         'payment_method_name' => '支付方式名称',
+
+        // 图书售卖记录
+        'book_sale_quantity' => '销售数量',
+        'book_sale_name' => '姓名',
+        'book_sale_cost' => '销售额',
     ],
 
 ];

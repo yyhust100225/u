@@ -6,8 +6,10 @@ use App\Exceptions\DataNotExistsException;
 use App\Http\Requests\StoreBookSale;
 use App\Http\Requests\UpdateBookSale;
 use App\Http\Resources\BookSaleResource;
+use App\Models\BookBuyer;
 use App\Models\BookSale;
 use App\Models\Department;
+use App\Models\PaymentMethod;
 use App\Models\User;
 use App\Models\Book;
 use Illuminate\Contracts\Foundation\Application;
@@ -15,7 +17,9 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Throwable;
 
 class BookSaleController extends ProjectDepartmentController
 {
@@ -70,18 +74,21 @@ class BookSaleController extends ProjectDepartmentController
      * @param Book $book
      * @param Department $department
      * @param User $user
+     * @param PaymentMethod $payment_method
      * @return Application|Factory|View
      */
-    public function create(Request $request, Book $book, Department $department, User $user)
+    public function create(Request $request, Book $book, Department $department, User $user, PaymentMethod $payment_method)
     {
         $books = $book->all();
         $departments = $department->all();
         $users = $user->all();
+        $payment_methods = $payment_method->all();
 
         return view('admin.book_sale.create', [
             'books' => $books,
             'departments' => $departments,
             'users' => $users,
+            'payment_methods' => $payment_methods,
         ]);
     }
 
@@ -90,15 +97,38 @@ class BookSaleController extends ProjectDepartmentController
      * @param StoreBookSale $request
      * @param BookSale $book_sale
      * @return JsonResponse
+     * @throws Throwable
      */
-    public function store(StoreBookSale $request, BookSale $book_sale)
+    public function store(StoreBookSale $request, BookSale $book_sale, BookBuyer $book_buyer)
     {
         $book_sale->book_id = intval($request->input('book_id'));
         $book_sale->department_id = intval($request->input('department_id'));
         $book_sale->user_id = intval($request->input('user_id'));
         $book_sale->remark = strval($request->input('remark'));
 
-        return $this->returnOperationResponse($book_sale->save(), $request);
+        $names = $request->input('name');
+        if(empty($names)) {
+            $this->returnFailedResponse(trans('request.write one record'));
+        }
+
+        $buyers = [];
+        foreach ($names as $key => $name) {
+            $buyers[$key]['name'] = strval($name);
+            $buyers[$key]['gender'] = $request->input('gender')[$key];
+            $buyers[$key]['id_number'] = strval($request->input('id_number')[$key]);
+            $buyers[$key]['tel'] = strval($request->input('tel')[$key]);
+            $buyers[$key]['quantity'] = intval($request->input('quantity')[$key]);
+            $buyers[$key]['payment_method'] = $request->input('payment_method')[$key];
+            $buyers[$key]['cost'] = floatval($request->input('cost')[$key]);
+        }
+
+        $ret = true;
+        DB::transaction(function() use($request, $book_sale, $book_buyer, $buyers, &$ret){
+            if(!$book_sale->save()) $ret = false;
+            if(!$book_buyer->saveBookBuyers($book_sale->id, $buyers)) $ret = false;
+        });
+
+        return $this->returnOperationResponse($ret, $request);
     }
 
     /**
