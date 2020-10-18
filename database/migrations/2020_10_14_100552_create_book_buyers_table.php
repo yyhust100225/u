@@ -24,7 +24,6 @@ class CreateBookBuyersTable extends Migration
                 $table->unsignedInteger('quantity')->default(0)->comment('销售数量');
                 $table->unsignedTinyInteger('payment_method')->default(0)->comment('缴费方式');
                 $table->decimal('cost', 8, 2)->default(0.00)->comment('销售费用');
-                $table->timestamps();
             });
         }
     }

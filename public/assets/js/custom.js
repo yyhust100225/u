@@ -7,7 +7,6 @@
 
 "use strict";
 
-
 //去除字符串头部空格或指定字符
 String.prototype.TrimStart = function (c) {
     if (c == null || c == "") {
@@ -62,6 +61,22 @@ var makeLayerForm = function(layer, title, content_url, end){
         title: title,
         content: content_url,
         end: end
+    });
+}
+
+let deleteTd = function(classname) {
+    let cn = arguments[0] ? arguments[0] : 'delete-td';
+    let $ = layui.$;
+    $('.' + cn).on('click', function(){
+        $(this).parents('td').remove();
+    });
+}
+
+let deleteTr = function(classname) {
+    let cn = arguments[0] ? arguments[0] : 'delete-tr';
+    let $ = layui.$;
+    $('.' + cn).on('click', function(){
+        $(this).parents('tr').remove();
     });
 }
 

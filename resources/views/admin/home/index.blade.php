@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="{{ asset('layuiadmin/layui/css/layui.css') }}" media="all">
     <link rel="stylesheet" href="{{ asset('layuiadmin/style/admin.css') }}" media="all">
     <link rel="stylesheet" href="{{ asset('layuiadmin/style/app.css') }}" media="all">
-
+    <style>
+        .layui-nav-bar {
+            background-color: rgb(170, 49, 48);
+        }
+    </style>
 </head>
 <body class="layui-layout-body">
 
@@ -196,7 +200,7 @@
                             <cite>系统设置</cite>
                         </a>
                         <dl class="layui-nav-child">
-                            <dd class="layui-nav-itemed">
+                            <dd class="">
                                 <a href="javascript:;">支付设置</a>
                                 <dl class="layui-nav-child">
                                     <dd data-name="payment_methods">
@@ -204,7 +208,7 @@
                                     </dd>
                                 </dl>
                             </dd>
-                            <dd class="layui-nav-itemed">
+                            <dd class="">
                                 <a href="javascript:;">我的设置</a>
                                 <dl class="layui-nav-child">
                                     <dd><a lay-href="set/user/info.html">基本资料</a></dd>
