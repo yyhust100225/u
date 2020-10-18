@@ -183,6 +183,35 @@
                                 <a lay-href="statements">对账单</a>
                             </dd>
                         </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="book_sales">
+                                <a lay-href="book_sales">图书销售</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                    <li data-name="set" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="系统设置" lay-direction="2">
+                            <i class="layui-icon layui-icon-set"></i>
+                            <cite>系统设置</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd class="layui-nav-itemed">
+                                <a href="javascript:;">支付设置</a>
+                                <dl class="layui-nav-child">
+                                    <dd data-name="payment_methods">
+                                        <a lay-href="payment_methods">支付方式设置</a>
+                                    </dd>
+                                </dl>
+                            </dd>
+                            <dd class="layui-nav-itemed">
+                                <a href="javascript:;">我的设置</a>
+                                <dl class="layui-nav-child">
+                                    <dd><a lay-href="set/user/info.html">基本资料</a></dd>
+                                    <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                                </dl>
+                            </dd>
+                        </dl>
                     </li>
 
                     <li data-name="component" class="layui-nav-item">

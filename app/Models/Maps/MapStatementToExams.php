@@ -6,6 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * App\Models\Maps\MapStatementToExams
+ *
+ * @property int $id
+ * @property int $statement_id 账单ID
+ * @property int $exam_id 考试ID
+ * @method static \Illuminate\Database\Eloquent\Builder|MapStatementToExams newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MapStatementToExams newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|MapStatementToExams query()
+ * @method static \Illuminate\Database\Eloquent\Builder|MapStatementToExams whereExamId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MapStatementToExams whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|MapStatementToExams whereStatementId($value)
+ * @mixin \Eloquent
+ */
 class MapStatementToExams extends Model
 {
     use HasFactory;

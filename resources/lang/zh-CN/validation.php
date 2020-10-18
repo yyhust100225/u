@@ -183,6 +183,9 @@ return [
         'quantity_print' => '印刷品数量',
         'price_print' => '印刷品单价',
         'designer_quote_price' => '设计报价',
+
+        // 支付设置
+        'payment_method_name' => '支付方式名称',
     ],
 
 ];

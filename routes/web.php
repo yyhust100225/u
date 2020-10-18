@@ -124,5 +124,21 @@ Route::namespace('Admin')->group(function(){
         Route::put('statements/update', 'StatementController@update')->name('statements.update');
         Route::delete('statements/delete', 'StatementController@delete')->name('statements.delete');
 
+        Route::get('book_sales', 'BookSaleController@list')->name('book_sales.list');
+        Route::get('book_sales/data', 'BookSaleController@data')->name('book_sales.data');
+        Route::get('book_sales/create', 'BookSaleController@create')->name('book_sales.create');
+        Route::post('book_sales/store', 'BookSaleController@store')->name('book_sales.store');
+        Route::get('book_sales/edit/{id}', 'BookSaleController@edit')->name('book_sales.edit');
+        Route::put('book_sales/update', 'BookSaleController@update')->name('book_sales.update');
+        Route::delete('book_sales/delete', 'BookSaleController@delete')->name('book_sales.delete');
+
+        // 支付设置路由
+        Route::get('payment_methods', 'PaymentMethodController@list')->name('payment_methods.list');
+        Route::get('payment_methods/data', 'PaymentMethodController@data')->name('payment_methods.data');
+        Route::get('payment_methods/create', 'PaymentMethodController@create')->name('payment_methods.create');
+        Route::post('payment_methods/store', 'PaymentMethodController@store')->name('payment_methods.store');
+        Route::get('payment_methods/edit/{id}', 'PaymentMethodController@edit')->name('payment_methods.edit');
+        Route::put('payment_methods/update', 'PaymentMethodController@update')->name('payment_methods.update');
+        Route::delete('payment_methods/delete', 'PaymentMethodController@delete')->name('payment_methods.delete');
     });
 });

@@ -2,17 +2,18 @@
 
 namespace App\Policies;
 
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Http\Request;
 
-class ExamPolicy extends CommonPolicy
+class PaymentMethodPolicy extends CommonPolicy
 {
     use HandlesAuthorization;
 
     /**
      * Create a new policy instance.
      *
-     * @param Request $request
+     * @return void
      */
     public function __construct(Request $request)
     {

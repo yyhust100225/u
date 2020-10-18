@@ -49,6 +49,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Statement whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Statement whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Department $department
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExamCategory[] $exam_categories
+ * @property-read int|null $exam_categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exam[] $exams
+ * @property-read int|null $exams_count
+ * @property-read \App\Models\PrintedMatter $printed_matter
+ * @property-read \App\Models\Printer $printer
  */
 class Statement extends Common
 {
