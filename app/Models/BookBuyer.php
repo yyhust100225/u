@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
@@ -35,13 +36,14 @@ use Illuminate\Support\Facades\DB;
  * @method static \Illuminate\Database\Eloquent\Builder|BookBuyer whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BookBuyer whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BookBuyer whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class BookBuyer extends Common
 {
     use HasFactory;
     public $timestamps = false;
 
+    // 存储书籍销售信息买家用户
     public function saveBookBuyers($book_sale_id, $buyers)
     {
         if(is_null($buyers)) return false;
@@ -61,5 +63,11 @@ class BookBuyer extends Common
         }
 
         return DB::table($this->getTable())->where('book_sale_id', $book_sale_id)->delete() !== false && DB::table($this->getTable())->insert($book_buyers);
+    }
+
+    // 销毁书籍售卖记录买家用户信息
+    public function deleteBookBuyers($book_sale_id)
+    {
+        return DB::table($this->getTable())->where('book_sale_id', $book_sale_id)->delete() !== false;
     }
 }

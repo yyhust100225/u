@@ -80,7 +80,11 @@
             url: route(routes.book_sales.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '书籍销售名称'},
+                {field:'book_name', title: '书籍名称'},
+                {field:'department_name', title: '归属部门'},
+                {field:'user_name', title: '归属人'},
+                {field:'total_quantity', title: '销售总量'},
+                {field:'total_cost', title: '总销售金额'},
                 {field:'created_at', title: '创建时间', width:'15%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],

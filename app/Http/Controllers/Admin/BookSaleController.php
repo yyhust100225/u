@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Throwable;
+use function Symfony\Component\String\u;
 
 class BookSaleController extends ProjectDepartmentController
 {
@@ -96,6 +97,7 @@ class BookSaleController extends ProjectDepartmentController
      * 存储新书籍销售记录
      * @param StoreBookSale $request
      * @param BookSale $book_sale
+     * @param BookBuyer $book_buyer
      * @return JsonResponse
      * @throws Throwable
      */
@@ -110,6 +112,9 @@ class BookSaleController extends ProjectDepartmentController
         if(empty($names)) {
             $this->returnFailedResponse(trans('request.write one record'));
         }
+
+        $book_sale->total_quantity = array_sum($request->input('quantity'));
+        $book_sale->total_cost = array_sum($request->input('cost'));
 
         $buyers = [];
         foreach ($names as $key => $name) {
@@ -139,21 +144,26 @@ class BookSaleController extends ProjectDepartmentController
      * @param Book $book
      * @param Department $department
      * @param User $user
+     * @param PaymentMethod $payment_method
      * @return Application|Factory|View
      */
-    public function edit($id, Request $request, BookSale $book_sale, Book $book, Department $department, User $user)
+    public function edit($id, Request $request, BookSale $book_sale, Book $book, Department $department, User $user, PaymentMethod $payment_method)
     {
         $book_sale = $book_sale->newQuery()->find($id);
+        $buyers = $book_sale->buyers;
 
         $books = $book->all();
         $departments = $department->all();
         $users = $user->all();
+        $payment_methods = $payment_method->all();
 
         return view('admin.book_sale.edit', [
             'book_sale' => $book_sale,
             'books' => $books,
             'departments' => $departments,
             'users' => $users,
+            'buyers' => $buyers,
+            'payment_methods' => $payment_methods,
         ]);
     }
 
@@ -161,10 +171,11 @@ class BookSaleController extends ProjectDepartmentController
      * 更新书籍销售记录
      * @param UpdateBookSale $request
      * @param BookSale $book_sale
+     * @param BookBuyer $book_buyer
      * @return JsonResponse
-     * @throws DataNotExistsException
+     * @throws DataNotExistsException|Throwable
      */
-    public function update(UpdateBookSale $request, BookSale $book_sale)
+    public function update(UpdateBookSale $request, BookSale $book_sale, BookBuyer $book_buyer)
     {
         try {
             $book_sale = $book_sale->newQuery()->find($request->input('id'));
@@ -177,23 +188,57 @@ class BookSaleController extends ProjectDepartmentController
         $book_sale->user_id = intval($request->input('user_id'));
         $book_sale->remark = strval($request->input('remark'));
 
-        return $this->returnOperationResponse($book_sale->save(), $request);
+        $names = $request->input('name');
+        if(empty($names)) {
+            $this->returnFailedResponse(trans('request.write one record'));
+        }
+
+        $book_sale->total_quantity = array_sum($request->input('quantity'));
+        $book_sale->total_cost = array_sum($request->input('cost'));
+
+        $buyers = [];
+        foreach ($names as $key => $name) {
+            $buyers[$key]['name'] = strval($name);
+            $buyers[$key]['gender'] = $request->input('gender')[$key];
+            $buyers[$key]['id_number'] = strval($request->input('id_number')[$key]);
+            $buyers[$key]['tel'] = strval($request->input('tel')[$key]);
+            $buyers[$key]['quantity'] = intval($request->input('quantity')[$key]);
+            $buyers[$key]['payment_method'] = $request->input('payment_method')[$key];
+            $buyers[$key]['cost'] = floatval($request->input('cost')[$key]);
+        }
+
+        $ret = true;
+        DB::transaction(function() use($request, $book_sale, $book_buyer, $buyers, &$ret){
+            if(!$book_sale->save()) $ret = false;
+            if(!$book_buyer->saveBookBuyers($book_sale->id, $buyers)) $ret = false;
+        });
+
+        return $this->returnOperationResponse($ret, $request);
     }
 
     /**
      * 删除书籍销售记录
      * @param Request $request
      * @param BookSale $book_sale
+     * @param BookBuyer $book_buyer
      * @return JsonResponse
      * @throws DataNotExistsException
+     * @throws Throwable
      */
-    public function delete(Request $request, BookSale $book_sale)
+    public function delete(Request $request, BookSale $book_sale, BookBuyer $book_buyer)
     {
         try {
             $book_sale = $book_sale->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
-        return $this->returnOperationResponse($book_sale->delete(), $request);
+
+        $ret = true;
+        DB::transaction(function() use($request, $book_sale, $book_buyer, &$ret){
+            if(!$book_sale->delete()) $ret = false;
+            if(!$book_buyer->deleteBookBuyers($book_sale->id)) $ret = false;
+        });
+
+        return $this->returnOperationResponse($ret, $request);
     }
 }

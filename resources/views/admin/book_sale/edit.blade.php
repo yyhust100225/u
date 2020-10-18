@@ -60,6 +60,52 @@
                     </div>
 
                     <div class="layui-form-item">
+                        <label class="layui-form-label" for="sale-record">销售记录</label>
+                        <div class="layui-input-block">
+                            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" id="new">新增</button>
+                            <table id="sale-record" class="layui-table">
+                                <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>身份证号</th>
+                                    <th>电话</th>
+                                    <th>销售数量</th>
+                                    <th>缴费方式</th>
+                                    <th>销售额</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($buyers as $buyer)
+                                <tr>
+                                    <td><input class="layui-input" value="{{ $buyer->name }}" name="name[]"></td>
+                                    <td width="8%">
+                                        <select name="gender[]">
+                                            <option @if($buyer->gender == 0) selected @endif value="0">男</option>
+                                            <option @if($buyer->gender == 1) selected @endif value="1">女</option>
+                                        </select>
+                                    </td>
+                                    <td><input class="layui-input" value="{{ $buyer->id_number }}" name="id_number[]"></td>
+                                    <td><input class="layui-input" value="{{ $buyer->tel }}" name="tel[]"></td>
+                                    <td><input class="layui-input" value="{{ $buyer->quantity }}" name="quantity[]"></td>
+                                    <td>
+                                        <select name="payment_method[]">
+                                            @foreach($payment_methods as $payment_method)
+                                                <option @if($buyer->payment_method == $payment_method->id) selected @endif value="{{ $payment_method->id }}" >{{ $payment_method->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td><input class="layui-input" value="{{ $buyer->cost }}" name="cost[]"></td>
+                                    <td><button type="button" class="layui-btn layui-btn-xs layui-btn-danger delete-tr">删除</button></td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
                         <div class="layui-input-block">
                             <input type="hidden" name="id" value="{{ $book_sale->id }}">
                             <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
@@ -78,7 +124,7 @@
 <script>
 
     // 页面路由
-    var routes = {
+    let routes = {
         book_sales: {
             list: '{{ route_uri('book_sales.list') }}',
             update: '{{ route_uri('book_sales.update') }}',
@@ -86,8 +132,10 @@
     };
 
     layui.use(['form'], function(){
-        var form = layui.form;
-        var $ = layui.$;
+        let form = layui.form;
+        let $ = layui.$;
+
+        deleteTr();
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
@@ -98,7 +146,7 @@
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
-                        var index = parent.layer.getFrameIndex(window.name);
+                        let index = parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
                             parent.layer.close(index);
                         });
@@ -120,7 +168,38 @@
             });
             return false;
         });
+
+        let row = "<tr>\n" +
+            "    <td><input class=\"layui-input\" name=\"name[]\"></td>\n" +
+            "    <td width=\"8%\">\n" +
+            "        <select name=\"gender[]\">\n" +
+            "            <option value=\"0\">男</option>\n" +
+            "            <option value=\"1\">女</option>\n" +
+            "        </select>\n" +
+            "    </td>\n" +
+            "    <td><input class=\"layui-input\" name=\"id_number[]\"></td>\n" +
+            "    <td><input class=\"layui-input\" name=\"tel[]\"></td>\n" +
+            "    <td><input class=\"layui-input\" name=\"quantity[]\"></td>\n" +
+            "    <td>\n" +
+            "        <select name=\"payment_method[]\">\n" +
+            "            @foreach($payment_methods as $payment_method)\n" +
+            "                <option value=\"{{ $payment_method->id }}\" >{{ $payment_method->name }}</option>\n" +
+            "            @endforeach\n" +
+            "        </select>\n" +
+            "    </td>\n" +
+            "    <td><input class=\"layui-input\" name=\"cost[]\"></td>\n" +
+            "    <td><button type=\"button\" class=\"layui-btn layui-btn-xs layui-btn-danger delete-tr\">删除</button></td>\n" +
+            "</tr>";
+
+        $('button#new').on('click', function(){;
+            $('tbody').append(row);
+            form.render();
+            deleteTr();
+        });
     });
+
+
+
 </script>
 
 </body>
