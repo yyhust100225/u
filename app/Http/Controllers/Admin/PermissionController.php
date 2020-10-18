@@ -13,7 +13,7 @@ class PermissionController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Permission::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
@@ -35,14 +35,22 @@ class PermissionController extends CommonController
      */
     public function data(Request $request, Permission $permission)
     {
-        $permissions = $permission->data($request->input('page'), $request->input('limit'));
-        $count = $permission->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $permissions = $permission->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => $permissions,
+            'count' => $permissions['count'],
+            'data' => $permissions['data'],
         ], 200);
     }
 
@@ -68,7 +76,7 @@ class PermissionController extends CommonController
         $permission->controller = $request->input('controller');
         $permission->action = $request->input('action');
         $permission->level = $request->input('level');
-        $permission->remark = $request->input('remark');
+        $permission->remark = strval($request->input('remark'));
 
         return $this->returnOperationResponse($permission->save(), $request);
     }
@@ -108,7 +116,7 @@ class PermissionController extends CommonController
         $permission->controller = $request->input('controller');
         $permission->action = $request->input('action');
         $permission->level = $request->input('level');
-        $permission->remark = $request->input('remark');
+        $permission->remark = strval($request->input('remark'));
 
         return $this->returnOperationResponse($permission->save(), $request);
     }

@@ -91,14 +91,23 @@
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
+                        var index = parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
-                            window.location.href = route(routes.roles.list);
+                            parent.layer.close(index);
                         });
                     } else {
                         layer.msg(res.message);
                     }
                 }, error: function(e){
-
+                    if(e.status === 422) {
+                        $.each(e.responseJSON.errors, function(k,v){
+                            layer.msg(v[0]);
+                            return false;
+                        });
+                    }
+                    else {
+                        layer.msg(e.responseJSON.message);
+                    }
                 }
             });
             return false;

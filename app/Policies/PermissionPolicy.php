@@ -2,10 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 
 class PermissionPolicy extends CommonPolicy
 {
@@ -14,7 +12,7 @@ class PermissionPolicy extends CommonPolicy
     /**
      * Create a new policy instance.
      *
-     * @return void
+     * @param Request $request
      */
     public function __construct(Request $request)
     {

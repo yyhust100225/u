@@ -31,13 +31,13 @@
                 <div class="layui-card-header">数据表格的重载</div>
                 <div class="layui-card-body">
 
-                    <div class="test-table-reload-btn" style="margin-bottom: 10px;">
-                        搜索ID：
+                    <form class="" id="table-search-form" style="margin-bottom: 10px;">
                         <div class="layui-inline">
-                            <input class="layui-input" name="id" id="test-table-demoReload" autocomplete="off">
+                            <input class="layui-input" name="username" autocomplete="off" placeholder="用户名">
                         </div>
-                        <button class="layui-btn" data-type="reload">搜索</button>
-                    </div>
+
+                        <button type="button" class="layui-btn" data-type="reload">搜索</button>
+                    </form>
 
                     <table class="layui-hide" id="data-table" lay-filter="data-table"></table>
 
@@ -78,6 +78,7 @@
         index: 'lib/index' //主入口模块
     }).use(['index', 'table'], function(){
         var table = layui.table;
+        var $ = layui.$;
 
         //方法级渲染
         table.render({
@@ -103,7 +104,9 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    window.location.href = route(routes.users.create);
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.users.create), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 default: break;
             }
@@ -112,7 +115,9 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    window.location.href = route(routes.users.edit, {id: obj.data.id});
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.users.edit, {id: obj.data.id}), function(){
+                        table.reload('data-table');
+                    });
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
@@ -146,25 +151,17 @@
             }
         });
 
-        var $ = layui.$, active = {
+        active = {
             reload: function(){
-                var demoReload = $('#test-table-demoReload');
-
-                //执行重载
-                table.reload('test-table-reload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
-                });
+                var data = $('#table-search-form').serialize();
+                table.reload('data-table', {
+                    page: {curr: 1},
+                    where: {where:data, action:'search'}
+                }, 'data');
             }
         };
 
-        $('.test-table-reload-btn .layui-btn').on('click', function(){
+        $('#table-search-form .layui-btn').on('click', function(){
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });

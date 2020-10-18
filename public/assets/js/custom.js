@@ -51,3 +51,17 @@ let route = (routeUrl, param) => {
     return url;
 }
 
+// 弹出表单框 参数初始化
+var makeLayerForm = function(layer, title, content_url, end){
+    return layer.open({
+        type: 2,
+        skin: 'layui-layer-lan',
+        area: ['90%', '90%'],
+        fixed: false, //不固定
+        maxmin: true,
+        title: title,
+        content: content_url,
+        end: end
+    });
+}
+

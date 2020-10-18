@@ -59,7 +59,7 @@ return [
     'image' => 'The :attribute must be an image.',
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field does not exist in :other.',
-    'integer' => 'The :attribute must be an integer.',
+    'integer' => ':attribute 必须填写整数',
     'ip' => 'The :attribute must be a valid IP address.',
     'ipv4' => 'The :attribute must be a valid IPv4 address.',
     'ipv6' => 'The :attribute must be a valid IPv6 address.',
@@ -92,7 +92,7 @@ return [
     ],
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
-    'numeric' => 'The :attribute must be a number.',
+    'numeric' => ':attribute 必须为数字',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
@@ -113,7 +113,7 @@ return [
     'starts_with' => 'The :attribute must start with one of the following: :values.',
     'string' => 'The :attribute must be a string.',
     'timezone' => 'The :attribute must be a valid zone.',
-    'unique' => 'The :attribute has already been taken.',
+    'unique' => ':attribute 已存在, 请更换重试',
     'uploaded' => 'The :attribute failed to upload.',
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
@@ -121,6 +121,10 @@ return [
     'check_password' => '新密码 需与 :attribute 一致',
     'username_unique' => '账户名已存在, 请更换重试',
     'email_unique' => '邮箱已存在, 请更换重试',
+    'department_name_unique' => '部门名称已存在, 请更换名称重试',
+    'exams_null' => '请至少选择一项 :attribute',
+    'exam_categories_null' => '请至少选择一项 :attribute',
+    'publish_date_format' => ':attribute 必须是 yyyy-MM-dd 日期格式',
 
     /*
     |--------------------------------------------------------------------------
@@ -134,9 +138,9 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ]
+//        'attribute-name' => [
+//            'rule-name' => 'custom-message',
+//        ]
     ],
 
     /*
@@ -157,6 +161,31 @@ return [
         'o_password' => '旧密码',
         'n_password' => '新密码',
         '_password' => '密码确认',
+
+        'book_name' => '书籍名称',
+        'quantity_total' => '总数',
+        'quantity_sold' => '出售量',
+        'quantity_give' => '赠送量',
+        'quantity_return' => '返还数量',
+        'quantity_supplement' => '补充数量',
+
+        'materiel_name' => '物料名称',
+        'quantity_scrap' => '报废数量',
+        'quantity_consume' => '消耗数量',
+        'quantity_incomplete' => '残缺数量',
+
+        'printer_name' => '印刷厂名称',
+        'printed_matter_name' => '印刷品名称',
+        'exam_name' => '考试名称',
+        'exam_categories' => '考试大类',
+        'exams' => '考试',
+        'publish_date' => '发稿日期',
+        'quantity_print' => '印刷品数量',
+        'price_print' => '印刷品单价',
+        'designer_quote_price' => '设计报价',
+
+        // 支付设置
+        'payment_method_name' => '支付方式名称',
     ],
 
 ];

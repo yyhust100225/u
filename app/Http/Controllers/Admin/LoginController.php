@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Exceptions\AuthException;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends CommonController
 {
-    use AuthenticatesUsers;
-
     /**
      * 登录表单页
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
@@ -19,7 +17,7 @@ class LoginController extends CommonController
     public function showLoginForm()
     {
         // 权限检查
-        if($this->guard()->check()) {
+        if(Auth::check()) {
             return redirect()->route('home');
         }
 
@@ -29,7 +27,7 @@ class LoginController extends CommonController
     /**
      * 登录验证
      * @param Request $request
-     * @return \Illuminate\Http\Response|void
+     * @return \Illuminate\Http\JsonResponse|void
      * @throws AuthException
      */
     public function login(Request $request)
@@ -37,21 +35,35 @@ class LoginController extends CommonController
         // 登录字段验证
         $this->validateLogin($request);
 
+        $credentials = $request->only($this->username(), 'password');
+        $remember = (boolean)$request->input('remember', false);
+
         // 执行登录请求
-        if($this->attemptLogin($request)) {
+        if(Auth::attempt($credentials, $remember)) {
             // 登录成功
             $context = [
-                'id' => $this->guard()->user()->id,
-                'username' => $this->guard()->user()->username,
+                'id' => Auth::user()->getAuthIdentifier(),
+                'username' => $request->input('username'),
                 'ip' => $request->ip(),
             ];
             Log::info(trans('auth.success'), $context);
-            return $this->sendLoginResponse($request);
+            return $this->authenticated($request, Auth::user());
         }
         else {
             // 登录失败, 返回Http响应
             return $this->sendFailedLoginResponse($request);
         }
+    }
+
+    /**
+     * 退出登录
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return $this->loggedOut($request);
     }
 
     /**

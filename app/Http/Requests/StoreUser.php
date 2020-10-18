@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\fieldUnique;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StoreUser extends FormRequest
 {
@@ -26,10 +26,18 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'min:4', new fieldUnique($this)],
-            'email' => ['required', 'email', new fieldUnique($this)],
+            'username' => ['required', 'min:4', Rule::unique('users')],
+            'email' => ['required', 'email', Rule::unique('users')],
             'password' => 'required|min:8',
             '_password' => 'same:password',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'username.unique' => trans('validation.username_unique'),
+            'email.unique' => trans('validation.email_unique'),
         ];
     }
 }

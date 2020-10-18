@@ -7,8 +7,10 @@ use App\Models\Maps\MapRoleToPermissions;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class RoleController extends CommonController
 {
@@ -16,7 +18,7 @@ class RoleController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . Role::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
@@ -34,18 +36,26 @@ class RoleController extends CommonController
      * 角色列表数据
      * @param Request $request
      * @param Role $role
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function data(Request $request, Role $role)
     {
-        $roles = $role->data($request->input('page'), $request->input('limit'));
-        $count = $role->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['name']))
+                $where['name'] = ['like', '%'.$con['name'].'%'];
+        }
+
+        $roles = $role->selectData($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => $roles,
+            'count' => $roles['count'],
+            'data' => $roles['data'],
         ], 200);
     }
 
@@ -74,7 +84,8 @@ class RoleController extends CommonController
      * @param Request $request
      * @param Role $role
      * @param MapRoleToPermissions $mrtp
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
+     * @throws Throwable
      */
     public function store(Request $request, Role $role, MapRoleToPermissions $mrtp)
     {
@@ -127,7 +138,7 @@ class RoleController extends CommonController
      * 更新新角色
      * @param Request $request
      * @param Role $role
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function update(Request $request, Role $role, MapRoleToPermissions $mrtp)
@@ -156,7 +167,7 @@ class RoleController extends CommonController
      * 删除新角色
      * @param Request $request
      * @param Role $role
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function delete(Request $request, Role $role)

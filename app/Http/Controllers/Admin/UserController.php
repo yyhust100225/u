@@ -19,7 +19,7 @@ class UserController extends CommonController
     {
         $action = $request->route()->getActionMethod();
         $this->middleware('can:' . $action . ',' . User::class);
-        parent::__construct();
+        parent::__construct($request);
     }
 
     /**
@@ -41,14 +41,22 @@ class UserController extends CommonController
      */
     public function data(Request $request, User $user)
     {
-        $users = $user->data($request->input('page'), $request->input('limit'), 'role');
-        $count = $user->num();
+        $where = array();
+        if($request->has('action') && $request->input('action') == 'search'){
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if(!empty($con['username']))
+                $where['username'] = ['like', '%'.$con['username'].'%'];
+        }
+
+        $list = $user->select($request->input('page'), $request->input('limit'), $where, 'role');
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
-            'count' => $count,
-            'data' => $users,
+            'count' => $list['count'],
+            'data' => $list['data'],
         ], 200);
     }
 
