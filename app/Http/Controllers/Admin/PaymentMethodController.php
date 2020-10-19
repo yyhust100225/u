@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePaymentMethod;
 use App\Http\Resources\PaymentMethodResource;
 use App\Models\PaymentMethod;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PaymentMethodController extends ProjectDepartmentController
@@ -34,7 +35,7 @@ class PaymentMethodController extends ProjectDepartmentController
      * 考试列表数据
      * @param Request $request
      * @param PaymentMethod $payment_method
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function data(Request $request, PaymentMethod $payment_method)
     {
@@ -71,7 +72,7 @@ class PaymentMethodController extends ProjectDepartmentController
      * 存储新考试
      * @param StorePaymentMethod $request
      * @param PaymentMethod $payment_method
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(StorePaymentMethod $request, PaymentMethod $payment_method)
     {
@@ -99,7 +100,7 @@ class PaymentMethodController extends ProjectDepartmentController
      * 更新考试
      * @param UpdatePaymentMethod $request
      * @param PaymentMethod $payment_method
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function update(UpdatePaymentMethod $request, PaymentMethod $payment_method)
@@ -119,7 +120,7 @@ class PaymentMethodController extends ProjectDepartmentController
      * 删除考试
      * @param Request $request
      * @param PaymentMethod $payment_method
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function delete(Request $request, PaymentMethod $payment_method)

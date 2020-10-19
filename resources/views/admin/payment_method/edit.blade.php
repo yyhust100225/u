@@ -16,25 +16,25 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">编辑考试</div>
+                <div class="layui-card-header">编辑支付方式</div>
                 <div class="layui-card-body">
-                <form class="layui-form" action="">
-                    @csrf
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">考试名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="name" value="{{ $exam->name }}" autocomplete="off" placeholder="请输入考试名称" class="layui-input">
+                    <form class="layui-form" action="">
+                        @csrf
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" style="width: 100px;">支付方式名称</label>
+                            <div class="layui-input-block" style="margin-left: 130px">
+                                <input type="text" name="name" value="{{ $payment_method->name }}" autocomplete="off" placeholder="请输入支付方式名称" class="layui-input">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <input type="hidden" name="id" value="{{ $exam->id }}">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-left: 130px">
+                                <input type="hidden" name="id" value="{{ $payment_method->id }}" />
+                                <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
                 </div>
             </div>
         </div>
@@ -47,9 +47,9 @@
 
     // 页面路由
     var routes = {
-        exams: {
-            list: '{{ route_uri('exams.list') }}',
-            update: '{{ route_uri('exams.update') }}',
+        payment_methods: {
+            list: '{{ route_uri('payment_methods.list') }}',
+            update: '{{ route_uri('payment_methods.update') }}',
         }
     };
 
@@ -60,7 +60,7 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'PUT',
-                url: route(routes.exams.update),
+                url: route(routes.payment_methods.update),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
