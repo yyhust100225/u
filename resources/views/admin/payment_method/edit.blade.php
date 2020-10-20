@@ -18,17 +18,17 @@
             <div class="layui-card">
                 <div class="layui-card-header">编辑支付方式</div>
                 <div class="layui-card-body">
-                    <form class="layui-form" action="">
+                    <form class="layui-form form-long-label-100" action="">
                         @csrf
                         <div class="layui-form-item">
-                            <label class="layui-form-label" style="width: 100px;">支付方式名称</label>
-                            <div class="layui-input-block" style="margin-left: 130px">
+                            <label class="layui-form-label">支付方式名称</label>
+                            <div class="layui-input-block">
                                 <input type="text" name="name" value="{{ $payment_method->name }}" autocomplete="off" placeholder="请输入支付方式名称" class="layui-input">
                             </div>
                         </div>
 
                         <div class="layui-form-item">
-                            <div class="layui-input-block" style="margin-left: 130px">
+                            <div class="layui-input-block">
                                 <input type="hidden" name="id" value="{{ $payment_method->id }}" />
                                 <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>

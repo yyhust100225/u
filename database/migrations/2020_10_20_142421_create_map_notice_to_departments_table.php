@@ -15,7 +15,8 @@ class CreateMapNoticeToDepartmentsTable extends Migration
     {
         Schema::create('map_notice_to_departments', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedInteger('notice_id')->comment('要讯ID');
+            $table->unsignedInteger('department_id')->comment('部门ID');
         });
     }
 

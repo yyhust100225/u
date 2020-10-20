@@ -15,7 +15,8 @@ class CreateMapNoticeToUsersTable extends Migration
     {
         Schema::create('map_notice_to_users', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedInteger('notice_id')->comment('要讯ID');
+            $table->unsignedInteger('user_id')->comment('用户ID');
         });
     }
 

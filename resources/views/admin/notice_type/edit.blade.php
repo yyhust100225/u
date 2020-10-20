@@ -16,19 +16,20 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">创建新支付方式</div>
+                <div class="layui-card-header">编辑要讯类型</div>
                 <div class="layui-card-body">
                 <form class="layui-form form-long-label-100" action="">
                     @csrf
                     <div class="layui-form-item">
-                        <label class="layui-form-label">支付方式名称</label>
+                        <label class="layui-form-label">要讯类型名称</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" autocomplete="off" placeholder="请输入支付方式名称" class="layui-input">
+                            <input type="text" name="name" value="{{ $notice_type->name }}" autocomplete="off" placeholder="请输入要讯类型名称" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
+                            <input type="hidden" name="id" value="{{ $notice_type->id }}">
                             <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
@@ -46,9 +47,9 @@
 
     // 页面路由
     var routes = {
-        payment_methods: {
-            list: '{{ route_uri('payment_methods.list') }}',
-            store: '{{ route_uri('payment_methods.store') }}',
+        notice_types: {
+            list: '{{ route_uri('notice_types.list') }}',
+            update: '{{ route_uri('notice_types.update') }}',
         }
     };
 
@@ -58,8 +59,8 @@
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
-                type: 'POST',
-                url: route(routes.payment_methods.store),
+                type: 'PUT',
+                url: route(routes.notice_types.update),
                 data: obj.field,
                 dataType: 'json',
                 async: false,

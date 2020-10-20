@@ -27,7 +27,7 @@ class ExamController extends ProjectDepartmentController
      */
     public function list(Request $request, Exam $exam)
     {
-        return view('admin.exam.exams');
+        return view('admin.exam.list');
     }
 
     /**

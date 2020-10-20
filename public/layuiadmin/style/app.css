@@ -1,3 +1,11 @@
 #logout {
     cursor: pointer !important;
 }
+
+form.form-long-label-100 .layui-form-item label{
+    width: 100px;
+}
+
+form.form-long-label-100 .layui-form-item div {
+    margin-left: 130px;
+}

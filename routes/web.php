@@ -140,5 +140,14 @@ Route::namespace('Admin')->group(function(){
         Route::get('payment_methods/edit/{id}', 'PaymentMethodController@edit')->name('payment_methods.edit');
         Route::put('payment_methods/update', 'PaymentMethodController@update')->name('payment_methods.update');
         Route::delete('payment_methods/delete', 'PaymentMethodController@delete')->name('payment_methods.delete');
+
+        // 要讯类型设置路由
+        Route::get('notice_types', 'NoticeTypeController@list')->name('notice_types.list');
+        Route::get('notice_types/data', 'NoticeTypeController@data')->name('notice_types.data');
+        Route::get('notice_types/create', 'NoticeTypeController@create')->name('notice_types.create');
+        Route::post('notice_types/store', 'NoticeTypeController@store')->name('notice_types.store');
+        Route::get('notice_types/edit/{id}', 'NoticeTypeController@edit')->name('notice_types.edit');
+        Route::put('notice_types/update', 'NoticeTypeController@update')->name('notice_types.update');
+        Route::delete('notice_types/delete', 'NoticeTypeController@delete')->name('notice_types.delete');
     });
 });
