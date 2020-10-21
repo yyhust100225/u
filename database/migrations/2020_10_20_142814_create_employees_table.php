@@ -32,6 +32,7 @@ class CreateEmployeesTable extends Migration
             $table->unsignedTinyInteger('marry')->default(0)->comment('婚姻状态 0未婚 1已婚');
             $table->unsignedTinyInteger('register_residence_type')->default(0)->comment('户口类型 0农村 1城镇');
             $table->date('hire_date')->nullable()->comment('入职日期');
+            $table->unsignedTinyInteger('regular')->default(0)->comment('是否转正 0否 1是');
             $table->date('regular_date')->nullable()->comment('转正日期');
             $table->date('insurance_date')->nullable()->comment('入保日期');
             $table->date('last_contract_date')->nullable()->comment('合同签署日期');

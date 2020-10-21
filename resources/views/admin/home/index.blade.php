@@ -148,6 +148,18 @@
                     </li>
 
                     <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="人事部" lay-direction="2">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>人事部</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="employees">
+                                <a lay-href="employees">员工档案</a>
+                            </dd>
+                        </dl>
+                    </li>
+
+                    <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="项目部" lay-direction="2">
                             <i class="layui-icon layui-icon-component"></i>
                             <cite>项目部</cite>
@@ -211,6 +223,15 @@
                             <dd class="">
                                 <a href="javascript:;">系统常量设置</a>
                                 <dl class="layui-nav-child">
+                                    <dd data-name="nations">
+                                        <a lay-href="nations">民族设置</a>
+                                    </dd>
+                                    <dd data-name="jobs">
+                                        <a lay-href="jobs">员工职务</a>
+                                    </dd>
+                                    <dd data-name="insurance_areas">
+                                        <a lay-href="insurance_areas">保险地区</a>
+                                    </dd>
                                     <dd data-name="notice_types">
                                         <a lay-href="notice_types">要讯类型</a>
                                     </dd>

@@ -33,6 +33,9 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $buyers_count
  * @method static \Illuminate\Database\Eloquent\Builder|BookSale whereTotalCost($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BookSale whereTotalQuantity($value)
+ * @property-read \App\Models\Book $book
+ * @property-read \App\Models\Department $department
+ * @property-read \App\Models\User $user
  */
 class BookSale extends Common
 {

@@ -141,6 +141,24 @@ Route::namespace('Admin')->group(function(){
         Route::put('payment_methods/update', 'PaymentMethodController@update')->name('payment_methods.update');
         Route::delete('payment_methods/delete', 'PaymentMethodController@delete')->name('payment_methods.delete');
 
+        // 民族设置
+        Route::get('nations', 'NationController@list')->name('nations.list');
+        Route::get('nations/data', 'NationController@data')->name('nations.data');
+        Route::get('nations/create', 'NationController@create')->name('nations.create');
+        Route::post('nations/store', 'NationController@store')->name('nations.store');
+        Route::get('nations/edit/{id}', 'NationController@edit')->name('nations.edit');
+        Route::put('nations/update', 'NationController@update')->name('nations.update');
+        Route::delete('nations/delete', 'NationController@delete')->name('nations.delete');
+
+        // 保险地区设置路由
+        Route::get('insurance_areas', 'InsuranceAreaController@list')->name('insurance_areas.list');
+        Route::get('insurance_areas/data', 'InsuranceAreaController@data')->name('insurance_areas.data');
+        Route::get('insurance_areas/create', 'InsuranceAreaController@create')->name('insurance_areas.create');
+        Route::post('insurance_areas/store', 'InsuranceAreaController@store')->name('insurance_areas.store');
+        Route::get('insurance_areas/edit/{id}', 'InsuranceAreaController@edit')->name('insurance_areas.edit');
+        Route::put('insurance_areas/update', 'InsuranceAreaController@update')->name('insurance_areas.update');
+        Route::delete('insurance_areas/delete', 'InsuranceAreaController@delete')->name('insurance_areas.delete');
+
         // 要讯类型设置路由
         Route::get('notice_types', 'NoticeTypeController@list')->name('notice_types.list');
         Route::get('notice_types/data', 'NoticeTypeController@data')->name('notice_types.data');
@@ -149,5 +167,23 @@ Route::namespace('Admin')->group(function(){
         Route::get('notice_types/edit/{id}', 'NoticeTypeController@edit')->name('notice_types.edit');
         Route::put('notice_types/update', 'NoticeTypeController@update')->name('notice_types.update');
         Route::delete('notice_types/delete', 'NoticeTypeController@delete')->name('notice_types.delete');
+
+        // 员工职务设置
+        Route::get('jobs', 'JobController@list')->name('jobs.list');
+        Route::get('jobs/data', 'JobController@data')->name('jobs.data');
+        Route::get('jobs/create', 'JobController@create')->name('jobs.create');
+        Route::post('jobs/store', 'JobController@store')->name('jobs.store');
+        Route::get('jobs/edit/{id}', 'JobController@edit')->name('jobs.edit');
+        Route::put('jobs/update', 'JobController@update')->name('jobs.update');
+        Route::delete('jobs/delete', 'JobController@delete')->name('jobs.delete');
+
+        // 员工档案
+        Route::get('employees', 'EmployeeController@list')->name('employees.list');
+        Route::get('employees/data', 'EmployeeController@data')->name('employees.data');
+        Route::get('employees/create', 'EmployeeController@create')->name('employees.create');
+        Route::post('employees/store', 'EmployeeController@store')->name('employees.store');
+        Route::get('employees/edit/{id}', 'EmployeeController@edit')->name('employees.edit');
+        Route::put('employees/update', 'EmployeeController@update')->name('employees.update');
+        Route::delete('employees/delete', 'EmployeeController@delete')->name('employees.delete');
     });
 });

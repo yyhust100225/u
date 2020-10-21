@@ -43,6 +43,7 @@ use App\Models\Common;
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \App\Models\Employee|null $archive
  */
 class User extends Authenticatable
 {
@@ -106,15 +107,6 @@ class User extends Authenticatable
     }
 
     /**
-     * 用户表唯一角色关联
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function role()
-    {
-        return $this->belongsTo(Role::class, 'role_id');
-    }
-
-    /**
      * 判断用户是否有相应操作控制器方法权限
      * @param User $user
      * @param $controller
@@ -135,5 +127,20 @@ class User extends Authenticatable
             return true;
 
         return !is_null($user->role->permissions->find($aim_permission->id));
+    }
+
+    /**
+     * 用户表唯一角色关联
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    // 关联员工档案表
+    public function archive()
+    {
+        return $this->hasOne(Employee::class, 'user_id');
     }
 }

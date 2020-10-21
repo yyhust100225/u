@@ -189,6 +189,9 @@ return [
         'price_print' => '印刷品单价',
         'designer_quote_price' => '设计报价',
         'notice_type_name' => '要讯类型名称',
+        'job_name' => '职务名称',
+        'insurance_area_name' => '保险地区名称',
+        'nation_name' => '民族名称',
 
         // 支付设置
         'payment_method_name' => '支付方式名称',
