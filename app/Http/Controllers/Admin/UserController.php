@@ -6,11 +6,16 @@ use App\Exceptions\DataNotExistsException;
 use App\Http\Requests\ResetPassword;
 use App\Http\Requests\StoreUser;
 use App\Http\Requests\UpdateUser;
+use App\Models\Employee;
+use App\Models\EmployeeDeparture;
+use App\Models\EmployeeEducation;
+use App\Models\EmployeeSalary;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends CommonController
@@ -30,7 +35,7 @@ class UserController extends CommonController
      */
     public function list(Request $request, User $user)
     {
-        return view('admin.user.users');
+        return view('admin.user.list');
     }
 
     /**
@@ -79,17 +84,38 @@ class UserController extends CommonController
      * 存储新用户
      * @param StoreUser $request
      * @param User $user
+     * @param Employee $employee
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StoreUser $request, User $user)
+    public function store(StoreUser $request, User $user, Employee $employee, EmployeeDeparture $employee_departure, EmployeeEducation $employee_education, EmployeeSalary $employee_salary)
     {
-        $user->username = $request->input('username');
-        $user->password = Hash::make($request->input('password'));
-        $user->email = $request->input('email');
-        $user->role_id = $request->input('role_id');
-        $user->remark = $request->input('remark');
+        try {
+            DB::transaction(function () use ($request, $user, $employee, $employee_departure, $employee_education, $employee_salary) {
+                $user->username = $request->input('username');
+                $user->password = Hash::make($request->input('password'));
+                $user->email = $request->input('email');
+                $user->role_id = $request->input('role_id');
+                $user->remark = $request->input('remark');
+                $user->save();
 
-        return $this->returnOperationResponse($user->save(), $request);
+                $employee->user_id = $user->id;
+                $employee->name = $user->username;
+                $employee->save();
+
+                $employee_departure->employee_id = $employee->id;
+                $employee_departure->save();
+
+                $employee_education->employee_id = $employee->id;
+                $employee_education->save();
+
+                $employee_salary->employee_id = $employee->id;
+                $employee_salary->save();
+            });
+        } catch (\Throwable $e) {
+            return $this->returnFailedResponse($e->getMessage(), 500);
+        }
+
+        return $this->returnOperationResponse(true, $request);
     }
 
     /**

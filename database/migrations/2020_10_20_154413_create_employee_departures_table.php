@@ -19,8 +19,8 @@ class CreateEmployeeDeparturesTable extends Migration
             $table->unsignedInteger('employee_id')->comment('员工表ID');
             $table->date('departure_date')->nullable()->comment('离职时间');
             $table->unsignedTinyInteger('departure_type')->default(0)->comment('离职方式 0辞职 1辞退');
-            $table->text('conversation_content')->comment('离职面谈详情');
-            $table->string('direction', 255)->comment('离职去向');
+            $table->text('conversation_content')->nullable()->comment('离职面谈详情');
+            $table->string('direction', 255)->default('')->comment('离职去向');
             $table->timestamps();
         });
     }

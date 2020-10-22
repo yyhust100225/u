@@ -110,7 +110,6 @@ class EmployeeController extends CommonController
         try {
             DB::transaction(function () use ($request, $employee, $employee_departure, $employee_education, $employee_salary) {
                 $employee->name = strval($request->input('name'));
-                $employee->user_id = intval($request->input('user_id'));
                 $employee->job_no = strval($request->input('job_no'));
                 $employee->TQ_no = strval($request->input('TQ_no'));
                 $employee->department_id = intval($request->input('department_id'));
@@ -234,7 +233,6 @@ class EmployeeController extends CommonController
         try {
             DB::transaction(function () use ($request, $employee) {
                 $employee->name = strval($request->input('name'));
-                $employee->user_id = intval($request->input('user_id'));
                 $employee->job_no = strval($request->input('job_no'));
                 $employee->TQ_no = strval($request->input('TQ_no'));
                 $employee->department_id = intval($request->input('department_id'));

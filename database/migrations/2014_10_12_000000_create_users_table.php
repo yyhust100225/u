@@ -21,7 +21,6 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->unsignedInteger('role_id')->comment('角色ID');
             $table->text('remark')->comment('备注');
-            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });
