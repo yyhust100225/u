@@ -22,7 +22,7 @@ class CreateEmployeeEducationsTable extends Migration
             $table->string('major', 255)->default('')->comment('专业');
             $table->string('university', 255)->default('')->comment('毕业院校');
             $table->string('learn_model', 255)->default('')->comment('学习模式');
-            $table->string('graduate_date', 255)->default('')->comment('毕业时间');
+            $table->date('graduate_date')->nullable()->comment('毕业时间');
             $table->string('other_certificates', 255)->default('')->comment('其他证书');
             $table->timestamps();
         });

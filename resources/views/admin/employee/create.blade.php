@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8">
     <title>Layui</title>
@@ -202,9 +201,9 @@
                                     <input type="radio" id="gender" name="gender" value="0" title="男" checked />
                                     <input type="radio" id="gender" name="gender" value="1" title="女" />
                                 </div>
-                                <label class="layui-form-label" for="nation">民族</label>
+                                <label class="layui-form-label" for="nation-id">民族</label>
                                 <div class="layui-input-inline">
-                                    <select name="nation" id="nation" lay-search>
+                                    <select name="nation_id" id="nation-id" lay-search>
                                         @foreach($nations as $nation)
                                             <option value="{{ $nation->id }}">{{ $nation->name }}</option>
                                         @endforeach
@@ -280,8 +279,158 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label" for="work-experience">工作经历</label>
                                 <div class="layui-input-block">
-                                    <textarea name="work_experience" id="work-experience"></textarea>
-                                    <input type="text" name="work_experience" id="work-experience" class="layui-input" placeholder="员工工作经历" />
+                                    <textarea name="work_experience" id="work-experience" class="layui-textarea" placeholder="员工以往工作经历"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="remark">员工备注</label>
+                                <div class="layui-input-block">
+                                    <textarea name="remark" id="remark" class="layui-textarea" placeholder="员工备注"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="layui-elem-field">
+                        <legend>教育经历</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="educational-background">学历</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="educational_background" id="educational-background" autocomplete="off" placeholder="员工学历" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="academic-degree">学位</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="academic_degree" id="academic-degree" autocomplete="off" placeholder="员工学位" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="major">专业</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="major" id="major" autocomplete="off" placeholder="所学专业" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="university">毕业院校</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="university" id="university" autocomplete="off" placeholder="毕业院校" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="learn-model">学习形式</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="learn_model" id="learn-model" autocomplete="off" placeholder="在校学习模式" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="graduate-date">毕业时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" readonly="readonly" name="graduate_date" id="graduate-date" autocomplete="off" placeholder="毕业时间" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="other-certificates">其他证书</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="other_certificates" id="other-certificates" autocomplete="off" placeholder="其他证书" class="layui-input">
+                                </div>
+
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="layui-elem-field">
+                        <legend>薪资信息</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="base-salary-1">基本薪资1</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="base_salary_1" id="base-salary-1" autocomplete="off" placeholder="基本薪资1" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="base-salary-2">基本薪资2</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="base_salary_2" id="base-salary-2" autocomplete="off" placeholder="基本薪资2" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="merits-salary">绩效工资</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="merits_salary" id="merits-salary" autocomplete="off" placeholder="绩效工资" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="job-subsidy">岗位补助</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="job_subsidy" id="job-subsidy" autocomplete="off" placeholder="岗位补助" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="live-subsidy">生活补助</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="live_subsidy" id="live-subsidy" autocomplete="off" placeholder="生活补助" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="local-subsidy">地方补助</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="local_subsidy" id="local-subsidy" autocomplete="off" placeholder="地方补助" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="public-service-subsidy">公共服务</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="public_service_subsidy" id="public-service-subsidy" autocomplete="off" placeholder="公共服务补助" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="class-subsidy">课时补助</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="class_subsidy" id="class-subsidy" autocomplete="off" placeholder="课时补助" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="no-insurance-subsidy">无保险补助</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="no_insurance_subsidy" id="no-insurance-subsidy" autocomplete="off" placeholder="放弃保险补助" class="layui-input">
+                                </div>
+
+                                <label class="layui-form-label" for="other-subsidy">其他补助</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="other_subsidy" id="other-subsidy" autocomplete="off" placeholder="其他补助" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="layui-elem-field">
+                        <legend>银行账户信息</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="bank-card-no-5">银行卡号1</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="bank_card_no_5" id="bank-card-no-5" autocomplete="off" placeholder="5日工资卡卡号" class="layui-input">
+                                </div>
+                                <label class="layui-form-label" for="bank-of-account-5">开户支行1</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="bank_of_account_5" id="bank-of-account-5" autocomplete="off" placeholder="5日工资卡开户支行" class="layui-input">
+                                </div>
+                                <label class="layui-form-label" for="bank-card-no-10">银行卡号2</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="bank_card_no_10" id="bank-card-no-10" autocomplete="off" placeholder="10日工资卡卡号" class="layui-input">
+                                </div>
+                                <label class="layui-form-label" for="bank-of-account-10">开户支行2</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="bank_of_account_10" id="bank-of-account-10" autocomplete="off" placeholder="10日工资卡开户支行" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="layui-elem-field">
+                        <legend>动态记录</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="exception-action">异动记录</label>
+                                <div class="layui-input-block">
+                                    <textarea name="exception_action" id="exception-action" class="layui-textarea" placeholder="员工异动记录"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="leave-records">休假记录</label>
+                                <div class="layui-input-block">
+                                    <textarea name="leave_records" id="leave-records" class="layui-textarea" placeholder="员工休假记录"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -289,7 +438,8 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <input type="hidden" name="user_id" value="1" />
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -313,9 +463,9 @@
     };
 
     layui.use(['form', 'laydate'], function(){
-        var form = layui.form;
-        var laydate = layui.laydate;
-        var $ = layui.$;
+        let form = layui.form;
+        let laydate = layui.laydate;
+        let $ = layui.$;
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
@@ -341,7 +491,6 @@
                         });
                     }
                     else {
-                        console.log(e);
                         layer.msg(e.responseJSON.message);
                     }
                 }
@@ -370,7 +519,7 @@
             }
         });
 
-        let plugin_ids = ['departure-date', 'hire-date', 'regular-date', 'last-contract-date', 'contract-expire-date', 'insurance-date', 'birthday'];
+        let plugin_ids = ['departure-date', 'hire-date', 'regular-date', 'last-contract-date', 'contract-expire-date', 'insurance-date', 'birthday', 'graduate-date'];
         $.each(plugin_ids, function(k,v){
             laydate.render({
                 elem: '#' + v,
@@ -382,4 +531,3 @@
 </script>
 
 </body>
-</html>

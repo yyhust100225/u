@@ -101,6 +101,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Employee whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Employee whereWorkExperience($value)
  * @mixin \Eloquent
+ * @property int $regular 是否转正
+ * @method static \Illuminate\Database\Eloquent\Builder|Employee whereRegular($value)
  */
 class Employee extends Common
 {

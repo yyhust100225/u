@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|EmployeeDeparture whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class EmployeeDeparture extends Model
+class EmployeeDeparture extends Common
 {
     use HasFactory;
 }

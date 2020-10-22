@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Exam whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Exam whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Nation whereType($value)
+ * @mixin \Eloquent
  */
 class Nation extends Common
 {

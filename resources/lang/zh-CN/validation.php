@@ -200,6 +200,9 @@ return [
         'book_sale_quantity' => '销售数量',
         'book_sale_name' => '姓名',
         'book_sale_cost' => '销售额',
+
+        // 员工档案信息
+        'employee_name' => '员工姓名',
     ],
 
 ];

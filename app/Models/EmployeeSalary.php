@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|EmployeeSalary whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class EmployeeSalary extends Model
+class EmployeeSalary extends Common
 {
     use HasFactory;
 }
