@@ -93,7 +93,7 @@
                 }},
                 {field:'email', title: '邮箱', width:'20%', sort: true},
                 {field:'created_at', width:'25%', title: '创建时间'},
-                {field:'email', title: '备注', sort: true},
+                {field:'remark', title: '备注', sort: true},
                 {fixed:'right', title: '操作', width:"8%", align:'center', toolbar: '#table-bar'}
             ]],
             page: true,

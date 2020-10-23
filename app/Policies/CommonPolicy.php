@@ -21,7 +21,6 @@ class CommonPolicy
     {
         $action_name = $request->route()->getActionName();
         $controller_name = explode('\\', explode('@', $action_name)[0]);
-        end($controller_name);
         $this->controller_name = end($controller_name);
     }
 

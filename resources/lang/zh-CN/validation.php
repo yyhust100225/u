@@ -203,6 +203,9 @@ return [
 
         // 员工档案信息
         'employee_name' => '员工姓名',
+
+        // 集团要讯
+        'notice_title' => '要讯标题',
     ],
 
 ];

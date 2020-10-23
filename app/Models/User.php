@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Response;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Common;
 
@@ -116,7 +117,7 @@ class User extends Authenticatable
     {
         // 找不到指定路由
         if(!$aim_permission = Permission::query()->where('controller', $controller)->where('action', $action)->first()) {
-            abort(404);
+            abort(404, trans('auth.empty authority'));
         }
 
         if($aim_permission->level == AUTHORIZATION_LEVEL_ALL_DENIED)

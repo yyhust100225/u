@@ -23,7 +23,9 @@
                     <form class="" id="table-search-form" style="margin-bottom: 10px;">
 
                         <div class="layui-inline">
-                            <input class="layui-input" name="name" autocomplete="off" placeholder="员工档案名称">
+                            <label>
+                                <input class="layui-input" name="name" autocomplete="off" placeholder="员工档案名称">
+                            </label>
                         </div>
 
                         <button type="button" class="layui-btn" data-type="reload">搜索</button>
@@ -33,14 +35,16 @@
 
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="create">新增员工档案</button>
+                            {{--不开放新增员工档案入口--}}
+                            {{--<button class="layui-btn layui-btn-sm" lay-event="create">新增员工档案</button>--}}
                             <button class="layui-btn layui-btn-sm" lay-event="refresh" ><i class="layui-icon layui-icon-refresh-3"></i></button>
                         </div>
                     </script>
 
                     <script type="text/html" id="table-bar">
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+                        {{--不开放删除档案接口--}}
+                        {{--<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>--}}
                     </script>
 
                 </div>
@@ -80,7 +84,7 @@
             url: route(routes.employees.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '员工档案名称'},
+                {field:'name', title: '员工姓名'},
                 {field:'created_at', title: '创建时间', width:'15%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],

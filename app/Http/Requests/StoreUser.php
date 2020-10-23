@@ -26,7 +26,7 @@ class StoreUser extends FormRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'min:4', Rule::unique('users')],
+            'username' => ['required', 'min:2', Rule::unique('users')],
             'email' => ['required', 'email', Rule::unique('users')],
             'password' => 'required|min:8',
             '_password' => 'same:password',

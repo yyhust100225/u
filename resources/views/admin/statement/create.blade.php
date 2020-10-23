@@ -191,7 +191,7 @@
                 {name: '{{ $exam->name }}', value: {{ $exam->id }}},
             @endforeach
         ]
-    })
+    });
 
 </script>
 

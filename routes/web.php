@@ -185,5 +185,16 @@ Route::namespace('Admin')->group(function(){
         Route::get('employees/edit/{id}', 'EmployeeController@edit')->name('employees.edit');
         Route::put('employees/update', 'EmployeeController@update')->name('employees.update');
         Route::delete('employees/delete', 'EmployeeController@delete')->name('employees.delete');
+
+        // 集团要讯
+        Route::get('notices', 'NoticeController@list')->name('notices.list');
+        Route::get('notices/publish', 'NoticeController@publish')->name('notices.publish');
+        Route::get('notices/publish/data', 'NoticeController@publishData')->name('notices.publish.data');
+        Route::get('notices/data', 'NoticeController@data')->name('notices.data');
+        Route::get('notices/create', 'NoticeController@create')->name('notices.create');
+        Route::post('notices/store', 'NoticeController@store')->name('notices.store');
+        Route::get('notices/edit/{id}', 'NoticeController@edit')->name('notices.edit');
+        Route::put('notices/update', 'NoticeController@update')->name('notices.update');
+        Route::delete('notices/delete', 'NoticeController@delete')->name('notices.delete');
     });
 });

@@ -60,7 +60,11 @@ var makeLayerForm = function(layer, title, content_url, end){
         maxmin: true,
         title: title,
         content: content_url,
-        end: end
+        end: end,
+        cancel: function(index, layero){
+            layer.close(index)
+            return false;
+        }
     });
 }
 
