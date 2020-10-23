@@ -91,7 +91,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label" for="content">要讯内容</label>
                         <div class="layui-input-block">
-                            <textarea name="" id="content" cols="30" rows="10"></textarea>
+                            <div id="content"></div>
                         </div>
                     </div>
 
@@ -108,10 +108,16 @@
     </div>
 </div>
 
-<script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
-<script src="{{ asset('assets/js/xm-select.js') }}"></script>
+<script type="text/javascript" src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/xm-select.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/wangEditor.min.js') }}"></script>
 <script>
+
+    const E = window.wangEditor;
+    const editor = new E('#content');
+    // 或者 const editor = new E( document.getElementById('div1') )
+    editor.create();
 
     // 页面路由
     let routes = {
@@ -121,19 +127,10 @@
         }
     };
 
-    layui.extend({
-        tinymce: '/layuiadmin/layui/mods/tinymce/tinymce'
-    }).use(['tinymce', 'form', 'upload'], function(){
+    layui.use(['form', 'upload'], function(){
         let form = layui.form;
         let upload = layui.upload;
         let $ = layui.$;
-
-        let tinymce = layui.tinymce
-        let edit = tinymce.render({
-            elem: "#content",
-            height: 600,
-            width:'100%'
-        });
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
