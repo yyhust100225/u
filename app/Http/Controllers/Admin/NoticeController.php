@@ -115,8 +115,6 @@ class NoticeController extends CommonController
      */
     public function create(Request $request, NoticeType $notice_type, Department $department, Role $role, User $user, Upload $file)
     {
-        dd(Storage::disk('files')->url('202010/24/2YTQbeB9opVEGAMsXKdlDCKFHcxMd765gNjbCCsj.jpeg'));
-
         $notice_types = $notice_type->all();
         $departments = $department->all();
         $roles = $role->all();

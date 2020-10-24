@@ -121,6 +121,7 @@
             list: '{{ route_uri('notices.list') }}',
             store: '{{ route_uri('notices.store') }}',
             upload: '{{ route_uri('file.upload') }}',
+            editor_img: '{{ route_uri('file.upload.editor.image') }}',
         }
     };
 
@@ -131,6 +132,8 @@
 
         // const E = window.wangEditor;
         const editor = new window.wangEditor('#content');
+        editor.config.uploadImgServer = route(routes.notices.editor_img);
+        editor.config.uploadFileName = 'images';
         editor.create();
 
         form.on('submit(form-submit)', function(obj){

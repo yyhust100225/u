@@ -20,6 +20,7 @@ Route::get('/', function () {
 Route::namespace('Common')->group(function(){
     Route::middleware(['web.auth'])->group(function(){
         Route::post('upload', 'FileController@upload')->name('file.upload');
+        Route::post('upload/editor/image', 'FileController@uploadEditorImage')->name('file.upload.editor.image');
     });
 });
 
@@ -31,6 +32,7 @@ Route::namespace('Admin')->group(function(){
         Route::get('/', 'HomeController@index');
         Route::get('home', 'HomeController@home')->name('home');
         Route::get('main', 'HomeController@main')->name('main');
+
 
         Route::get('users', 'UserController@list')->name('users.list');
         Route::get('users/data', 'UserController@data')->name('users.data');

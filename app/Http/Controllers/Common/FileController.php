@@ -26,4 +26,10 @@ class FileController extends CommonController
         else
             return $this->returnFailedJsonResponse($file->getError() == 0 ? trans('request.upload failed') : $file->getErrorMessage());
     }
+
+    public function uploadEditorImage(Request $request, File $upload)
+    {
+        $file = $request->allFiles();
+        dd($file);
+    }
 }
