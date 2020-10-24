@@ -5,4 +5,5 @@ return [
     'failed' => '请求失败',
     'delete logged in account' => '抱歉, 无法删除当前登录账户',
     'write one record' => '请至少写一条记录',
+    'upload failed' => '上传失败, 请重试...',
 ];

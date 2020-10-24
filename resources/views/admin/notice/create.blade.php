@@ -80,11 +80,12 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">抄送部门</label>
+                        <label class="layui-form-label">上传附件</label>
                         <div class="layui-input-inline">
                             <button type="button" class="layui-btn" id="upload">
                                 <i class="layui-icon">&#xe67c;</i>上传图片
                             </button>
+                            <input type="hidden" name="file_id" id="upload-file" value="0" />
                         </div>
                     </div>
 
@@ -114,16 +115,12 @@
 <script type="text/javascript" src="{{ asset('assets/js/wangEditor.min.js') }}"></script>
 <script>
 
-    const E = window.wangEditor;
-    const editor = new E('#content');
-    // 或者 const editor = new E( document.getElementById('div1') )
-    editor.create();
-
     // 页面路由
     let routes = {
         notices: {
             list: '{{ route_uri('notices.list') }}',
             store: '{{ route_uri('notices.store') }}',
+            upload: '{{ route_uri('file.upload') }}',
         }
     };
 
@@ -131,6 +128,10 @@
         let form = layui.form;
         let upload = layui.upload;
         let $ = layui.$;
+
+        // const E = window.wangEditor;
+        const editor = new window.wangEditor('#content');
+        editor.create();
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
@@ -166,9 +167,12 @@
 
         let uploadInst = upload.render({
             elem: '#upload',
-            url: '/upload/',
+            url: route(routes.notices.upload),
             done: function(res){
-                //上传完毕回调
+                if(res.code === {{ REQUEST_SUCCESS }})
+                    $('#upload-file').val(res.data.file_id);
+                else
+                    layer.msg(res.message);
             },
             error: function(){
                 //请求异常回调

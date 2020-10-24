@@ -19,6 +19,7 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        // 上传文件路由暂时无需CSRF保护
+        'http://u.yyhust.cc/upload',
     ];
 }

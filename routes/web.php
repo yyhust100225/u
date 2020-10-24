@@ -17,6 +17,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::namespace('Common')->group(function(){
+    Route::middleware(['web.auth'])->group(function(){
+        Route::post('upload', 'FileController@upload')->name('file.upload');
+    });
+});
+
 Route::namespace('Admin')->group(function(){
     Route::get('login/form', 'LoginController@showLoginForm')->name('login.form');
     Route::post('login', 'LoginController@login')->name('login');

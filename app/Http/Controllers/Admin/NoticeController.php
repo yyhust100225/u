@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\File;
 use App\Exceptions\DataNotExistsException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreNotice;
@@ -12,12 +13,14 @@ use App\Models\Notice;
 use App\Models\NoticeType;
 use App\Models\Role;
 use App\Models\User;
+use App\Tools\Upload;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class NoticeController extends CommonController
@@ -110,8 +113,10 @@ class NoticeController extends CommonController
      * @param Request $request
      * @return Application|Factory|View
      */
-    public function create(Request $request, NoticeType $notice_type, Department $department, Role $role, User $user)
+    public function create(Request $request, NoticeType $notice_type, Department $department, Role $role, User $user, Upload $file)
     {
+        dd(Storage::disk('files')->url('202010/24/2YTQbeB9opVEGAMsXKdlDCKFHcxMd765gNjbCCsj.jpeg'));
+
         $notice_types = $notice_type->all();
         $departments = $department->all();
         $roles = $role->all();
