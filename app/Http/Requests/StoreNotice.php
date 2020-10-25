@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AtLeastOne;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,6 +27,10 @@ class StoreNotice extends FormRequest
     {
         return [
             'title' => ['required', 'min:2', Rule::unique('notices')],
+            'start_time' => ['required'],
+            'end_time' => ['required', 'date', 'after_or_equal:start_time'],
+            'department_ids' => [new AtLeastOne($this, ['role_ids', 'user_ids'])],
+            'content' => ['required']
         ];
     }
 
@@ -33,6 +38,7 @@ class StoreNotice extends FormRequest
     {
         return [
             'title' => trans('validation.attributes.notice_title'),
+            'content' => trans('validation.attributes.notice_content'),
         ];
     }
 }

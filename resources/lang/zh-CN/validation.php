@@ -16,7 +16,7 @@ return [
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
-    'after_or_equal' => 'The :attribute must be a date after or equal to :date.',
+    'after_or_equal' => ':attribute 需要在 :date 之后或相同',
     'alpha' => 'The :attribute may only contain letters.',
     'alpha_dash' => 'The :attribute may only contain letters, numbers, dashes and underscores.',
     'alpha_num' => 'The :attribute may only contain letters and numbers.',
@@ -130,6 +130,7 @@ return [
     'exam_categories_null' => '请至少选择一项 :attribute',
     'publish_date_format' => ':attribute 必须是 yyyy-MM-dd 日期格式',
     'book_sale_name_null' => '销售记录姓名不能为空, 如不需要, 请删除该行',
+    'at_least_one' => '请至少选择一人推送要讯',
 
     /*
     |--------------------------------------------------------------------------
@@ -160,6 +161,12 @@ return [
     */
 
     'attributes' => [
+
+        // 公用字段
+        'start_time' => '开始时间',
+        'end_time' => '结束时间',
+
+        // 用户表字段
         'username' => '用户名',
         'email' => '邮箱',
         'password' => '密码',
@@ -206,6 +213,7 @@ return [
 
         // 集团要讯
         'notice_title' => '要讯标题',
+        'notice_content' => '要讯内容',
     ],
 
 ];

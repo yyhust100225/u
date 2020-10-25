@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Maps\MapNoticeToDepartments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,8 +41,27 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Notice whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Notice whereUserId($value)
  * @mixin \Eloquent
+ * @property int $file_id 要讯附件文件ID
+ * @method static \Illuminate\Database\Eloquent\Builder|Notice whereFileId($value)
  */
 class Notice extends Common
 {
     use HasFactory;
+
+    public function getContentAttribute($value)
+    {
+        return htmlspecialchars_decode($value);
+    }
+
+    // 关联要讯抄送的所有部门
+    public function departments()
+    {
+        return $this->hasManyThrough(Department::class, MapNoticeToDepartments::class, 'notice_id', 'id', 'id', 'department_id');
+    }
+
+    // 关联所有抄送部门ID
+    public function departmentIds()
+    {
+        return $this->hasMany(MapNoticeToDepartments::class);
+    }
 }

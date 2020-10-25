@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
+use App\Http\Resources\RoleResource;
 use App\Models\Maps\MapRoleToPermissions;
 use App\Models\Permission;
 use App\Models\Role;
@@ -29,7 +30,7 @@ class RoleController extends CommonController
      */
     public function list(Request $request, Role $role)
     {
-        return view('admin.role.roles');
+        return view('admin.role.list');
     }
 
     /**
@@ -55,7 +56,7 @@ class RoleController extends CommonController
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
             'count' => $roles['count'],
-            'data' => $roles['data'],
+            'data' => RoleResource::collection($roles['data']),
         ], 200);
     }
 

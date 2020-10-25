@@ -18,55 +18,141 @@
             <div class="layui-card">
                 <div class="layui-card-header">编辑要讯</div>
                 <div class="layui-card-body">
-                <form class="layui-form" action="">
-                    @csrf
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">要讯名称</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" value="{{ $notice->title }}" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
+                    <form class="layui-form" action="">
+                        @csrf
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="title">要讯名称</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="title" value="{{ $notice->title }}" id="title" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <input type="hidden" name="id" value="{{ $notice->id }}">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">抄送部门</label>
+                            <div class="layui-input-block">
+                                <div class="layui-col-md6">
+                                    <div id="departments"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </form>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">抄送员工</label>
+                            <div class="layui-input-block">
+                                <div class="layui-col-md6">
+                                    <div id="users"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">抄送角色</label>
+                            <div class="layui-input-block">
+                                <div class="layui-col-md6">
+                                    <div id="roles"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="start-time">开始时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" readonly="readonly" name="start_time" value="{{ $notice->start_time }}" id="start-time" autocomplete="off" placeholder="内容生效开始时间" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="end-time">结束时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" readonly="readonly" name="end_time" value="{{ $notice->end_time }}" id="end-time" autocomplete="off" placeholder="内容生效结束时间" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="notice-type-id">要讯类型</label>
+                            <div class="layui-input-inline">
+                                <select name="notice_type_id" id="notice-type-id">
+                                    @foreach($notice_types as $notice_type)
+                                        <option @if($notice_type->id == $notice->notice_type_id) selected @endif value="{{ $notice_type->id }}">{{ $notice_type->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">上传附件</label>
+                            <div class="layui-input-inline">
+                                <button type="button" class="layui-btn" id="upload">
+                                    <i class="layui-icon">&#xe67c;</i>上传图片
+                                </button>
+                                <span id="file-name"></span>
+                                <input type="hidden" name="file_id" id="upload-file" value="{{ $notice->file_id }}" />
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="content">要讯内容</label>
+                            <div class="layui-input-block">
+                                <div id="content">
+                                    {!! $notice->content !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <input type="hidden" name="id" value="{{ $notice->id }}" />
+                                <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/xm-select.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/wangEditor.min.js') }}"></script>
 <script>
 
     // 页面路由
-    var routes = {
+    let routes = {
         notices: {
             list: '{{ route_uri('notices.list') }}',
             update: '{{ route_uri('notices.update') }}',
+            upload: '{{ route_uri('file.upload') }}',
+            editor_img: '{{ route_uri('file.upload.editor.image') }}',
         }
     };
 
-    layui.use(['form'], function(){
-        var form = layui.form;
-        var $ = layui.$;
+    layui.use(['form', 'upload', 'laydate'], function(){
+        let form = layui.form;
+        let upload = layui.upload;
+        let laydate = layui.laydate;
+        let $ = layui.$;
+
+        // const E = window.wangEditor;
+        const editor = new window.wangEditor('#content');
+        editor.config.uploadImgServer = route(routes.notices.editor_img);
+        editor.config.uploadFileName = 'images';
+        editor.create();
+        // editor.txt.html('');
 
         form.on('submit(form-submit)', function(obj){
+            obj.field.content = editor.txt.html();
             $.ajax({
-                type: 'PUT',
+                type: 'POST',
                 url: route(routes.notices.update),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
-                        var index = parent.layer.getFrameIndex(window.name);
+                        let index = parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
                             parent.layer.close(index);
                         });
@@ -88,7 +174,73 @@
             });
             return false;
         });
+
+        let uploadInst = upload.render({
+            elem: '#upload',
+            url: route(routes.notices.upload),
+            done: function(res){
+                if(res.code === {{ REQUEST_SUCCESS }}) {
+                    $('#upload-file').val(res.data.file_id);
+                    $('#file-name').html(res.data.file_name);
+                }
+                else
+                    layer.msg(res.message);
+            },
+            error: function(){
+                //请求异常回调
+            }
+        });
+
+        laydate.render({
+            elem: '#start-time',
+            type: 'date'
+        });
+
+        laydate.render({
+            elem: '#end-time',
+            type: 'date'
+        });
     });
+
+    let departments_select = xmSelect.render({
+        el: '#departments',
+        language: 'zn',
+        filterable: true,
+        autoRow: true,
+        name: 'department_ids',
+        data: [
+            @foreach($departments as $department)
+                {name: '{{ $department->name }}', value: {{ $department->id }} @if(in_array($department->id, $notice->department_ids)) ,selected: true @endif},
+            @endforeach
+        ]
+    });
+
+    let roles_select = xmSelect.render({
+        el: '#roles',
+        language: 'zn',
+        filterable: true,
+        autoRow: true,
+        name: 'role_ids',
+        data: [
+            @foreach($roles as $role)
+                {name: '{{ $role->name }}', value: {{ $role->id }}},
+            @endforeach
+        ]
+    });
+
+    let users_select = xmSelect.render({
+        el: '#users',
+        language: 'zn',
+        filterable: true,
+        autoRow: true,
+        name: 'user_ids',
+        data: [
+            @foreach($users as $user)
+                {name: '{{ $user->username }}', value: {{ $user->id }}},
+            @endforeach
+        ]
+    });
+
 </script>
 
 </body>

@@ -18,14 +18,14 @@ class CreateNoticesTable extends Migration
             $table->id();
             $table->string('title', 512)->comment('要讯标题');
             $table->unsignedTinyInteger('notice_type_id')->comment('要讯种类');
-            $table->dateTime('start_time')->comment('开始时间');
-            $table->dateTime('end_time')->comment('结束时间');
-            $table->string('file', 255)->default('')->comment('要讯附件');
+            $table->date('start_time')->nullable()->comment('开始时间');
+            $table->date('end_time')->nullable()->comment('结束时间');
+            $table->unsignedInteger('file_id')->default(0)->comment('要讯附件文件ID');
             $table->text('content')->comment('要讯内容');
             $table->unsignedInteger('user_id')->comment('创建用户ID');
             $table->unsignedTinyInteger('status')->default(0)->comment('要讯状态');
             $table->unsignedInteger('reviewer_id')->default(0)->comment('审核人ID');
-            $table->dateTime('review_time')->nullable()->comment('审核时间');
+            $table->date('review_time')->nullable()->comment('审核时间');
             $table->string('review_remark', 512)->default('')->comment('审核备注');
             $table->timestamps();
         });

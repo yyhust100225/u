@@ -83,7 +83,7 @@
                     return data.status === 1 ? '<span style="color: green">已启用</span>' : '<span style="color: red">已停用</span>';
                 }},
                 {field:'remark', title: '备注'},
-                {field:'created_at', title: '创建时间'},
+                {field:'created_at', width: '12%', title: '创建时间'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\File
@@ -30,4 +31,10 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Common
 {
     use HasFactory;
+
+    // 查询资源url
+    public function resourceUrl()
+    {
+        return Storage::disk($this->disk)->url($this->path);
+    }
 }

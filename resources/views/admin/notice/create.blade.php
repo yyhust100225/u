@@ -28,6 +28,33 @@
                     </div>
 
                     <div class="layui-form-item">
+                        <label class="layui-form-label">抄送部门</label>
+                        <div class="layui-input-block">
+                            <div class="layui-col-md6">
+                                <div id="departments"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">抄送员工</label>
+                        <div class="layui-input-block">
+                            <div class="layui-col-md6">
+                                <div id="users"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">抄送角色</label>
+                        <div class="layui-input-block">
+                            <div class="layui-col-md6">
+                                <div id="roles"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
                         <label class="layui-form-label" for="start-time">开始时间</label>
                         <div class="layui-input-inline">
                             <input type="text" readonly="readonly" name="start_time" id="start-time" autocomplete="off" placeholder="内容生效开始时间" class="layui-input">
@@ -53,38 +80,12 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <label class="layui-form-label">抄送部门</label>
-                        <div class="layui-input-block">
-                            <div class="layui-col-md6">
-                                <div id="departments"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">抄送角色</label>
-                        <div class="layui-input-block">
-                            <div class="layui-col-md6">
-                                <div id="roles"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">抄送员工</label>
-                        <div class="layui-input-block">
-                            <div class="layui-col-md6">
-                                <div id="users"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
                         <label class="layui-form-label">上传附件</label>
                         <div class="layui-input-inline">
                             <button type="button" class="layui-btn" id="upload">
                                 <i class="layui-icon">&#xe67c;</i>上传图片
                             </button>
+                            <span id="file-name"></span>
                             <input type="hidden" name="file_id" id="upload-file" value="0" />
                         </div>
                     </div>
@@ -98,7 +99,7 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -125,9 +126,10 @@
         }
     };
 
-    layui.use(['form', 'upload'], function(){
+    layui.use(['form', 'upload', 'laydate'], function(){
         let form = layui.form;
         let upload = layui.upload;
+        let laydate = layui.laydate;
         let $ = layui.$;
 
         // const E = window.wangEditor;
@@ -137,6 +139,7 @@
         editor.create();
 
         form.on('submit(form-submit)', function(obj){
+            obj.field.content = editor.txt.html();
             $.ajax({
                 type: 'POST',
                 url: route(routes.notices.store),
@@ -145,7 +148,7 @@
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
-                        var index = parent.layer.getFrameIndex(window.name);
+                        let index = parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
                             parent.layer.close(index);
                         });
@@ -172,14 +175,26 @@
             elem: '#upload',
             url: route(routes.notices.upload),
             done: function(res){
-                if(res.code === {{ REQUEST_SUCCESS }})
+                if(res.code === {{ REQUEST_SUCCESS }}) {
                     $('#upload-file').val(res.data.file_id);
+                    $('#file-name').html(res.data.file_name);
+                }
                 else
                     layer.msg(res.message);
             },
             error: function(){
                 //请求异常回调
             }
+        });
+
+        laydate.render({
+            elem: '#start-time',
+            type: 'date'
+        });
+
+        laydate.render({
+            elem: '#end-time',
+            type: 'date'
         });
     });
 

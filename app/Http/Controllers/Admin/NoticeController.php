@@ -9,6 +9,9 @@ use App\Http\Requests\StoreNotice;
 use App\Http\Requests\UpdateNotice;
 use App\Http\Resources\NoticeResource;
 use App\Models\Department;
+use App\Models\Maps\MapNoticeToDepartments;
+use App\Models\Maps\MapNoticeToRoles;
+use App\Models\Maps\MapNoticeToUsers;
 use App\Models\Notice;
 use App\Models\NoticeType;
 use App\Models\Role;
@@ -20,6 +23,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -113,7 +118,7 @@ class NoticeController extends CommonController
      * @param Request $request
      * @return Application|Factory|View
      */
-    public function create(Request $request, NoticeType $notice_type, Department $department, Role $role, User $user, Upload $file)
+    public function create(Request $request, NoticeType $notice_type, Department $department, Role $role, User $user)
     {
         $notice_types = $notice_type->all();
         $departments = $department->all();
@@ -129,16 +134,62 @@ class NoticeController extends CommonController
     }
 
     /**
-     * 存储新要讯
+     * 存储要讯
      * @param StoreNotice $request
      * @param Notice $notice
+     * @param MapNoticeToDepartments $mntd
+     * @param MapNoticeToRoles $mntr
+     * @param MapNoticeToUsers $mntu
      * @return JsonResponse
      */
-    public function store(StoreNotice $request, Notice $notice)
+    public function store(StoreNotice $request, Notice $notice, MapNoticeToDepartments $mntd, MapNoticeToRoles $mntr, MapNoticeToUsers $mntu)
     {
-        $notice->name = $request->input('name');
+        try {
+            DB::transaction(function() use($request, $notice, $mntd, $mntr, $mntu) {
+                // 存储要讯主体
+                $notice->title = strval($request->input('title'));
+                $notice->notice_type_id = intval($request->input('notice_type_id'));
+                $notice->start_time = $request->input('start_time');
+                $notice->end_time = $request->input('end_time');
+                $notice->file_id = strval($request->input('file_id'));
+                $notice->user_id = Auth::user()->getAuthIdentifier();
+                $notice->content = htmlspecialchars(strval($request->input('content')));
+                $notice->status = NOTICE_SUBMITTED;
+                $notice->save();
 
-        return $this->returnOperationResponse($notice->save(), $request);
+                // 保存要讯抄送部门映射
+                if($request->filled('department_ids')) {
+                    $department_ids = explode(',', $request->input('department_ids'));
+                    foreach($department_ids as $department_id) {
+                        $ntd_maps[] = ['department_id' => $department_id, 'notice_id' => $notice->id];
+                    }
+                    $mntd->insert($ntd_maps);
+                }
+
+                // 保存要讯抄送角色映射
+                if($request->filled('role_ids')) {
+                    $role_ids = explode(',', $request->input('role_ids'));
+                    foreach($role_ids as $role_id) {
+                        $ntr_maps[] = ['role_id' => $role_id, 'notice_id' => $notice->id];
+                    }
+                    $mntr->insert($ntr_maps);
+                }
+
+                // 保存要讯抄送员工映射
+                if($request->filled('user_ids')) {
+                    $user_ids = explode(',', $request->input('user_ids'));
+                    foreach($user_ids as $user_id) {
+                        $ntu_maps[] = ['user_id' => $user_id, 'notice_id' => $notice->id];
+                    }
+                    $mntu->insert($ntu_maps);
+                }
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
     }
 
     /**
@@ -148,12 +199,22 @@ class NoticeController extends CommonController
      * @param Notice $notice
      * @return Application|Factory|View
      */
-    public function edit($id, Request $request, Notice $notice)
+    public function edit($id, Request $request,Notice $notice, NoticeType $notice_type, Department $department, Role $role, User $user)
     {
         $notice = $notice->newQuery()->find($id);
+        $notice->department_ids = $notice->departmentIds()->pluck('department_id')->toArray();
+
+        $notice_types = $notice_type->all();
+        $departments = $department->all();
+        $roles = $role->all();
+        $users = $user->all();
 
         return view('admin.notice.edit', [
             'notice' => $notice,
+            'notice_types' => $notice_types,
+            'departments' => $departments,
+            'roles' => $roles,
+            'users' => $users,
         ]);
     }
 
