@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Maps\MapNoticeToDepartments;
+use App\Models\Maps\MapNoticeToUsers;
+use App\Models\Maps\MapNoticeToRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -59,9 +61,27 @@ class Notice extends Common
         return $this->hasManyThrough(Department::class, MapNoticeToDepartments::class, 'notice_id', 'id', 'id', 'department_id');
     }
 
+    // 关联要讯附件
+    public function file()
+    {
+        return $this->hasOne(File::class, 'id', 'file_id');
+    }
+
     // 关联所有抄送部门ID
     public function departmentIds()
     {
         return $this->hasMany(MapNoticeToDepartments::class);
+    }
+
+    // 关联所有抄送部门ID
+    public function roleIds()
+    {
+        return $this->hasMany(MapNoticeToRoles::class);
+    }
+
+    // 关联所有抄送部门ID
+    public function userIds()
+    {
+        return $this->hasMany(MapNoticeToUsers::class);
     }
 }

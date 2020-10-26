@@ -4,6 +4,7 @@ namespace App\Models\Maps;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Common;
+use Illuminate\Support\Facades\Log;
 
 /**
  * App\Models\Maps\MapNoticeToDepartments
@@ -22,4 +23,10 @@ use App\Models\Common;
 class MapNoticeToDepartments extends Common
 {
     use HasFactory;
+
+    // 删除指定要讯抄送部门映射
+    public function deleteMaps($notice_id)
+    {
+        return $this->where('notice_id', $notice_id)->delete();
+    }
 }

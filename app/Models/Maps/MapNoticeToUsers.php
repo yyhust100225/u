@@ -22,4 +22,10 @@ use App\Models\Common;
 class MapNoticeToUsers extends Common
 {
     use HasFactory;
+
+    // 删除指定要讯抄送用户映射
+    public function deleteMaps($notice_id)
+    {
+        return $this->where('notice_id', $notice_id)->delete();
+    }
 }

@@ -24,7 +24,7 @@
 
                         <div class="layui-inline">
                             <label>
-                                <input class="layui-input" name="name" autocomplete="off" placeholder="要讯名称">
+                                <input class="layui-input" name="title" autocomplete="off" placeholder="要讯名称">
                             </label>
                         </div>
 
@@ -124,7 +124,7 @@
                                     });
                                 }
                             }, error: function(e){
-                                if(e.status === 404)
+                                if(e.status === 404 || e.status === 403)
                                     layer.msg(e.responseJSON.message);
                             }
                         });

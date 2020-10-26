@@ -61,8 +61,8 @@ class NoticeController extends CommonController
             parse_str($request->input('where'), $con);
 
             // 搜索条件
-            if (!empty($con['name']))
-                $where['name'] = ['like', '%' . $con['name'] . '%'];
+            if (!empty($con['title']))
+                $where['title'] = ['like', '%' . $con['title'] . '%'];
         }
 
         $notices = $notice->selectData($request->input('page'), $request->input('limit'), $where);
@@ -99,8 +99,8 @@ class NoticeController extends CommonController
             parse_str($request->input('where'), $con);
 
             // 搜索条件
-            if (!empty($con['name']))
-                $where['name'] = ['like', '%' . $con['name'] . '%'];
+            if (!empty($con['title']))
+                $where['title'] = ['like', '%' . $con['title'] . '%'];
         }
 
         $notices = $notice->selectData($request->input('page'), $request->input('limit'), $where);
@@ -197,12 +197,18 @@ class NoticeController extends CommonController
      * @param $id
      * @param Request $request
      * @param Notice $notice
+     * @param NoticeType $notice_type
+     * @param Department $department
+     * @param Role $role
+     * @param User $user
      * @return Application|Factory|View
      */
     public function edit($id, Request $request,Notice $notice, NoticeType $notice_type, Department $department, Role $role, User $user)
     {
-        $notice = $notice->newQuery()->find($id);
+        $notice = $notice->newQuery()->with('file')->find($id);
         $notice->department_ids = $notice->departmentIds()->pluck('department_id')->toArray();
+        $notice->role_ids = $notice->roleIds()->pluck('role_id')->toArray();
+        $notice->user_ids = $notice->userIds()->pluck('user_id')->toArray();
 
         $notice_types = $notice_type->all();
         $departments = $department->all();
@@ -219,13 +225,16 @@ class NoticeController extends CommonController
     }
 
     /**
-     * 更新要讯
+     * 更新要讯信息
      * @param UpdateNotice $request
      * @param Notice $notice
+     * @param MapNoticeToDepartments $mntd
+     * @param MapNoticeToRoles $mntr
+     * @param MapNoticeToUsers $mntu
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function update(UpdateNotice $request, Notice $notice)
+    public function update(UpdateNotice $request, Notice $notice, MapNoticeToDepartments $mntd, MapNoticeToRoles $mntr, MapNoticeToUsers $mntu)
     {
         try {
             $notice = $notice->newQuery()->find($request->input('id'));
@@ -233,25 +242,93 @@ class NoticeController extends CommonController
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        $notice->name = strval($request->input('name'));
+        try {
+            DB::transaction(function() use($request, $notice, $mntd, $mntr, $mntu) {
+                // 更新要讯主体
+                $notice->title = strval($request->input('title'));
+                $notice->notice_type_id = intval($request->input('notice_type_id'));
+                $notice->start_time = $request->input('start_time');
+                $notice->end_time = $request->input('end_time');
+                $notice->file_id = strval($request->input('file_id'));
+                $notice->user_id = Auth::user()->getAuthIdentifier();
+                $notice->content = htmlspecialchars(strval($request->input('content')));
+                $notice->status = NOTICE_SUBMITTED;
+                $notice->save();
 
-        return $this->returnOperationResponse($notice->save(), $request);
+                // 保存要讯抄送部门映射
+                $mntd->deleteMaps($notice->id);
+                if($request->filled('department_ids')) {
+                    $department_ids = explode(',', $request->input('department_ids'));
+                    foreach($department_ids as $department_id) {
+                        $ntd_maps[] = ['department_id' => $department_id, 'notice_id' => $notice->id];
+                    }
+                    $mntd->insert($ntd_maps);
+                }
+
+                // 保存要讯抄送角色映射
+                $mntr->deleteMaps($notice->id);
+                if($request->filled('role_ids')) {
+                    $role_ids = explode(',', $request->input('role_ids'));
+                    foreach($role_ids as $role_id) {
+                        $ntr_maps[] = ['role_id' => $role_id, 'notice_id' => $notice->id];
+                    }
+                    $mntr->insert($ntr_maps);
+                }
+
+                // 保存要讯抄送员工映射
+                $mntu->deleteMaps($notice->id);
+                if($request->filled('user_ids')) {
+                    $user_ids = explode(',', $request->input('user_ids'));
+                    foreach($user_ids as $user_id) {
+                        $ntu_maps[] = ['user_id' => $user_id, 'notice_id' => $notice->id];
+                    }
+                    $mntu->insert($ntu_maps);
+                }
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
     }
 
     /**
      * 删除要讯
      * @param Request $request
      * @param Notice $notice
+     * @param MapNoticeToDepartments $mntd
+     * @param MapNoticeToRoles $mntr
+     * @param MapNoticeToUsers $mntu
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function delete(Request $request, Notice $notice)
+    public function delete(Request $request, Notice $notice, MapNoticeToDepartments $mntd, MapNoticeToRoles $mntr, MapNoticeToUsers $mntu)
     {
         try {
             $notice = $notice->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
-        return $this->returnOperationResponse($notice->delete(), $request);
+
+        try {
+            DB::transaction(function() use($notice, $mntd, $mntr, $mntu) {
+                $file = $notice->file;
+                $mntd->deleteMaps($notice->id);
+                $mntr->deleteMaps($notice->id);
+                $mntu->deleteMaps($notice->id);
+                $notice->delete();
+
+                $disk = $file->disk;
+                $path = $file->path;
+                $file->delete();
+                @Storage::disk($disk)->delete($path);
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
     }
 }

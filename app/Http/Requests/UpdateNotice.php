@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AtLeastOne;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -26,13 +27,18 @@ class UpdateNotice extends FormRequest
     {
         return [
             'title' => ['required', 'min:2', Rule::unique('notices')->ignore($this->input('id'))],
+            'start_time' => ['required'],
+            'end_time' => ['required', 'date', 'after_or_equal:start_time'],
+            'department_ids' => [new AtLeastOne($this, ['role_ids', 'user_ids'])],
+            'content' => ['required']
         ];
     }
 
     public function attributes()
     {
         return [
-            'title' => trans('validation.attributes.title_name'),
+            'title' => trans('validation.attributes.notice_title'),
+            'content' => trans('validation.attributes.notice_content'),
         ];
     }
 }

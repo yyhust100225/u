@@ -85,7 +85,7 @@
                                 <button type="button" class="layui-btn" id="upload">
                                     <i class="layui-icon">&#xe67c;</i>上传图片
                                 </button>
-                                <span id="file-name"></span>
+                                <span id="file-name">{{ $notice->file->name }}</span>
                                 <input type="hidden" name="file_id" id="upload-file" value="{{ $notice->file_id }}" />
                             </div>
                         </div>
@@ -145,7 +145,7 @@
         form.on('submit(form-submit)', function(obj){
             obj.field.content = editor.txt.html();
             $.ajax({
-                type: 'POST',
+                type: 'PUT',
                 url: route(routes.notices.update),
                 data: obj.field,
                 dataType: 'json',
@@ -223,7 +223,7 @@
         name: 'role_ids',
         data: [
             @foreach($roles as $role)
-                {name: '{{ $role->name }}', value: {{ $role->id }}},
+                {name: '{{ $role->name }}', value: {{ $role->id }} @if(in_array($role->id, $notice->role_ids)) ,selected: true @endif},
             @endforeach
         ]
     });
@@ -236,7 +236,7 @@
         name: 'user_ids',
         data: [
             @foreach($users as $user)
-                {name: '{{ $user->username }}', value: {{ $user->id }}},
+                {name: '{{ $user->username }}', value: {{ $user->id }} @if(in_array($user->id, $notice->user_ids)) ,selected: true @endif},
             @endforeach
         ]
     });
