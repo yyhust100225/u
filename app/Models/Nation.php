@@ -26,9 +26,4 @@ class Nation extends Common
 {
     use HasFactory;
     public $timestamps = false;
-
-    public function getNameAttribute($value)
-    {
-        return htmlspecialchars($value);
-    }
 }

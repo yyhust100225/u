@@ -9,3 +9,32 @@ form.form-long-label-100 .layui-form-item label{
 form.form-long-label-100 .layui-form-item div {
     margin-left: 130px;
 }
+
+.layui-form-pane .layui-form-label {
+    width: 180px;
+}
+
+.layui-form-pane .layui-input-block {
+    margin-left: 180px;
+}
+
+.table-data-status {
+    height: 20px;
+    border-radius: 10px;
+    background-image: linear-gradient(135deg, #E2B0FF 0%, #9F44D3 100%);
+    box-shadow: 0 20px 30px -6px rgba(171, 88, 219, 0.5);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: white;
+}
+
+.show-table tr th{
+    background-color: rgb(247, 247, 255);
+}
+
+.show-content {
+    border: 1px solid rgb(230, 230, 230);
+    padding: 10px;
+}

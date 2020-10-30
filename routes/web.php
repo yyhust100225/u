@@ -198,11 +198,18 @@ Route::namespace('Admin')->group(function(){
         Route::get('notices', 'NoticeController@list')->name('notices.list');
         Route::get('notices/publish', 'NoticeController@publish')->name('notices.publish');
         Route::get('notices/publish/data', 'NoticeController@publishData')->name('notices.publish.data');
+        Route::put('notices/commit', 'NoticeController@commit')->name('notices.commit');
+        Route::put('notices/withdraw', 'NoticeController@withdraw')->name('notices.withdraw');
         Route::get('notices/data', 'NoticeController@data')->name('notices.data');
         Route::get('notices/create', 'NoticeController@create')->name('notices.create');
         Route::post('notices/store', 'NoticeController@store')->name('notices.store');
         Route::get('notices/edit/{id}', 'NoticeController@edit')->name('notices.edit');
         Route::put('notices/update', 'NoticeController@update')->name('notices.update');
         Route::delete('notices/delete', 'NoticeController@delete')->name('notices.delete');
+        Route::get('notices/reviews', 'NoticeController@reviews')->name('notices.reviews');
+        Route::get('notices/reviews/data', 'NoticeController@reviewsData')->name('notices.reviews.data');
+        Route::get('notices/show/{id}', 'NoticeController@show')->name('notices.show');
+        Route::put('notices/approve', 'NoticeController@approve')->name('notices.approve');
+        Route::put('notices/reject', 'NoticeController@reject')->name('notices.reject');
     });
 });

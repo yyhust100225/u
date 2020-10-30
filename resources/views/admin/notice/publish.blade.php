@@ -41,7 +41,15 @@
                     </script>
 
                     <script type="text/html" id="table-bar">
+                        @{{#  if(d.status == NOTICE_SAVED){ }}
+                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="commit">提交</a>
+                        @{{#  } }}
+                        @{{#  if(d.status == NOTICE_SUBMITTED){ }}
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="withdraw">撤回</a>
+                        @{{#  } }}
+                        @{{#  if(d.status == NOTICE_SAVED || d.status == NOTICE_REJECT){ }}
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        @{{#  } }}
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
 
@@ -55,6 +63,12 @@
 <script src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
 
+    var NOTICE_SAVED = {{ NOTICE_SAVED }};
+    var NOTICE_SUBMITTED = {{ NOTICE_SUBMITTED }};
+    var NOTICE_VIEWED = {{ NOTICE_VIEWED }};
+    var NOTICE_APPROVED = {{ NOTICE_APPROVED }};
+    var NOTICE_REJECT = {{ NOTICE_REJECT }};
+
     // 页面路由
     let routes = {
         notices: {
@@ -62,6 +76,8 @@
             create: '{{ route_uri('notices.create') }}',
             edit: '{{ route_uri('notices.edit') }}',
             delete: '{{ route_uri('notices.delete') }}',
+            commit: '{{ route_uri('notices.commit') }}',
+            withdraw: '{{ route_uri('notices.withdraw') }}',
         }
     };
 
@@ -83,8 +99,17 @@
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
                 {field:'title', title: '要讯标题'},
+                {field:'status', title: '状态', width: '10%', templet: function(data){
+                    switch(data.status) {
+                        case {{ NOTICE_SAVED }}: return '<span style="color: #20B2AA">已保存</span>';
+                        case {{ NOTICE_SUBMITTED }}: return '<span style="color: #00BFFF">已提交</span>';
+                        case {{ NOTICE_VIEWED }}: return '<span style="color: #008080">已查看</span>';
+                        case {{ NOTICE_APPROVED }}: return '<span style="color: #6495ED">审核通过</span>';
+                        case {{ NOTICE_REJECT }}: return '<span style="color: #EE0000">审核驳回</span>';
+                    }
+                }},
                 {field:'created_at', title: '创建时间', width:'15%'},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                {fixed: 'right', title: '操作', width:180, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
@@ -127,6 +152,56 @@
                                 if(res.code === {{ REQUEST_SUCCESS }}){
                                     layer.msg(res.message, {time: 1000}, function(){
                                         obj.del();
+                                    });
+                                }
+                            }, error: function(e){
+                                if(e.status === 404 || e.status === 403)
+                                    layer.msg(e.responseJSON.message);
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }break;
+                case 'commit': {
+                    layer.confirm('{{ trans('tips.table commit confirm') }}', function(index){
+                        $.ajax({
+                            type: 'PUT',
+                            url: route(routes.notices.commit),
+                            data: {id: obj.data.id},
+                            dataType: 'json',
+                            async: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(res){
+                                if(res.code === {{ REQUEST_SUCCESS }}){
+                                    layer.msg(res.message, {time: 1000}, function(){
+                                        table.reload('data-table');
+                                    });
+                                }
+                            }, error: function(e){
+                                if(e.status === 404 || e.status === 403)
+                                    layer.msg(e.responseJSON.message);
+                            }
+                        });
+                        layer.close(index);
+                    });
+                }break;
+                case 'withdraw': {
+                    layer.confirm('{{ trans('tips.table withdraw confirm') }}', function(index){
+                        $.ajax({
+                            type: 'PUT',
+                            url: route(routes.notices.withdraw),
+                            data: {id: obj.data.id},
+                            dataType: 'json',
+                            async: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(res){
+                                if(res.code === {{ REQUEST_SUCCESS }}){
+                                    layer.msg(res.message, {time: 1000}, function(){
+                                        table.reload('data-table');
                                     });
                                 }
                             }, error: function(e){

@@ -30,8 +30,12 @@ class Common extends Model
         $model = $this->newQuery();
 
         foreach($where as $field => $value) {
-            if(is_array($value))
-                $model->where($field, $value[0], $value[1]);
+            if(is_array($value)) {
+                if($value[0] == 'in')
+                    $model->whereIn($field, $value[1]);
+                else
+                    $model->where($field, $value[0], $value[1]);
+            }
             else
                 $model->where($field, $value);
         }

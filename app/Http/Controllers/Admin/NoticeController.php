@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Mockery\Matcher\Not;
 
 class NoticeController extends CommonController
 {
@@ -114,6 +115,52 @@ class NoticeController extends CommonController
     }
 
     /**
+     * 提交要讯状态
+     * @param Request $request
+     * @param Notice $notice
+     * @return JsonResponse
+     */
+    public function commit(Request $request, Notice $notice)
+    {
+        $notice = $notice->newQuery()->findOrFail($request->input('id'));
+
+        try {
+            DB::transaction(function() use($notice){
+                $notice->status = NOTICE_SUBMITTED;
+                $notice->save();
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
+    }
+
+    /**
+     * 撤回提交要讯
+     * @param Request $request
+     * @param Notice $notice
+     * @return JsonResponse
+     */
+    public function withdraw(Request $request, Notice $notice)
+    {
+        $notice = $notice->newQuery()->findOrFail($request->input('id'));
+
+        try {
+            DB::transaction(function() use($notice){
+                $notice->status = NOTICE_SAVED;
+                $notice->save();
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
+    }
+
+    /**
      * 创建新要讯
      * @param Request $request
      * @return Application|Factory|View
@@ -153,8 +200,8 @@ class NoticeController extends CommonController
                 $notice->end_time = $request->input('end_time');
                 $notice->file_id = strval($request->input('file_id'));
                 $notice->user_id = Auth::user()->getAuthIdentifier();
-                $notice->content = htmlspecialchars(strval($request->input('content')));
-                $notice->status = NOTICE_SUBMITTED;
+                $notice->content = strval($request->input('content'));
+                $notice->status = intval($request->input('status'));
                 $notice->save();
 
                 // 保存要讯抄送部门映射
@@ -251,8 +298,8 @@ class NoticeController extends CommonController
                 $notice->end_time = $request->input('end_time');
                 $notice->file_id = strval($request->input('file_id'));
                 $notice->user_id = Auth::user()->getAuthIdentifier();
-                $notice->content = htmlspecialchars(strval($request->input('content')));
-                $notice->status = NOTICE_SUBMITTED;
+                $notice->content = strval($request->input('content'));
+                $notice->status = intval($request->input('status'));
                 $notice->save();
 
                 // 保存要讯抄送部门映射
@@ -323,6 +370,123 @@ class NoticeController extends CommonController
                 $path = $file->path;
                 $file->delete();
                 @Storage::disk($disk)->delete($path);
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
+    }
+
+    /**
+     * 审核要讯列表页
+     * @param Request $request
+     * @return Application|Factory|View
+     */
+    public function reviews(Request $request)
+    {
+        return view('admin.notice.reviews');
+    }
+
+    /**
+     * 待审核要讯列表
+     * @param Request $request
+     * @param Notice $notice
+     * @return JsonResponse
+     */
+    public function reviewsData(Request $request, Notice $notice)
+    {
+        // 查询已提交状态公告
+        $where = array('status' => ['in', [NOTICE_SUBMITTED, NOTICE_VIEWED]]);
+        if ($request->has('action') && $request->input('action') == 'search') {
+            parse_str($request->input('where'), $con);
+
+            // 搜索条件
+            if (!empty($con['title']))
+                $where['title'] = ['like', '%' . $con['title'] . '%'];
+        }
+
+        $notices = $notice->selectData($request->input('page'), $request->input('limit'), $where);
+
+        return response()->json([
+            'code' => RESPONSE_SUCCESS,
+            'msg' => trans('request.success'),
+            'count' => $notices['count'],
+            'data' => NoticeResource::collection($notices['data']),
+        ], 200);
+    }
+
+    /**
+     * 查看审核要讯
+     * @param $id
+     * @param Request $request
+     * @param Notice $notice
+     * @return Application|Factory|\Illuminate\Contracts\View\View
+     */
+    public function show($id, Request $request, Notice $notice)
+    {
+        $notice = $notice->newQuery()->with(['departments', 'roles', 'users', 'file'])->findOrFail($id);
+
+        // 变更要讯为已查看状态
+        try {
+            DB::transaction(function() use($notice) {
+                $notice->status = NOTICE_VIEWED;
+                $notice->save();
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            abort(404, trans('message.errors.404'));
+        }
+
+        $notice->departments = implode(',', array_column($notice->departments->toArray(), 'name'));
+        $notice->roles = implode(',', array_column($notice->roles->toArray(), 'name'));
+        $notice->users = implode(',', array_column($notice->users->toArray(), 'username'));
+
+        return view('admin.notice.show', [
+            'notice' => $notice,
+        ]);
+    }
+
+    /**
+     * 要讯审核通过
+     * @param Request $request
+     * @param Notice $notice
+     * @return JsonResponse
+     */
+    public function approve(Request $request, Notice $notice)
+    {
+        $notice = $notice->newQuery()->findOrFail($request->input('id'));
+
+        try {
+            DB::transaction(function() use($request, $notice){
+                $notice->status = NOTICE_APPROVED;
+                $notice->review_remark = strval($request->input('review_remark'));
+                $notice->save();
+            });
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            $this->returnFailedResponse(trans('request.failed'));
+        }
+
+        return $this->returnOperationResponse(true, $request);
+    }
+
+    /**
+     * 要讯审核驳回
+     * @param Request $request
+     * @param Notice $notice
+     * @return JsonResponse
+     */
+    public function reject(Request $request, Notice $notice)
+    {
+        $notice = $notice->newQuery()->findOrFail($request->input('id'));
+
+        try {
+            DB::transaction(function() use($request, $notice){
+                $notice->status = NOTICE_REJECT;
+                $notice->review_remark = strval($request->input('review_remark'));
+                $notice->save();
             });
         } catch (\Throwable $e) {
             Log::error($e->getMessage());

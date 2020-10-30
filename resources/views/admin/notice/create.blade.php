@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
     <meta charset="utf-8">
     <title>Layui</title>
@@ -99,7 +98,8 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-save">保存</button>
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">保存并提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -137,38 +137,18 @@
         editor.config.uploadImgServer = route(routes.notices.editor_img);
         editor.config.uploadFileName = 'images';
         editor.create();
+        // 只保存
+        form.on('submit(form-save)', function(obj){
+            obj.field.content = editor.txt.html();
+            obj.field.status = {{ NOTICE_SAVED }};
+            return submit(obj.field);
+        });
 
+        // 保存并提交
         form.on('submit(form-submit)', function(obj){
             obj.field.content = editor.txt.html();
-            $.ajax({
-                type: 'POST',
-                url: route(routes.notices.store),
-                data: obj.field,
-                dataType: 'json',
-                async: false,
-                success: function(res){
-                    if(res.code === {{ REQUEST_SUCCESS }}) {
-                        let index = parent.layer.getFrameIndex(window.name);
-                        layer.msg(res.message, {time: 1000}, function(){
-                            parent.layer.close(index);
-                        });
-                    } else {
-                        layer.msg(res.message);
-                    }
-                }, error: function(e){
-                    if(e.status === 422) {
-                        $.each(e.responseJSON.errors, function(k,v){
-                            layer.msg(v[0]);
-                            return false;
-                        });
-                    }
-                    else {
-                        console.log(e);
-                        layer.msg(e.responseJSON.message);
-                    }
-                }
-            });
-            return false;
+            obj.field.status = {{ NOTICE_SUBMITTED }};
+            return submit(obj.field);
         });
 
         let uploadInst = upload.render({
@@ -196,6 +176,38 @@
             elem: '#end-time',
             type: 'date'
         });
+
+        let submit = function(data) {
+            $.ajax({
+                type: 'POST',
+                url: route(routes.notices.store),
+                data: data,
+                dataType: 'json',
+                async: false,
+                success: function(res){
+                    if(res.code === {{ REQUEST_SUCCESS }}) {
+                        let index = parent.layer.getFrameIndex(window.name);
+                        layer.msg(res.message, {time: 1000}, function(){
+                            parent.layer.close(index);
+                        });
+                    } else {
+                        layer.msg(res.message);
+                    }
+                }, error: function(e){
+                    if(e.status === 422) {
+                        $.each(e.responseJSON.errors, function(k,v){
+                            layer.msg(v[0]);
+                            return false;
+                        });
+                    }
+                    else {
+                        console.log(e);
+                        layer.msg(e.responseJSON.message);
+                    }
+                }
+            });
+            return false;
+        }
     });
 
     let departments_select = xmSelect.render({
@@ -238,6 +250,4 @@
     });
 
 </script>
-
 </body>
-</html>

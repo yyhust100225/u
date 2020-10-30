@@ -50,15 +50,27 @@ class Notice extends Common
 {
     use HasFactory;
 
-    public function getContentAttribute($value)
+    public function notice_type()
     {
-        return htmlspecialchars_decode($value);
+        return $this->belongsTo(NoticeType::class);
     }
 
     // 关联要讯抄送的所有部门
     public function departments()
     {
         return $this->hasManyThrough(Department::class, MapNoticeToDepartments::class, 'notice_id', 'id', 'id', 'department_id');
+    }
+
+    // 关联要讯抄送的所有角色
+    public function roles()
+    {
+        return $this->hasManyThrough(Role::class, MapNoticeToRoles::class, 'notice_id', 'id', 'id', 'role_id');
+    }
+
+    // 关联要讯抄送的所有用户
+    public function users()
+    {
+        return $this->hasManyThrough(User::class, MapNoticeToUsers::class, 'notice_id', 'id', 'id', 'user_id');
     }
 
     // 关联要讯附件

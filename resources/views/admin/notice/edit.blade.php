@@ -20,6 +20,16 @@
                 <div class="layui-card-body">
                     <form class="layui-form" action="">
                         @csrf
+
+                        @if($notice->status == NOTICE_REJECT)
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="review-remark"><b style="color: #9f191f">驳回建议</b></label>
+                                <div class="layui-input-block">
+                                    <input type="text" readonly="readonly" name="review_remark" value="{{ $notice->review_remark }}" id="review-remark" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="title">要讯名称</label>
                             <div class="layui-input-block">
@@ -102,7 +112,8 @@
                         <div class="layui-form-item">
                             <div class="layui-input-block">
                                 <input type="hidden" name="id" value="{{ $notice->id }}" />
-                                <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                                <button type="button" lay-submit class="layui-btn" lay-filter="form-save">保存</button>
+                                <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">保存并提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
@@ -142,12 +153,50 @@
         editor.create();
         // editor.txt.html('');
 
+        // 只保存
+        form.on('submit(form-save)', function(obj){
+            obj.field.content = editor.txt.html();
+            obj.field.status = {{ NOTICE_SAVED }};
+            return submit(obj.field);
+        });
+
+        // 保存并提交
         form.on('submit(form-submit)', function(obj){
             obj.field.content = editor.txt.html();
+            obj.field.status = {{ NOTICE_SUBMITTED }};
+            return submit(obj.field);
+        });
+
+        let uploadInst = upload.render({
+            elem: '#upload',
+            url: route(routes.notices.upload),
+            done: function(res){
+                if(res.code === {{ REQUEST_SUCCESS }}) {
+                    $('#upload-file').val(res.data.file_id);
+                    $('#file-name').html(res.data.file_name);
+                }
+                else
+                    layer.msg(res.message);
+            },
+            error: function(){
+                //请求异常回调
+            }
+        });
+
+        laydate.render({
+            elem: '#start-time',
+            type: 'date'
+        });
+        laydate.render({
+            elem: '#end-time',
+            type: 'date'
+        });
+
+        let submit = function(data) {
             $.ajax({
                 type: 'PUT',
                 url: route(routes.notices.update),
-                data: obj.field,
+                data: data,
                 dataType: 'json',
                 async: false,
                 success: function(res){
@@ -173,33 +222,7 @@
                 }
             });
             return false;
-        });
-
-        let uploadInst = upload.render({
-            elem: '#upload',
-            url: route(routes.notices.upload),
-            done: function(res){
-                if(res.code === {{ REQUEST_SUCCESS }}) {
-                    $('#upload-file').val(res.data.file_id);
-                    $('#file-name').html(res.data.file_name);
-                }
-                else
-                    layer.msg(res.message);
-            },
-            error: function(){
-                //请求异常回调
-            }
-        });
-
-        laydate.render({
-            elem: '#start-time',
-            type: 'date'
-        });
-
-        laydate.render({
-            elem: '#end-time',
-            type: 'date'
-        });
+        }
     });
 
     let departments_select = xmSelect.render({
@@ -214,7 +237,6 @@
             @endforeach
         ]
     });
-
     let roles_select = xmSelect.render({
         el: '#roles',
         language: 'zn',
@@ -227,7 +249,6 @@
             @endforeach
         ]
     });
-
     let users_select = xmSelect.render({
         el: '#users',
         language: 'zn',

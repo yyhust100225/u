@@ -84,3 +84,36 @@ let deleteTr = function(classname) {
     });
 }
 
+let formSubmit = function(data, type, url, success_code){
+    let $ = layui.$;
+    $.ajax({
+        type: type,
+        url: url,
+        data: data,
+        dataType: 'json',
+        async: false,
+        success: function(res){
+            if(res.code === success_code) {
+                let index = parent.layer.getFrameIndex(window.name);
+                layer.msg(res.message, {time: 1000}, function(){
+                    parent.layer.close(index);
+                });
+            } else {
+                layer.msg(res.message);
+            }
+        }, error: function(e){
+            if(e.status === 422) {
+                $.each(e.responseJSON.errors, function(k,v){
+                    layer.msg(v[0]);
+                    return false;
+                });
+            }
+            else {
+                console.log(e);
+                layer.msg(e.responseJSON.message);
+            }
+        }
+    });
+    return false;
+}
+

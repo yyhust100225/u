@@ -144,6 +144,9 @@
                             <dd data-name="notices">
                                 <a lay-href="notices">要讯通知</a>
                             </dd>
+                            <dd data-name="notices/reviews">
+                                <a lay-href="notices/reviews">要讯审核</a>
+                            </dd>
                             <dd data-name="notices/publish">
                                 <a lay-href="notices/publish">发布要讯</a>
                             </dd>
