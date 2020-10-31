@@ -73,12 +73,12 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label" for="start-time">开始日期</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" readonly="readonly" id="start-time" value="{{ $notice->start_time }}" class="layui-input">
+                                    <input type="text" readonly="readonly" id="start-time" value="{{ $notice->start_time }}" class="layui-input" />
                                 </div>
                                 <div class="layui-form-mid">-</div>
                                 <label class="layui-form-label" for="end-time">结束日期</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" readonly="readonly" id="end-time" value="{{ $notice->end_time }}" class="layui-input">
+                                    <input type="text" readonly="readonly" id="end-time" value="{{ $notice->end_time }}" class="layui-input" />
                                 </div>
                             </div>
                         </div>
@@ -86,9 +86,12 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="file">附件</label>
                             <div class="layui-input-block">
-                                <div class="layui-col-md5">
-                                    <input type="text" readonly="readonly" id="file" value="{{ $notice->file->name }}" class="layui-input">
+                                <div class="layui-col-md2">
+                                    <input type="text" readonly="readonly" id="file" value="{{ $notice->file->name }}" class="layui-input" />
                                 </div>
+                                <a class="layui-btn" style="margin-left: 10px;" href="{{ route('file.download', ['id' => $notice->file->id]) }}">
+                                    <i class="layui-icon">&#xe601;</i>下载附件
+                                </a>
                             </div>
                         </div>
 

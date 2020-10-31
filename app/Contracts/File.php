@@ -22,8 +22,7 @@ interface File
 
     /**
      * 文件下载
-     * @param $file
-     * @param $disk
+     * @param $file_id
      */
-    public function download($file, $disk);
+    public function download($file_id);
 }

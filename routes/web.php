@@ -21,6 +21,7 @@ Route::namespace('Common')->group(function(){
     Route::middleware(['web.auth'])->group(function(){
         Route::post('upload', 'FileController@upload')->name('file.upload');
         Route::post('upload/editor/image', 'FileController@uploadEditorImage')->name('file.upload.editor.image');
+        Route::get('download/{id}', 'FileController@download')->name('file.download');
     });
 });
 

@@ -6,6 +6,7 @@ use App\Contracts\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\File as FileModel;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Upload implements File
 {
@@ -51,11 +52,12 @@ class Upload implements File
 
     /**
      * 文件下载
-     * @param $file
-     * @param $disk
+     * @param $file_id
+     * @return StreamedResponse
      */
-    public function download($file, $disk)
+    public function download($file_id)
     {
-        return '123';
+        $file = $this->file->newQuery()->findOrFail($file_id);
+        return Storage::disk($file->disk)->download($file->path, $file->name);
     }
 }

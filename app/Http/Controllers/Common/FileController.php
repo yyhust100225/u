@@ -61,4 +61,15 @@ class FileController extends CommonController
             'data' => $image_urls,
         ], 200);
     }
+
+    /**
+     * 下载文件
+     * @param $file_id
+     * @param FileContract $file_tool
+     * @return mixed
+     */
+    public function download($file_id, FileContract $file_tool)
+    {
+        return $file_tool->download($file_id);
+    }
 }
