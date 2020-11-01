@@ -10,6 +10,14 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 class FilterMiddleware extends TransformsRequest
 {
     /**
+     * 配置需要自动加p标签的字段
+     * @var array
+     */
+    protected $auto_paragraph_keys = [
+        'content',
+    ];
+
+    /**
      * 过滤输入标签
      * @param string $key
      * @param mixed $value
@@ -17,6 +25,9 @@ class FilterMiddleware extends TransformsRequest
      */
     protected function transform($key, $value)
     {
-        return clean($value);
+        if(in_array($key, $this->auto_paragraph_keys))
+            return clean($value, 'auto_paragraph');
+        else
+            return clean($value);
     }
 }

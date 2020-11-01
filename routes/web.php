@@ -197,11 +197,12 @@ Route::namespace('Admin')->group(function(){
 
         // 集团要讯
         Route::get('notices', 'NoticeController@list')->name('notices.list');
+        Route::get('notices/data', 'NoticeController@data')->name('notices.data');
+        Route::get('notices/browse/{id}', 'NoticeController@browse')->name('notices.browse');
         Route::get('notices/publish', 'NoticeController@publish')->name('notices.publish');
         Route::get('notices/publish/data', 'NoticeController@publishData')->name('notices.publish.data');
         Route::put('notices/commit', 'NoticeController@commit')->name('notices.commit');
         Route::put('notices/withdraw', 'NoticeController@withdraw')->name('notices.withdraw');
-        Route::get('notices/data', 'NoticeController@data')->name('notices.data');
         Route::get('notices/create', 'NoticeController@create')->name('notices.create');
         Route::post('notices/store', 'NoticeController@store')->name('notices.store');
         Route::get('notices/edit/{id}', 'NoticeController@edit')->name('notices.edit');

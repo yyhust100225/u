@@ -44,7 +44,7 @@
                         @{{#  if(d.status == NOTICE_SAVED){ }}
                         <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="commit">提交</a>
                         @{{#  } }}
-                        @{{#  if(d.status == NOTICE_SUBMITTED){ }}
+                        @{{#  if(d.status == NOTICE_SUBMITTED || d.status == NOTICE_APPROVED){ }}
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="withdraw">撤回</a>
                         @{{#  } }}
                         @{{#  if(d.status == NOTICE_SAVED || d.status == NOTICE_REJECT){ }}

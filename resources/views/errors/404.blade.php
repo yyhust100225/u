@@ -29,7 +29,8 @@
                 404                    </div>
 
             <div class="ml-4 text-lg text-gray-500 uppercase tracking-wider">
-                {{ empty($exception->getMessage()) ? trans('message.errors.404') : $exception->getMessage() }}                    </div>
+                {{ trans('message.errors.404') }}
+{{--                {{ empty($exception->getMessage()) ? trans('message.errors.404') : $exception->getMessage() }}                    </div>--}}
         </div>
     </div>
 </div>

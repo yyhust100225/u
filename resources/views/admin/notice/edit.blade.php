@@ -25,7 +25,21 @@
                             <div class="layui-form-item">
                                 <label class="layui-form-label" for="review-remark"><b style="color: #9f191f">驳回建议</b></label>
                                 <div class="layui-input-block">
-                                    <input type="text" readonly="readonly" name="review_remark" value="{{ $notice->review_remark }}" id="review-remark" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
+                                    <input type="text" readonly="readonly" value="{{ $notice->review_remark }}" id="review-remark" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="reviewer-id"><b style="color: #9f191f">审批人</b></label>
+                                <div class="layui-input-block">
+                                    <input type="text" readonly="readonly" value="{{ $notice->reviewer->username }}" id="reviewer-id" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label" for="review-time"><b style="color: #9f191f">审批时间</b></label>
+                                <div class="layui-input-block">
+                                    <input type="text" readonly="readonly" value="{{ $notice->review_time }}" id="review-time" autocomplete="off" placeholder="请输入要讯名称" class="layui-input">
                                 </div>
                             </div>
                         @endif
@@ -95,7 +109,7 @@
                                 <button type="button" class="layui-btn" id="upload">
                                     <i class="layui-icon">&#xe67c;</i>上传图片
                                 </button>
-                                <span id="file-name">{{ $notice->file->name }}</span>
+                                <span id="file-name">{{ !is_null($notice->file) ? $notice->file->name : '' }}</span>
                                 <input type="hidden" name="file_id" id="upload-file" value="{{ $notice->file_id }}" />
                             </div>
                         </div>

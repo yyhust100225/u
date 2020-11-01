@@ -7,6 +7,7 @@ use App\Models\Maps\MapNoticeToUsers;
 use App\Models\Maps\MapNoticeToRoles;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\Models\Notice
@@ -55,6 +56,29 @@ class Notice extends Common
         return $this->belongsTo(NoticeType::class);
     }
 
+    // 查询可见要讯
+    public function canViewNotices()
+    {
+        $table_name = $this->getTable() . ' as n';
+
+        DB::enableQueryLog();
+        $result = \DB::table($table_name)
+            ->distinct()
+            ->leftJoin('map_notice_to_users as mu', 'n.id', '=', 'mu.notice_id')
+            ->leftJoin('map_notice_to_roles as mr', 'n.id', '=', 'mr.notice_id')
+            ->leftJoin('map_notice_to_departments as md', 'n.id', '=', 'md.notice_id')
+            ->where('n.status', NOTICE_APPROVED)
+            ->where(function($query){
+                $query->where('mu.user_id', 44)
+                ->orWhere('mr.role_id', 1)
+                ->orWhere('md.department_id', 6);
+            })
+            ->get(['n.id as n_id', 'n.title', 'n.status'])->toArray();
+
+        // dd(DB::getQueryLog());
+        return $result;
+    }
+
     // 关联要讯抄送的所有部门
     public function departments()
     {
@@ -77,6 +101,12 @@ class Notice extends Common
     public function file()
     {
         return $this->hasOne(File::class, 'id', 'file_id');
+    }
+
+    // 关联要讯审批人
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewer_id', 'id');
     }
 
     // 关联所有抄送部门ID

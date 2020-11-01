@@ -25,7 +25,7 @@ class CreateNoticesTable extends Migration
             $table->unsignedInteger('user_id')->comment('创建用户ID');
             $table->unsignedTinyInteger('status')->default(0)->comment('要讯状态');
             $table->unsignedInteger('reviewer_id')->default(0)->comment('审核人ID');
-            $table->date('review_time')->nullable()->comment('审核时间');
+            $table->dateTime('review_time')->nullable()->comment('审核时间');
             $table->string('review_remark', 512)->default('')->comment('审核备注');
             $table->timestamps();
         });

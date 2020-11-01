@@ -40,8 +40,7 @@
                     </script>
 
                     <script type="text/html" id="table-bar">
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
+                        <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="browse">浏览</a>
                     </script>
 
                 </div>
@@ -58,9 +57,7 @@
     var routes = {
         notices: {
             data: '{{ route_uri('notices.data') }}',
-            create: '{{ route_uri('notices.create') }}',
-            edit: '{{ route_uri('notices.edit') }}',
-            delete: '{{ route_uri('notices.delete') }}',
+            browse: '{{ route_uri('notices.browse') }}',
         }
     };
 
@@ -101,34 +98,9 @@
 
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
-                case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.notices.edit, {id: obj.data.id}), function(){
+                case 'browse': {
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.notices.browse, {id: obj.data.id}), function(){
                         table.reload('data-table');
-                    });
-                }break;
-                case 'delete': {
-                    layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
-                        $.ajax({
-                            type: 'DELETE',
-                            url: route(routes.notices.delete),
-                            data: {id: obj.data.id},
-                            dataType: 'json',
-                            async: false,
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(res){
-                                if(res.code === {{ REQUEST_SUCCESS }}){
-                                    layer.msg(res.message, {time: 1000}, function(){
-                                        obj.del();
-                                    });
-                                }
-                            }, error: function(e){
-                                if(e.status === 404 || e.status === 403)
-                                    layer.msg(e.responseJSON.message);
-                            }
-                        });
-                        layer.close(index);
                     });
                 }break;
                 default:break;

@@ -20,6 +20,12 @@ class NoticePolicy extends CommonPolicy
         parent::__construct($request);
     }
 
+    // 浏览要讯权限
+    public function browse(User $user)
+    {
+        return $this->list($user);
+    }
+
     // 发布要讯权限
     public function publish(User $user)
     {

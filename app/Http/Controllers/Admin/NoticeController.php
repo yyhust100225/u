@@ -57,7 +57,8 @@ class NoticeController extends CommonController
      */
     public function data(Request $request, Notice $notice)
     {
-        $where = array();
+        $where = array('status' => NOTICE_APPROVED);
+
         if ($request->has('action') && $request->input('action') == 'search') {
             parse_str($request->input('where'), $con);
 
@@ -66,7 +67,13 @@ class NoticeController extends CommonController
                 $where['title'] = ['like', '%' . $con['title'] . '%'];
         }
 
+        dd($notice->canViewNotices());
+
         $notices = $notice->selectData($request->input('page'), $request->input('limit'), $where);
+
+        foreach($notices['data'] as $notice) {
+            dd($notice->departments->pluck('id'));
+        }
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
@@ -74,6 +81,21 @@ class NoticeController extends CommonController
             'count' => $notices['count'],
             'data' => NoticeResource::collection($notices['data']),
         ], 200);
+    }
+
+    /**
+     * 浏览要讯
+     * @param $id
+     * @param Notice $notice
+     * @return Application|Factory|\Illuminate\Contracts\View\View
+     */
+    public function browse($id, Notice $notice)
+    {
+        $notice = $notice->newQuery()->with(['file'])->findOrFail($id);
+
+        return view('admin.notice.browse', [
+            'notice' => $notice,
+        ]);
     }
 
     /**
@@ -462,6 +484,8 @@ class NoticeController extends CommonController
             DB::transaction(function() use($request, $notice){
                 $notice->status = NOTICE_APPROVED;
                 $notice->review_remark = strval($request->input('review_remark'));
+                $notice->reviewer_id = Auth::user()->getAuthIdentifier();
+                $notice->review_time = now();
                 $notice->save();
             });
         } catch (\Throwable $e) {
@@ -486,6 +510,8 @@ class NoticeController extends CommonController
             DB::transaction(function() use($request, $notice){
                 $notice->status = NOTICE_REJECT;
                 $notice->review_remark = strval($request->input('review_remark'));
+                $notice->reviewer_id = Auth::user()->getAuthIdentifier();
+                $notice->review_time = now();
                 $notice->save();
             });
         } catch (\Throwable $e) {
