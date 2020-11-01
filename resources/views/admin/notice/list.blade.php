@@ -83,7 +83,7 @@
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
-            limit: 14,
+            limit: 2,
             limits: [5, 14, 28, 50]
         });
 

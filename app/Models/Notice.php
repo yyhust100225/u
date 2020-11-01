@@ -57,26 +57,38 @@ class Notice extends Common
     }
 
     // 查询可见要讯
-    public function canViewNotices()
+    public function canViewNotices($page, $limit, $where)
     {
-        $table_name = $this->getTable() . ' as n';
-
-        DB::enableQueryLog();
-        $result = \DB::table($table_name)
+        $db = $this->newQuery()
             ->distinct()
-            ->leftJoin('map_notice_to_users as mu', 'n.id', '=', 'mu.notice_id')
-            ->leftJoin('map_notice_to_roles as mr', 'n.id', '=', 'mr.notice_id')
-            ->leftJoin('map_notice_to_departments as md', 'n.id', '=', 'md.notice_id')
-            ->where('n.status', NOTICE_APPROVED)
-            ->where(function($query){
-                $query->where('mu.user_id', 44)
+            ->leftJoin('map_notice_to_users as mu', 'notices.id', '=', 'mu.notice_id')
+            ->leftJoin('map_notice_to_roles as mr', 'notices.id', '=', 'mr.notice_id')
+            ->leftJoin('map_notice_to_departments as md', 'notices.id', '=', 'md.notice_id');
+
+        foreach($where as $field => $value) {
+            if(is_array($value)) {
+                if($value[0] == 'in')
+                    $db->whereIn($field, $value[1]);
+                else
+                    $db->where($field, $value[0], $value[1]);
+            }
+            else
+                $db->where($field, $value);
+        }
+
+        $db->where(function($query){
+            $query->where('mu.user_id', 44)
                 ->orWhere('mr.role_id', 1)
                 ->orWhere('md.department_id', 6);
-            })
-            ->get(['n.id as n_id', 'n.title', 'n.status'])->toArray();
+        });
 
-        // dd(DB::getQueryLog());
-        return $result;
+        $count = $db->count('notices.id');
+
+        $data = $db
+            ->offset(($page - 1) * $limit)->limit($limit)
+            ->get(['notices.*']);
+
+        return ['count' => $count, 'data' => $data];
     }
 
     // 关联要讯抄送的所有部门

@@ -67,13 +67,7 @@ class NoticeController extends CommonController
                 $where['title'] = ['like', '%' . $con['title'] . '%'];
         }
 
-        dd($notice->canViewNotices());
-
-        $notices = $notice->selectData($request->input('page'), $request->input('limit'), $where);
-
-        foreach($notices['data'] as $notice) {
-            dd($notice->departments->pluck('id'));
-        }
+        $notices = $notice->canViewNotices($request->input('page'), $request->input('limit'), $where);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
