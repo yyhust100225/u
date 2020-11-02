@@ -78,7 +78,10 @@
             url: route(routes.notices.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'title', title: '要讯标题'},
+                {field:'title', title: '标题'},
+                {field:'notice_type_name', title: '公告类型', width: '20%'},
+                {field:'notice_time', title: '公告时间', width: '12%'},
+                {field:'notice_creator', title: '创建人', width: '8%'},
                 {field:'created_at', title: '创建时间', width:'15%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
@@ -99,8 +102,9 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'browse': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.notices.browse, {id: obj.data.id}), function(){
-                        table.reload('data-table');
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.notices.browse, {id: obj.data.id}), function(index){
+                        layer.close(index)
+                        return false;
                     });
                 }break;
                 default:break;

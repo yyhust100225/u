@@ -9,4 +9,8 @@ return [
     'errors' => [
         '404' => '抱歉, 找不到指定资源'
     ],
+
+    'table' => [
+        'time slot' => ':start 至 :end',
+    ]
 ];

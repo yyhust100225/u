@@ -56,6 +56,11 @@ class Notice extends Common
         return $this->belongsTo(NoticeType::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     // 查询可见要讯
     public function canViewNotices($page, $limit, $where, $userinfo)
     {

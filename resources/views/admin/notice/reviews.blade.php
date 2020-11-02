@@ -79,7 +79,10 @@
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
                 {field:'title', title: '要讯标题'},
-                {field:'status', title: '状态', width: '10%', templet: function(data){
+                {field:'notice_type_name', title: '类型', width:'20%'},
+                {field:'notice_time', title: '持续时间', width:'12%'},
+                {field:'notice_creator', title: '创建人', width:'8%'},
+                {field:'status', title: '状态', width: '6%', templet: function(data){
                     switch(data.status) {
                         case {{ NOTICE_SAVED }}: return '<span style="color: #20B2AA">已保存</span>';
                         case {{ NOTICE_SUBMITTED }}: return '<span style="color: #00BFFF">已提交</span>';
