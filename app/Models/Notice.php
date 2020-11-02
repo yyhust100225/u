@@ -57,13 +57,15 @@ class Notice extends Common
     }
 
     // 查询可见要讯
-    public function canViewNotices($page, $limit, $where)
+    public function canViewNotices($page, $limit, $where, $userinfo)
     {
+        $table_name = $this->getTable();
+
         $db = $this->newQuery()
             ->distinct()
-            ->leftJoin('map_notice_to_users as mu', 'notices.id', '=', 'mu.notice_id')
-            ->leftJoin('map_notice_to_roles as mr', 'notices.id', '=', 'mr.notice_id')
-            ->leftJoin('map_notice_to_departments as md', 'notices.id', '=', 'md.notice_id');
+            ->leftJoin('map_notice_to_users as mu', $table_name.'.id', '=', 'mu.notice_id')
+            ->leftJoin('map_notice_to_roles as mr', $table_name.'.id', '=', 'mr.notice_id')
+            ->leftJoin('map_notice_to_departments as md', $table_name.'.id', '=', 'md.notice_id');
 
         foreach($where as $field => $value) {
             if(is_array($value)) {
@@ -76,10 +78,10 @@ class Notice extends Common
                 $db->where($field, $value);
         }
 
-        $db->where(function($query){
-            $query->where('mu.user_id', 44)
-                ->orWhere('mr.role_id', 1)
-                ->orWhere('md.department_id', 6);
+        $db->where(function($query) use($userinfo){
+            $query->where('mu.user_id', $userinfo['user_id'])
+                ->orWhere('mr.role_id', $userinfo['role_id'])
+                ->orWhere('md.department_id', $userinfo['department_id']);
         });
 
         $count = $db->count('notices.id');

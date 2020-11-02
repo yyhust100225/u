@@ -67,7 +67,14 @@ class NoticeController extends CommonController
                 $where['title'] = ['like', '%' . $con['title'] . '%'];
         }
 
-        $notices = $notice->canViewNotices($request->input('page'), $request->input('limit'), $where);
+        $me = Auth::user();
+        $userinfo = [
+            'user_id' => $me->getAuthIdentifier(),
+            'role_id' => $me->role_id,
+            'department_id' => $me->archive->department_id,
+        ];
+
+        $notices = $notice->canViewNotices($request->input('page'), $request->input('limit'), $where, $userinfo);
 
         return response()->json([
             'code' => RESPONSE_SUCCESS,
