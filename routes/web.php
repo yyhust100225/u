@@ -213,5 +213,14 @@ Route::namespace('Admin')->group(function(){
         Route::get('notices/show/{id}', 'NoticeController@show')->name('notices.show');
         Route::put('notices/approve', 'NoticeController@approve')->name('notices.approve');
         Route::put('notices/reject', 'NoticeController@reject')->name('notices.reject');
+
+        // 城市设置
+        Route::get('cities', 'CityController@list')->name('cities.list');
+        Route::get('cities/data', 'CityController@data')->name('cities.data');
+        Route::get('cities/create', 'CityController@create')->name('cities.create');
+        Route::post('cities/store', 'CityController@store')->name('cities.store');
+        Route::get('cities/edit/{id}', 'CityController@edit')->name('cities.edit');
+        Route::put('cities/update', 'CityController@update')->name('cities.update');
+        Route::delete('cities/delete', 'CityController@delete')->name('cities.delete');
     });
 });

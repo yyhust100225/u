@@ -241,6 +241,9 @@
                             <dd class="">
                                 <a href="javascript:;">系统常量设置</a>
                                 <dl class="layui-nav-child">
+                                    <dd data-name="cities">
+                                        <a lay-href="cities">城市设置</a>
+                                    </dd>
                                     <dd data-name="nations">
                                         <a lay-href="nations">民族设置</a>
                                     </dd>
