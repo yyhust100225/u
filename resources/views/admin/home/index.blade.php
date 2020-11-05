@@ -1,7 +1,5 @@
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>layuiAdmin std - 通用后台管理模板系统（iframe标准版）</title>
@@ -156,7 +154,7 @@
                     {{-- 开班管理 --}}
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="开班管理" lay-direction="2">
-                            <i class="layui-icon layui-icon-survey"></i>
+                            <i class="layui-icon layui-icon-read"></i>
                             <cite>开班管理</cite>
                         </a>
                         <dl class="layui-nav-child">

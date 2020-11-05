@@ -46,7 +46,7 @@ use Illuminate\Support\Facades\DB;
  * @mixin \Eloquent
  * @property int $file_id 要讯附件文件ID
  * @method static \Illuminate\Database\Eloquent\Builder|Notice whereFileId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection|MapNoticeToDepartments[] $departmentIds
+ * @property-read \Illuminate\Database\Eloquent\Collection|MapNoticeToDepartments[]|string $departmentIds
  * @property-read int|null $department_ids_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
  * @property-read int|null $departments_count

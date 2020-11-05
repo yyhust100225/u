@@ -462,12 +462,15 @@ class NoticeController extends CommonController
             abort(404, trans('message.errors.404'));
         }
 
-        $notice->departments = implode(',', array_column($notice->departments->toArray(), 'name'));
-        $notice->roles = implode(',', array_column($notice->roles->toArray(), 'name'));
-        $notice->users = implode(',', array_column($notice->users->toArray(), 'username'));
+        $departments = implode(',', array_column($notice->departments->toArray(), 'name'));
+        $roles = implode(',', array_column($notice->roles->toArray(), 'name'));
+        $users = implode(',', array_column($notice->users->toArray(), 'username'));
 
         return view('admin.notice.show', [
             'notice' => $notice,
+            'departments' => $departments,
+            'roles' => $roles,
+            'users' => $users,
         ]);
     }
 

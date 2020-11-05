@@ -23,14 +23,14 @@ class CreateClassAnnouncementsTable extends Migration
             $table->date('publish_date')->nullable()->comment('发布时间');
             $table->unsignedInteger('candidate_num')->default(0)->comment('招考人数');
             $table->date('enroll_date_start')->nullable()->comment('报名开始时间');
-            $table->date('enroll_end_start')->nullable()->comment('报名截止时间');
+            $table->date('enroll_date_end')->nullable()->comment('报名截止时间');
             $table->tinyInteger('enroll_type')->default(0)->comment('报名形式');
             $table->tinyInteger('exam_type')->default(0)->comment('考试形式');
             $table->unsignedInteger('written_exam_activity_num')->default(0)->comment('笔试活动人数');
             $table->date('written_exam_date')->nullable()->comment('笔试考试时间');
             $table->unsignedTinyInteger('written_exam_class_open')->default(0)->comment('笔试是否开课');
             $table->unsignedTinyInteger('written_exam_take_problem_sets')->default(0)->comment('笔试是否拿习题');
-            $table->unsignedInteger('written_exam_in_examination_num')->default(0)->comment('笔试参加开始人数');
+            $table->unsignedInteger('written_exam_in_examination_num')->default(0)->comment('笔试参加考试人数');
             $table->date('check_qualification_date')->nullable()->comment('资格审查时间');
             $table->unsignedInteger('interview_activity_num')->default(0)->comment('面试活动人数');
             $table->date('interview_date')->nullable()->comment('面试时间');

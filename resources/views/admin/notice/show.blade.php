@@ -30,21 +30,21 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="departments">抄送部门</label>
                             <div class="layui-input-block">
-                                <input type="text" readonly="readonly" id="departments" value="{{ $notice->departments }}" class="layui-input">
+                                <input type="text" readonly="readonly" id="departments" value="{{ $departments }}" class="layui-input">
                             </div>
                         </div>
 
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="roles">抄送角色</label>
                             <div class="layui-input-block">
-                                <input type="text" readonly="readonly" id="roles" value="{{ $notice->roles }}" class="layui-input">
+                                <input type="text" readonly="readonly" id="roles" value="{{ $roles }}" class="layui-input">
                             </div>
                         </div>
 
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="users">抄送用户</label>
                             <div class="layui-input-block">
-                                <input type="text" readonly="readonly" id="users" value="{{ $notice->users }}" class="layui-input">
+                                <input type="text" readonly="readonly" id="users" value="{{ $users }}" class="layui-input">
                             </div>
                         </div>
 

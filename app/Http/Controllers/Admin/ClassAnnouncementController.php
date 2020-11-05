@@ -6,9 +6,15 @@ use App\Exceptions\DataNotExistsException;
 use App\Http\Requests\StoreClassAnnouncement;
 use App\Http\Requests\UpdateClassAnnouncement;
 use App\Http\Resources\ClassAnnouncementResource;
+use App\Models\AnnouncementType;
+use App\Models\City;
 use App\Models\ClassAnnouncement;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ClassAnnouncementController extends ProjectDepartmentController
 {
@@ -23,7 +29,7 @@ class ClassAnnouncementController extends ProjectDepartmentController
      * 开班公告列表页
      * @param Request $request
      * @param ClassAnnouncement $class_announcement
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function list(Request $request, ClassAnnouncement $class_announcement)
     {
@@ -34,7 +40,7 @@ class ClassAnnouncementController extends ProjectDepartmentController
      * 开班公告列表数据
      * @param Request $request
      * @param ClassAnnouncement $class_announcement
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function data(Request $request, ClassAnnouncement $class_announcement)
     {
@@ -60,22 +66,28 @@ class ClassAnnouncementController extends ProjectDepartmentController
     /**
      * 创建新开班公告
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
-    public function create(Request $request)
+    public function create(Request $request, City $city, AnnouncementType $announcement_type)
     {
-        return view('admin.class_announcement.create');
+        $cities = $city->all();
+        $announcement_types = $announcement_type->all();
+
+        return view('admin.class_announcement.create', [
+            'cities' => $cities,
+            'announcement_types' => $announcement_types,
+        ]);
     }
 
     /**
      * 存储新开班公告
      * @param StoreClassAnnouncement $request
      * @param ClassAnnouncement $class_announcement
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(StoreClassAnnouncement $request, ClassAnnouncement $class_announcement)
     {
-        $class_announcement->name = $request->input('name');
+        $class_announcement->title = $request->input('title');
 
         return $this->returnOperationResponse($class_announcement->save(), $request);
     }
@@ -85,7 +97,7 @@ class ClassAnnouncementController extends ProjectDepartmentController
      * @param $id
      * @param Request $request
      * @param ClassAnnouncement $class_announcement
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function edit($id, Request $request, ClassAnnouncement $class_announcement)
     {
@@ -100,7 +112,7 @@ class ClassAnnouncementController extends ProjectDepartmentController
      * 更新开班公告
      * @param UpdateClassAnnouncement $request
      * @param ClassAnnouncement $class_announcement
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function update(UpdateClassAnnouncement $request, ClassAnnouncement $class_announcement)
@@ -120,7 +132,7 @@ class ClassAnnouncementController extends ProjectDepartmentController
      * 删除开班公告
      * @param Request $request
      * @param ClassAnnouncement $class_announcement
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function delete(Request $request, ClassAnnouncement $class_announcement)
