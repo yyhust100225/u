@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAnnouncementTypeTable extends Migration
+class CreateAnnouncementTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateAnnouncementTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create('announcement_type', function (Blueprint $table) {
+        Schema::create('announcement_types', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
         });
@@ -26,6 +26,6 @@ class CreateAnnouncementTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcement_type');
+        Schema::dropIfExists('announcement_types');
     }
 }
