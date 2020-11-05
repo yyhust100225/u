@@ -46,6 +46,21 @@ use Illuminate\Support\Facades\DB;
  * @mixin \Eloquent
  * @property int $file_id 要讯附件文件ID
  * @method static \Illuminate\Database\Eloquent\Builder|Notice whereFileId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|MapNoticeToDepartments[] $departmentIds
+ * @property-read int|null $department_ids_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
+ * @property-read int|null $departments_count
+ * @property-read \App\Models\NoticeType $notice_type
+ * @property-read \App\Models\User $reviewer
+ * @property-read \Illuminate\Database\Eloquent\Collection|MapNoticeToRoles[] $roleIds
+ * @property-read int|null $role_ids_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
+ * @property-read int|null $roles_count
+ * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|MapNoticeToUsers[] $userIds
+ * @property-read int|null $user_ids_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
  */
 class Notice extends Common
 {

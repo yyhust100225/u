@@ -222,5 +222,14 @@ Route::namespace('Admin')->group(function(){
         Route::get('cities/edit/{id}', 'CityController@edit')->name('cities.edit');
         Route::put('cities/update', 'CityController@update')->name('cities.update');
         Route::delete('cities/delete', 'CityController@delete')->name('cities.delete');
+
+        // 开班公告
+        Route::get('class_announcements', 'ClassAnnouncementController@list')->name('class_announcements.list');
+        Route::get('class_announcements/data', 'ClassAnnouncementController@data')->name('class_announcements.data');
+        Route::get('class_announcements/create', 'ClassAnnouncementController@create')->name('class_announcements.create');
+        Route::post('class_announcements/store', 'ClassAnnouncementController@store')->name('class_announcements.store');
+        Route::get('class_announcements/edit/{id}', 'ClassAnnouncementController@edit')->name('class_announcements.edit');
+        Route::put('class_announcements/update', 'ClassAnnouncementController@update')->name('class_announcements.update');
+        Route::delete('class_announcements/delete', 'ClassAnnouncementController@delete')->name('class_announcements.delete');
     });
 });

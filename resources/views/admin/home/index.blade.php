@@ -152,6 +152,20 @@
                             </dd>
                         </dl>
                     </li>
+
+                    {{-- 开班管理 --}}
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:;" lay-tips="开班管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-survey"></i>
+                            <cite>开班管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="class_announcements">
+                                <a lay-href="class_announcements">开班公告</a>
+                            </dd>
+                        </dl>
+                    </li>
+
                     {{-- 行政结构 --}}
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="行政结构" lay-direction="2">
