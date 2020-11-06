@@ -2,6 +2,7 @@
 
 define('REQUEST_SUCCESS', 10000);
 define('REQUEST_FAILED', 10001);
+define('AUTHORITY_EXPIRED', 10002);
 
 define('RESPONSE_SUCCESS', 0);
 

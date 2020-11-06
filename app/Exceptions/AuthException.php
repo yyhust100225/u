@@ -16,7 +16,7 @@ class AuthException extends Exception
     {
         parent::__construct($message, $code, $previous);
         $this->message = $message;
-        $this->status = 401.1;
+        $this->status = 401;
     }
 
     /**

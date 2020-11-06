@@ -280,8 +280,6 @@
                             parent.layer.close(index);
                             parent.active.reload.call(this);
                         });
-                    } else {
-                        layer.msg(res.message);
                     }
                 }, error: function(e){
                     if(e.status === 422) {
@@ -290,8 +288,12 @@
                             return false;
                         });
                     }
+                    else if(e.status === 419 || e.status === 401) {
+                        layer.msg(e.responseJSON.message, {time: 1000}, function(){
+                            parent.parent.window.location = "{{ route('login.form') }}";
+                        });
+                    }
                     else {
-                        console.log(e);
                         layer.msg(e.responseJSON.message);
                     }
                 }
