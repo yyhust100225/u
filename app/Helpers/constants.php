@@ -5,6 +5,10 @@ define('REQUEST_FAILED', 10001);
 
 define('RESPONSE_SUCCESS', 0);
 
+// 状态
+define('STATUS_OFF', 0);
+define('STATUS_ON', 1);
+
 // 权限等级
 define('AUTHORIZATION_LEVEL_ALL_ALLOWED', 3);
 define('AUTHORIZATION_LEVEL_ON_USER', 2);

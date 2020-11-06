@@ -15,7 +15,7 @@ class AnnouncementTypeSeeder extends Seeder
     public function run()
     {
         DB::table('announcement_types')->insert([
-            ['name' => '教师'], ['name' => '公务员']
+            ['name' => '教师'], ['name' => '公务员'], ['name' => '企事业']
         ]);
     }
 }

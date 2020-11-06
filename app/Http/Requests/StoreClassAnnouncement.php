@@ -25,14 +25,14 @@ class StoreClassAnnouncement extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:2', Rule::unique('class_announcements')],
+            'title' => ['required', 'min:2', Rule::unique('class_announcements')],
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => trans('validation.attributes.class_announcement_name'),
+            'title' => trans('validation.attributes.class_announcement_title'),
         ];
     }
 }

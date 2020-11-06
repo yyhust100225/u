@@ -38,6 +38,7 @@ class CreateClassAnnouncementsTable extends Migration
             $table->unsignedTinyInteger('interview_take_problem_sets')->default(0)->comment('面试是否拿题');
             $table->decimal('pass_percent', 8, 2)->default(0.00)->comment('自然通过率');
             $table->unsignedTinyInteger('status')->default(0)->comment('公告状态');
+            $table->unsignedInteger('user_id')->comment('录入人');
             $table->timestamps();
         });
     }

@@ -54,7 +54,7 @@
 <script>
 
     // 页面路由
-    var routes = {
+    let routes = {
         class_announcements: {
             data: '{{ route_uri('class_announcements.data') }}',
             create: '{{ route_uri('class_announcements.create') }}',
@@ -80,9 +80,9 @@
             url: route(routes.class_announcements.data),
             cols: [[
                 {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '公告名称'},
+                {field:'title', title: '公告名称'},
                 {field:'created_at', title: '创建时间', width:'15%'},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                {fixed:'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
@@ -92,9 +92,7 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_announcements.create), function(){
-                        table.reload('data-table');
-                    });
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_announcements.create));
                 }break;
                 case 'refresh': {
                     table.reload('data-table');

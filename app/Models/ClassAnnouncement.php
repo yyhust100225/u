@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $publish_date 发布时间
  * @property int $candidate_num 招考人数
  * @property string|null $enroll_date_start 报名开始时间
- * @property string|null $enroll_end_start 报名截止时间
+ * @property string|null $enroll_date_end 报名截止时间
  * @property int $enroll_type 报名形式
  * @property int $exam_type 考试形式
  * @property int $written_exam_activity_num 笔试活动人数
@@ -33,6 +33,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $interview_take_problem_sets 面试是否拿题
  * @property string $pass_percent 自然通过率
  * @property int $status 公告状态
+ * @property int $user_id 录入人
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereAnnouncementType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereCandidateNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereCheckQualificationDate($value)

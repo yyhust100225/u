@@ -14,6 +14,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class ClassAnnouncementController extends ProjectDepartmentController
@@ -87,7 +88,29 @@ class ClassAnnouncementController extends ProjectDepartmentController
      */
     public function store(StoreClassAnnouncement $request, ClassAnnouncement $class_announcement)
     {
-        $class_announcement->title = $request->input('title');
+        $class_announcement->title = strval($request->input('title'));
+        $class_announcement->city_id = intval($request->input('city_id'));
+        $class_announcement->announcement_type = intval($request->input('announcement_type'));
+        $class_announcement->level = strval($request->input('level'));
+        $class_announcement->publish_date = $request->input('publish_date');
+        $class_announcement->candidate_num = intval($request->input('candidate_num'));
+        $class_announcement->enroll_date_start = $request->input('enroll_date_start');
+        $class_announcement->enroll_date_end = $request->input('enroll_date_end');
+        $class_announcement->enroll_type = intval($request->input('enroll_type'));
+        $class_announcement->exam_type = intval($request->input('exam_type'));
+        $class_announcement->written_exam_activity_num = intval($request->input('written_exam_activity_num'));
+        $class_announcement->written_exam_date = $request->input('written_exam_date');
+        $class_announcement->written_exam_class_open = intval($request->input('written_exam_class_open'));
+        $class_announcement->written_exam_take_problem_sets = intval($request->input('written_exam_take_problem_sets'));
+        $class_announcement->written_exam_in_examination_num = intval($request->input('written_exam_in_examination_num'));
+        $class_announcement->check_qualification_date = $request->input('check_qualification_date');
+        $class_announcement->interview_activity_num = intval($request->input('interview_activity_num'));
+        $class_announcement->interview_date = $request->input('interview_date');
+        $class_announcement->interview_class_open = intval($request->input('interview_class_open'));
+        $class_announcement->interview_take_problem_sets = intval($request->input('interview_take_problem_sets'));
+        $class_announcement->pass_percent = floatval($request->input('pass_percent'));
+        $class_announcement->status = intval($request->input('status'));
+        $class_announcement->user_id = $this->user()->getAuthIdentifier();
 
         return $this->returnOperationResponse($class_announcement->save(), $request);
     }

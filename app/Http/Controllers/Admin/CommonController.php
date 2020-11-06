@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommonController extends Controller
 {
@@ -57,5 +58,13 @@ class CommonController extends Controller
             'message' => $message,
         ];
         return response()->json($response, $status);
+    }
+
+    /**
+     * 获取当前访问请求用户
+     */
+    protected function user()
+    {
+        return Auth::user();
     }
 }

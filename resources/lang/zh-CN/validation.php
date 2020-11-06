@@ -214,6 +214,9 @@ return [
         // 集团要讯
         'notice_title' => '要讯标题',
         'notice_content' => '要讯内容',
+
+        // 开班管理
+        'class_announcement_title' => '开班公告标题'
     ],
 
 ];

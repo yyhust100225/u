@@ -16,7 +16,7 @@ class ClassAnnouncementResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'title' => $this->title,
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

@@ -52,6 +52,10 @@ let route = (routeUrl, param) => {
 
 // 弹出表单框 参数初始化
 var makeLayerForm = function(layer, title, content_url, end){
+
+    if(typeof arguments[3] === 'undefined')
+        end = null;
+
     return layer.open({
         type: 2,
         skin: 'layui-layer-lan',
