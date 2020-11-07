@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Exam
+ * App\Models\ClassAnnouncement
  *
  * @property int $id
- * @mixin \Eloquent
  * @property string $title 公告标题
  * @property int $city_id 城市ID
  * @property int $announcement_type 公告类型
@@ -25,7 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $written_exam_date 笔试考试时间
  * @property int $written_exam_class_open 笔试是否开课
  * @property int $written_exam_take_problem_sets 笔试是否拿习题
- * @property int $written_exam_in_examination_num 笔试参加开始人数
+ * @property int $written_exam_in_examination_num 笔试参加考试人数
  * @property string|null $check_qualification_date 资格审查时间
  * @property int $interview_activity_num 面试活动人数
  * @property string|null $interview_date 面试时间
@@ -34,14 +33,21 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $pass_percent 自然通过率
  * @property int $status 公告状态
  * @property int $user_id 录入人
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement query()
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereAnnouncementType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereCandidateNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereCheckQualificationDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereCityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereEnrollDateEnd($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereEnrollDateStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereEnrollEndStart($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereEnrollType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereExamType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereInterviewActivityNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereInterviewClassOpen($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereInterviewDate($value)
@@ -52,13 +58,34 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement wherePublishDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamActivityNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamClassOpen($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamDate($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamInExaminationNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamTakeProblemSets($value)
+ * @mixin \Eloquent
  */
 class ClassAnnouncement extends Common
 {
     use HasFactory;
+
+    // 关联从属公告类别
+    public function type()
+    {
+        return $this->belongsTo(AnnouncementType::class, 'announcement_type');
+    }
+
+    // 关联创建人
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // 关联发布城市
+    public function city()
+    {
+        return $this->belongsTo(City::class);
+    }
 }

@@ -50,3 +50,7 @@ form.layui-form div.layui-input-block {
 form.layui-form div.layui-input-inline {
     margin-left: 120px;
 }
+
+div.search-form-buttons .layui-btn+.layui-btn{
+    margin-left: 0 !important;
+}

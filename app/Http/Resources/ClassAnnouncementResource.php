@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ClassAnnouncementResource extends JsonResource
@@ -9,7 +10,7 @@ class ClassAnnouncementResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      * @return array
      */
     public function toArray($request)
@@ -17,6 +18,9 @@ class ClassAnnouncementResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'type' => $this->type->name,
+            'status' => $this->status,
+            'user' => $this->user->username,
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

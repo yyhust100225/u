@@ -22,9 +22,9 @@
                     @csrf
                     <div class="layui-form-item">
                         <div class="layui-col-md8">
-                            <label class="layui-form-label" for="title">公告名称</label>
+                            <label class="layui-form-label" for="title">公告标题</label>
                             <div class="layui-input-block">
-                                <input type="text" name="title" id="title" autocomplete="off" placeholder="请输入公告名称" class="layui-input">
+                                <input type="text" name="title" id="title" autocomplete="off" placeholder="请输入公告标题" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -210,7 +210,7 @@
                         <div class="layui-col-md3">
                             <label class="layui-form-label" for="pass-percent">自然通过率</label>
                             <div class="layui-input-block">
-                                <input type="text" name="	pass_percent" id="pass-percent" autocomplete="off" placeholder="请输入自然通过率" class="layui-input">
+                                <input type="text" name="pass_percent" id="pass-percent" autocomplete="off" placeholder="请输入自然通过率" class="layui-input">
                             </div>
                         </div>
                     </div>

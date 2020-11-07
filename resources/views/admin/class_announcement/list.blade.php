@@ -23,10 +23,15 @@
                     <form class="" id="table-search-form" style="margin-bottom: 10px;">
 
                         <div class="layui-inline">
-                            <input class="layui-input" name="name" autocomplete="off" placeholder="公告名称">
+                            <label>
+                                <input class="layui-input" name="title" autocomplete="off" placeholder="公告标题">
+                            </label>
                         </div>
 
-                        <button type="button" class="layui-btn" data-type="reload">搜索</button>
+                        <div class="layui-inline search-form-buttons">
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            <button type="button" class="layui-btn search-btn" data-type="reload">搜索</button>
+                        </div>
                     </form>
 
                     <table class="layui-hide" id="data-table" lay-filter="data-table"></table>
@@ -79,10 +84,19 @@
             toolbar: '#table-toolbar',
             url: route(routes.class_announcements.data),
             cols: [[
-                {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'title', title: '公告名称'},
-                {field:'created_at', title: '创建时间', width:'15%'},
-                {fixed:'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
+                {field:'type', align:'center',  width:'8%', title: '公告类型'},
+                {field:'title', align:'center', title: '公告名称'},
+                {field:'status', align:'center', width:'4%', title: '状态', templet: function(data){
+                    if(data.status === 0) {
+                        return '<span style="color:red">关闭</span>';
+                    } else {
+                        return '<span style="color:forestgreen">启用</span>';
+                    }
+                }},
+                {field:'user', align:'center', width:'8%', title: '创建人'},
+                {field:'created_at', align:'center', width:'12%', title: '创建时间'},
+                {fixed:'right', title: '操作', width: '12%', align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
@@ -104,9 +118,7 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_announcements.edit, {id: obj.data.id}), function(){
-                        table.reload('data-table');
-                    });
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_announcements.edit, {id: obj.data.id}));
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){

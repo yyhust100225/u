@@ -50,8 +50,8 @@ class ClassAnnouncementController extends ProjectDepartmentController
             parse_str($request->input('where'), $con);
 
             // 搜索条件
-            if(!empty($con['name']))
-                $where['name'] = ['like', '%'.$con['name'].'%'];
+            if(!empty($con['title']))
+                $where['title'] = ['like', '%'.$con['title'].'%'];
         }
 
         $class_announcements = $class_announcement->selectData($request->input('page'), $request->input('limit'), $where);
@@ -67,7 +67,9 @@ class ClassAnnouncementController extends ProjectDepartmentController
     /**
      * 创建新开班公告
      * @param Request $request
-     * @return Application|Factory|View
+     * @param City $city
+     * @param AnnouncementType $announcement_type
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
     public function create(Request $request, City $city, AnnouncementType $announcement_type)
     {
@@ -91,6 +93,7 @@ class ClassAnnouncementController extends ProjectDepartmentController
         $class_announcement->title = strval($request->input('title'));
         $class_announcement->city_id = intval($request->input('city_id'));
         $class_announcement->announcement_type = intval($request->input('announcement_type'));
+        $class_announcement->link = strval($request->input('link'));
         $class_announcement->level = strval($request->input('level'));
         $class_announcement->publish_date = $request->input('publish_date');
         $class_announcement->candidate_num = intval($request->input('candidate_num'));
@@ -120,14 +123,20 @@ class ClassAnnouncementController extends ProjectDepartmentController
      * @param $id
      * @param Request $request
      * @param ClassAnnouncement $class_announcement
-     * @return Application|Factory|View
+     * @param City $city
+     * @param AnnouncementType $announcement_type
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function edit($id, Request $request, ClassAnnouncement $class_announcement)
+    public function edit($id, Request $request, ClassAnnouncement $class_announcement, City $city, AnnouncementType $announcement_type)
     {
         $class_announcement = $class_announcement->newQuery()->find($id);
+        $cities = $city->all();
+        $announcement_types = $announcement_type->all();
 
         return view('admin.class_announcement.edit', [
             'class_announcement' => $class_announcement,
+            'cities' => $cities,
+            'announcement_types' => $announcement_types,
         ]);
     }
 
@@ -146,7 +155,29 @@ class ClassAnnouncementController extends ProjectDepartmentController
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        $class_announcement->name = strval($request->input('name'));
+        $class_announcement->title = strval($request->input('title'));
+        $class_announcement->city_id = intval($request->input('city_id'));
+        $class_announcement->announcement_type = intval($request->input('announcement_type'));
+        $class_announcement->link = strval($request->input('link'));
+        $class_announcement->level = strval($request->input('level'));
+        $class_announcement->publish_date = $request->input('publish_date');
+        $class_announcement->candidate_num = intval($request->input('candidate_num'));
+        $class_announcement->enroll_date_start = $request->input('enroll_date_start');
+        $class_announcement->enroll_date_end = $request->input('enroll_date_end');
+        $class_announcement->enroll_type = intval($request->input('enroll_type'));
+        $class_announcement->exam_type = intval($request->input('exam_type'));
+        $class_announcement->written_exam_activity_num = intval($request->input('written_exam_activity_num'));
+        $class_announcement->written_exam_date = $request->input('written_exam_date');
+        $class_announcement->written_exam_class_open = intval($request->input('written_exam_class_open'));
+        $class_announcement->written_exam_take_problem_sets = intval($request->input('written_exam_take_problem_sets'));
+        $class_announcement->written_exam_in_examination_num = intval($request->input('written_exam_in_examination_num'));
+        $class_announcement->check_qualification_date = $request->input('check_qualification_date');
+        $class_announcement->interview_activity_num = intval($request->input('interview_activity_num'));
+        $class_announcement->interview_date = $request->input('interview_date');
+        $class_announcement->interview_class_open = intval($request->input('interview_class_open'));
+        $class_announcement->interview_take_problem_sets = intval($request->input('interview_take_problem_sets'));
+        $class_announcement->pass_percent = floatval($request->input('pass_percent'));
+        $class_announcement->status = intval($request->input('status'));
 
         return $this->returnOperationResponse($class_announcement->save(), $request);
     }

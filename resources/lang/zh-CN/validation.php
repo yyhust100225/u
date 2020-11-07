@@ -24,7 +24,7 @@ return [
     'before' => 'The :attribute must be a date before :date.',
     'before_or_equal' => 'The :attribute must be a date before or equal to :date.',
     'between' => [
-        'numeric' => 'The :attribute must be between :min and :max.',
+        'numeric' => ':attribute需要输入:min到:max之间.',
         'file' => 'The :attribute must be between :min and :max kilobytes.',
         'string' => 'The :attribute must be between :min and :max characters.',
         'array' => 'The :attribute must have between :min and :max items.',
@@ -59,7 +59,7 @@ return [
     'image' => 'The :attribute must be an image.',
     'in' => 'The selected :attribute is invalid.',
     'in_array' => 'The :attribute field does not exist in :other.',
-    'integer' => ':attribute 必须填写整数',
+    'integer' => ':attribute 请输入整数',
     'ip' => 'The :attribute must be a valid IP address.',
     'ipv4' => 'The :attribute must be a valid IPv4 address.',
     'ipv6' => 'The :attribute must be a valid IPv6 address.',
@@ -92,11 +92,11 @@ return [
     ],
     'not_in' => 'The selected :attribute is invalid.',
     'not_regex' => 'The :attribute format is invalid.',
-    'numeric' => ':attribute 必须为数字',
+    'numeric' => ':attribute 请输入数字',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => '必须填写 :attribute 字段',
+    'required' => '请填写:attribute',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',
@@ -115,7 +115,7 @@ return [
     'timezone' => 'The :attribute must be a valid zone.',
     'unique' => ':attribute 已存在, 请更换重试',
     'uploaded' => 'The :attribute failed to upload.',
-    'url' => 'The :attribute format is invalid.',
+    'url' => ':attribute 请输入正确格式的url地址',
     'uuid' => 'The :attribute must be a valid UUID.',
 
     // 自定义验证规则消息
@@ -216,7 +216,13 @@ return [
         'notice_content' => '要讯内容',
 
         // 开班管理
-        'class_announcement_title' => '开班公告标题'
+        'class_announcement_title' => '公告标题',
+        'class_announcement_link' => '公告链接',
+        'candidate_num' => '招考人数',
+        'written_exam_activity_num' => '笔试活动人数',
+        'written_exam_in_examination_num' => '笔试考试人数',
+        'interview_activity_num' => '面试活动人数',
+        'pass_percent' => '自然通过率'
     ],
 
 ];

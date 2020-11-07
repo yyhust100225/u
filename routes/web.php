@@ -229,7 +229,7 @@ Route::namespace('Admin')->group(function(){
         Route::get('class_announcements/create', 'ClassAnnouncementController@create')->name('class_announcements.create');
         Route::post('class_announcements/store', 'ClassAnnouncementController@store')->name('class_announcements.store');
         Route::get('class_announcements/edit/{id}', 'ClassAnnouncementController@edit')->name('class_announcements.edit');
-        Route::put('class_announcements/update', 'ClassAnnouncementController@update')->name('class_announcements.update');
+        Route::post('class_announcements/update', 'ClassAnnouncementController@update')->name('class_announcements.update');
         Route::delete('class_announcements/delete', 'ClassAnnouncementController@delete')->name('class_announcements.delete');
     });
 });

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateExamCategory;
 use App\Http\Resources\ExamCategoryResource;
 use App\Models\ExamCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ExamCategoryController extends ProjectDepartmentController
@@ -34,7 +35,7 @@ class ExamCategoryController extends ProjectDepartmentController
      * 考试大类列表数据
      * @param Request $request
      * @param ExamCategory $exam_category
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function data(Request $request, ExamCategory $exam_category)
     {
@@ -72,7 +73,7 @@ class ExamCategoryController extends ProjectDepartmentController
      * 存储新考试大类
      * @param StoreExamCategory $request
      * @param ExamCategory $exam_category
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
     public function store(StoreExamCategory $request, ExamCategory $exam_category)
     {
@@ -102,7 +103,7 @@ class ExamCategoryController extends ProjectDepartmentController
      * 更新考试大类
      * @param UpdateExamCategory $request
      * @param ExamCategory $exam_category
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function update(UpdateExamCategory $request, ExamCategory $exam_category)
@@ -123,7 +124,7 @@ class ExamCategoryController extends ProjectDepartmentController
      * 删除考试大类
      * @param Request $request
      * @param ExamCategory $exam_category
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @throws DataNotExistsException
      */
     public function delete(Request $request, ExamCategory $exam_category)
