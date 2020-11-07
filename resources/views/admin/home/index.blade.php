@@ -162,6 +162,11 @@
                                 <a lay-href="class_announcements">开班公告</a>
                             </dd>
                         </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="class_examinations">
+                                <a lay-href="class_examinations">考试管理</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     {{-- 行政结构 --}}

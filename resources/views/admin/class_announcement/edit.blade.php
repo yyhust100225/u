@@ -269,7 +269,7 @@
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
-                type: 'POST',
+                type: 'PUT',
                 url: route(routes.class_announcements.update),
                 data: obj.field,
                 dataType: 'json',

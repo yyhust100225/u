@@ -222,7 +222,11 @@ return [
         'written_exam_activity_num' => '笔试活动人数',
         'written_exam_in_examination_num' => '笔试考试人数',
         'interview_activity_num' => '面试活动人数',
-        'pass_percent' => '自然通过率'
+        'pass_percent' => '自然通过率',
+        'class_examination_name' => '考试名称',
+        'announcement_id' => '所属公告',
+        'examination_id' => '所属考试',
+        'discount_type_id' => '优惠类型',
+        'examination_discount_amount' => '考试优惠金额'
     ],
-
 ];

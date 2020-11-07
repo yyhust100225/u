@@ -229,7 +229,23 @@ Route::namespace('Admin')->group(function(){
         Route::get('class_announcements/create', 'ClassAnnouncementController@create')->name('class_announcements.create');
         Route::post('class_announcements/store', 'ClassAnnouncementController@store')->name('class_announcements.store');
         Route::get('class_announcements/edit/{id}', 'ClassAnnouncementController@edit')->name('class_announcements.edit');
-        Route::post('class_announcements/update', 'ClassAnnouncementController@update')->name('class_announcements.update');
+        Route::put('class_announcements/update', 'ClassAnnouncementController@update')->name('class_announcements.update');
         Route::delete('class_announcements/delete', 'ClassAnnouncementController@delete')->name('class_announcements.delete');
+
+        // 考试管理
+        Route::get('class_examinations', 'ClassExaminationController@list')->name('class_examinations.list');
+        Route::get('class_examinations/data', 'ClassExaminationController@data')->name('class_examinations.data');
+        Route::get('class_examinations/create', 'ClassExaminationController@create')->name('class_examinations.create');
+        Route::post('class_examinations/store', 'ClassExaminationController@store')->name('class_examinations.store');
+        Route::get('class_examinations/edit/{id}', 'ClassExaminationController@edit')->name('class_examinations.edit');
+        Route::put('class_examinations/update', 'ClassExaminationController@update')->name('class_examinations.update');
+        Route::delete('class_examinations/delete', 'ClassExaminationController@delete')->name('class_examinations.delete');
+        Route::get('class_examination_discounts/data', 'ClassExaminationController@discountsData')->name('class_examination_discounts.data');
+        Route::get('class_examination_discounts/create/{examination_id}', 'ClassExaminationController@discountCreate')->name('class_examination_discounts.create');
+        Route::post('class_examination_discounts/store', 'ClassExaminationController@discountStore')->name('class_examination_discounts.store');
+        Route::get('class_examination_discounts/edit/{id}', 'ClassExaminationController@discountEdit')->name('class_examination_discounts.edit');
+        Route::put('class_examination_discounts/update', 'ClassExaminationController@discountUpdate')->name('class_examination_discounts.update');
+        Route::delete('class_examination_discounts/delete', 'ClassExaminationController@discountDelete')->name('class_examination_discounts.delete');
+        Route::get('class_examination_discounts/{id}', 'ClassExaminationController@discounts')->name('class_examination_discounts.list');
     });
 });

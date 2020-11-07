@@ -66,6 +66,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamInExaminationNum($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassAnnouncement whereWrittenExamTakeProblemSets($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\City $city
+ * @property-read \App\Models\AnnouncementType $type
+ * @property-read \App\Models\User $user
  */
 class ClassAnnouncement extends Common
 {

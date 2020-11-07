@@ -67,4 +67,21 @@ class Common extends Model
 
         return $model->count();
     }
+
+    // 获取所有可用资源
+    public function allUsable()
+    {
+        return $this->where(['status' => STATUS_ON])->get();
+    }
+
+    // 获取所有可用资源及一条指定查询资源
+    public function allUsableWithOne($con)
+    {
+        // 当条件为数字时 判定为主键ID
+        if(is_numeric($con) && $con >= 1) {
+            return $this->where(['status' => STATUS_ON])->orWhere(['id' => $con])->get();
+        } else {
+            return $this->where(['status' => STATUS_ON])->orWhere($con)->get();
+        }
+    }
 }
