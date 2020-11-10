@@ -7,8 +7,11 @@ use App\Http\Requests\StoreExam;
 use App\Http\Requests\UpdateExam;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class ExamController extends ProjectDepartmentController
 {
@@ -23,7 +26,7 @@ class ExamController extends ProjectDepartmentController
      * 考试列表页
      * @param Request $request
      * @param Exam $exam
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function list(Request $request, Exam $exam)
     {
@@ -60,7 +63,7 @@ class ExamController extends ProjectDepartmentController
     /**
      * 创建新考试
      * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function create(Request $request)
     {
@@ -85,7 +88,7 @@ class ExamController extends ProjectDepartmentController
      * @param $id
      * @param Request $request
      * @param Exam $exam
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Application|Factory|View
      */
     public function edit($id, Request $request, Exam $exam)
     {
