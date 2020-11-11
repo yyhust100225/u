@@ -7,8 +7,8 @@ use App\Http\Requests\StoreClassExamination;
 use App\Http\Requests\StoreClassExaminationDiscount;
 use App\Http\Requests\UpdateClassExamination;
 use App\Http\Requests\UpdateClassExaminationDiscount;
-use App\Http\Resources\ClassExaminationDiscountResource;
-use App\Http\Resources\ClassExaminationResource;
+use App\Http\Resources\ClassTypeDiscountResource;
+use App\Http\Resources\ClassTypeResource;
 use App\Models\City;
 use App\Models\ClassAnnouncement;
 use App\Models\ClassExamination;
@@ -66,7 +66,7 @@ class ClassExaminationController extends ProjectDepartmentController
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
             'count' => $class_examinations['count'],
-            'data' => ClassExaminationResource::collection($class_examinations['data']),
+            'data' => ClassTypeResource::collection($class_examinations['data']),
         ], 200);
     }
 
@@ -216,7 +216,7 @@ class ClassExaminationController extends ProjectDepartmentController
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
             'count' => $class_examination_discounts['count'],
-            'data' => ClassExaminationDiscountResource::collection($class_examination_discounts['data']),
+            'data' => ClassTypeDiscountResource::collection($class_examination_discounts['data']),
         ], 200);
     }
 

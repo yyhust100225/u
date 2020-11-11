@@ -247,5 +247,21 @@ Route::namespace('Admin')->group(function(){
         Route::put('class_examination_discounts/update', 'ClassExaminationController@discountUpdate')->name('class_examination_discounts.update');
         Route::delete('class_examination_discounts/delete', 'ClassExaminationController@discountDelete')->name('class_examination_discounts.delete');
         Route::get('class_examination_discounts/{id}', 'ClassExaminationController@discounts')->name('class_examination_discounts.list');
+
+        // 班型管理
+        Route::get('class_types', 'ClassTypeController@list')->name('class_types.list');
+        Route::get('class_types/data', 'ClassTypeController@data')->name('class_types.data');
+        Route::get('class_types/create', 'ClassTypeController@create')->name('class_types.create');
+        Route::post('class_types/store', 'ClassTypeController@store')->name('class_types.store');
+        Route::get('class_types/edit/{id}', 'ClassTypeController@edit')->name('class_types.edit');
+        Route::put('class_types/update', 'ClassTypeController@update')->name('class_types.update');
+        Route::delete('class_types/delete', 'ClassTypeController@delete')->name('class_types.delete');
+        Route::get('class_type_discounts/data', 'ClassTypeController@discountsData')->name('class_type_discounts.data');
+        Route::get('class_type_discounts/create/{type_id}', 'ClassTypeController@discountCreate')->name('class_type_discounts.create');
+        Route::post('class_type_discounts/store', 'ClassTypeController@discountStore')->name('class_type_discounts.store');
+        Route::get('class_type_discounts/edit/{id}', 'ClassTypeController@discountEdit')->name('class_type_discounts.edit');
+        Route::put('class_type_discounts/update', 'ClassTypeController@discountUpdate')->name('class_type_discounts.update');
+        Route::delete('class_type_discounts/delete', 'ClassTypeController@discountDelete')->name('class_type_discounts.delete');
+        Route::get('class_type_discounts/{id}', 'ClassTypeController@discounts')->name('class_type_discounts.list');
     });
 });

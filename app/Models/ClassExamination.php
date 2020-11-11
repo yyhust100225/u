@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ClassExamination whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassExamination whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ClassExaminationDiscount[] $discounts
+ * @property-read int|null $discounts_count
  */
 class ClassExamination extends Common
 {

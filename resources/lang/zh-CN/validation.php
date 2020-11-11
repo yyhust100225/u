@@ -227,6 +227,20 @@ return [
         'announcement_id' => '所属公告',
         'examination_id' => '所属考试',
         'discount_type_id' => '优惠类型',
-        'examination_discount_amount' => '考试优惠金额'
+        'examination_discount_amount' => '考试优惠金额',
+
+        // 班型管理
+        'class_type_name' => '班型名称',
+        'written_examination_days' => '笔试白天',
+        'written_examination_nights' => '笔试夜晚',
+        'interview_days' => '面试白天',
+        'interview_nights' => '面试夜晚',
+        'total_tuition' => '总学费',
+        'per_day_tuition' => '每日学费',
+        'written_examination_refund' => '笔试退费',
+        'interview_refund' => '面试退费',
+        'type_id' => '所属班型',
+        'type_discount_name' => '班型优惠名称',
+        'type_discount_amount' => '班型优惠金额',
     ],
 ];

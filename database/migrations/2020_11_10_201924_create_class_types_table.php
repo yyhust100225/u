@@ -23,7 +23,13 @@ class CreateClassTypesTable extends Migration
             $table->unsignedInteger('written_examination_nights')->default(0)->comment('笔试夜晚数');
             $table->unsignedInteger('interview_days')->default(0)->comment('面试白天数');
             $table->unsignedInteger('interview_nights')->default(0)->comment('面试夜晚数');
-            
+            $table->decimal('total_tuition', 10, 2)->default(0.00)->comment('总学费');
+            $table->decimal('per_day_tuition', 10, 2)->default(0.00)->comment('每日学费');
+            $table->decimal('written_examination_refund', 10, 2)->default(0.00)->comment('笔试退款');
+            $table->decimal('interview_refund', 10, 2)->default(0.00)->comment('面试退款');
+            $table->unsignedTinyInteger('status')->default(1)->comment('班型状态 0关闭 1开启');
+            $table->text('remark')->comment('备注');
+            $table->unsignedInteger('user_id')->comment('录入人');
             $table->timestamps();
         });
     }
