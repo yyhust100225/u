@@ -26,3 +26,7 @@ define('NOTICE_SUBMITTED', 1);  // 已提交
 define('NOTICE_VIEWED', 2);     // 已查看
 define('NOTICE_APPROVED', 3);   // 审核通过
 define('NOTICE_REJECT', 4);     // 审核驳回
+
+// 学员管理 - TQ
+define('TQ_SYNC_NOT_ALLOWED', 1);
+define('TQ_SYNC_ALLOWED', 2);

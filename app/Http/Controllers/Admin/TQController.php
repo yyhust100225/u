@@ -9,6 +9,7 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Ixudra\Curl\Facades\Curl;
 
@@ -17,6 +18,7 @@ class TQController extends ProjectDepartmentController
     protected $admin_uin;
     protected $appkey;
     protected $token_url;
+    protected $visitor_url;
     protected $timestamp;
 
     public function __construct(Request $request)
@@ -28,6 +30,7 @@ class TQController extends ProjectDepartmentController
         $this->admin_uin = '9773028';
         $this->appkey = 'kexin1202';
         $this->token_url = 'http://webservice.edu.tq.cn/webservice/getAccessToken';
+        $this->visitor_url = 'http://webservice.edu.tq.cn/webservice/visitorInfo/list';
         $this->timestamp = Carbon::now()->getTimestamp();
         parent::__construct($request);
     }
@@ -74,27 +77,30 @@ class TQController extends ProjectDepartmentController
      * @param $url
      * @param $data
      * @param array $headers
-     * @param string $contentType
      * @return mixed
      */
-    protected function request($url, $data, $headers = [], $contentType = 'application/json')
+    protected function request($url, $data, $headers = [])
     {
         if(!empty($headers)) {
             $headers = array(
-                // 'Content-Type:application/x-www-form-urlencoded',
+                'Content-Type:application/x-www-form-urlencoded',
                 'Accept:application/json,text/javascript, */*; q=0.01'
             );
         }
 
         $response = Curl::to($url)
             ->withData($data)
-            ->withContentType("application/x-www-form-urlencoded")
-            ->withHeaders($headers);
+            ->withHeaders($headers)
+            ->post();
 
         return json_decode($response, true);
     }
 
-    public function sync()
+    /**
+     * 获取TOKEN
+     * @return mixed
+     */
+    protected function token()
     {
         $data = [
             'admin_uin' => $this->admin_uin,
@@ -103,10 +109,50 @@ class TQController extends ProjectDepartmentController
             'sign' => $this->makeSign(),
         ];
 
-        $token = $this->request($this->token_url, $data);
-        dd($token);
+        return $this->request($this->token_url, $data);
     }
 
+    /**
+     * 同步TQ学员信息
+     * @return false|JsonResponse|string
+     */
+    public function sync()
+    {
+        $TQ_no = $this->user()->archive->TQ_no;
+
+        // 该账号无效TQ号
+        if(!$TQ_no) {
+            return $this->returnFailedResponse(trans('request.TQ no invalid'),200);
+        }
+
+        $token = $this->token();
+        // 获取token失败
+        if(isset($token['errorCode']) && $token['errorCode'] == -1) {
+            Log::error($token['exceptionMessage']);
+            return $this->returnFailedResponse(trans('request.failed'),500);
+        }
+
+        // 组成请求地址
+        $params = array(
+            'access_token' => $token['access_token'],
+            'admin_uin' => $this->admin_uin,
+        );
+        $request_url = $this->visitor_url . '?' . http_build_query($params);
+
+        // 组成请求参数
+        $data = array(
+            'order_name' => 'id',
+            'order_rule' => 'DESC',
+            'pageSize' => 100,
+            'col101' => TQ_SYNC_ALLOWED,
+            'uin' => $TQ_no,
+        );
+        $response = $this->request($request_url, $data);
+
+        return json_encode($response);
+    }
+
+    // 制作请求签名
     protected function makeSign()
     {
         return strtoupper(md5($this->admin_uin . "$" . $this->appkey . "$" . $this->timestamp));

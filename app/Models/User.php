@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Response;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Common;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\User
@@ -15,17 +19,17 @@ use App\Models\Common;
  * @property int $id
  * @property string $username
  * @property string $email
- * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property Carbon|null $email_verified_at
  * @property string $password
  * @property int $role_id 角色ID
  * @property string $remark 备注
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property Carbon|null $deleted_at
  * @property string|null $remember_token
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Models\Role $role
+ * @property-read Role $role
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Query\Builder|User onlyTrashed()
@@ -43,8 +47,8 @@ use App\Models\Common;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @method static \Illuminate\Database\Query\Builder|User withTrashed()
  * @method static \Illuminate\Database\Query\Builder|User withoutTrashed()
- * @mixin \Eloquent
- * @property-read \App\Models\Employee|null $archive
+ * @mixin Eloquent
+ * @property-read Employee|null $archive
  */
 class User extends Authenticatable
 {
@@ -85,7 +89,7 @@ class User extends Authenticatable
      * @param array|string $with 关联查询
      * @return mixed 查询数据
      */
-    public function select($page, $limit, $where = array(), $with = '')
+    public function select(int $page, int $limit, $where = array(), $with = '')
     {
         $model = $this->newQuery();
 
@@ -131,7 +135,7 @@ class User extends Authenticatable
 
     /**
      * 用户表唯一角色关联
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function role()
     {

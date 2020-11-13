@@ -7,4 +7,5 @@ return [
     'delete logged in account' => '抱歉, 无法删除当前登录账户',
     'write one record' => '请至少写一条记录',
     'upload failed' => '上传失败, 请重试...',
+    'TQ no invalid' => '本用户没有有效的TQ号',
 ];

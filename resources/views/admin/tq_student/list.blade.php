@@ -92,9 +92,12 @@
                     $.ajax({
                         type: 'POST',
                         url: route(routes.TQ_students.sync),
+                        dataType: 'json',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success: function(res) {
                             console.log(res);
+                        }, error: function(e) {
+                            console.log(e);
                         }
                     });
                 }break;

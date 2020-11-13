@@ -17,7 +17,8 @@
         "laravel/tinker": "^2.0",
         "mews/purifier": "^3.3",
         "predis/predis": "^1.1",
-        "ixudra/curl": "6.*"
+        "ixudra/curl": "6.*",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
