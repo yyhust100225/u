@@ -174,6 +174,19 @@
                         </dl>
                     </li>
 
+                    {{-- 学员管理 --}}
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:" lay-tips="学员管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <cite>学员管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="TQ_students">
+                                <a lay-href="TQ_students">TQ学员信息</a>
+                            </dd>
+                        </dl>
+                    </li>
+
                     {{-- 行政结构 --}}
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="行政结构" lay-direction="2">

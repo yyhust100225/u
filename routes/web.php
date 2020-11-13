@@ -263,5 +263,16 @@ Route::namespace('Admin')->group(function(){
         Route::put('class_type_discounts/update', 'ClassTypeController@discountUpdate')->name('class_type_discounts.update');
         Route::delete('class_type_discounts/delete', 'ClassTypeController@discountDelete')->name('class_type_discounts.delete');
         Route::get('class_type_discounts/{id}', 'ClassTypeController@discounts')->name('class_type_discounts.list');
+
+        /**
+         * =====================================
+         * 学员管理                            *
+         * =====================================
+         */
+
+        // TQ同步学员
+        Route::get('TQ_students', 'TQController@list')->name('TQ_students.list');
+        Route::get('TQ_students/data', 'TQController@data')->name('TQ_students.data');
+        Route::post('TQ_students/sync', 'TQController@sync')->name('TQ_students.sync');
     });
 });
