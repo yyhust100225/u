@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
 use App\Http\Resources\TQStudentResource;
+use App\Models\Department;
 use App\Models\TQ;
 use App\Facades\Api;
 use Exception;
@@ -119,12 +120,14 @@ class TQController extends ProjectDepartmentController
      * @param TQ $tq
      * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function edit(Request $request, TQ $tq)
+    public function edit(Request $request, TQ $tq, Department $department)
     {
+        $departments = $department->all();
         $tq_student = $tq->newQuery()->find($request->input('id'));
 
         return view('admin.tq_student.edit', [
             'tq_student' => $tq_student,
+            'departments' => $departments,
         ]);
     }
 

@@ -21,9 +21,71 @@
                 <form class="layui-form" action="">
                     @csrf
                     <div class="layui-form-item">
-                        <label class="layui-form-label">学员姓名</label>
+                        <label class="layui-form-label" for="name">学员姓名</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" value="{{ $tq_student->name }}" id="name" autocomplete="off" placeholder="请输入学员姓名" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label" for="mobile">性别</label>
+                        <div class="layui-input-inline">
+                            <input type="radio" @if($tq_student->gender == 1) checked @endif name="gender" value="1" id="gender" title="男" />
+                            <input type="radio" @if($tq_student->gender == 2) checked @endif name="gender" value="2" id="gender" title="女" />
+                        </div>
+
+                        <label class="layui-form-label" for="mobile">手机</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="mobile" value="{{ $tq_student->mobile }}" id="mobile" autocomplete="off" placeholder="请输入手机号" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label" for="telephone">联系方式</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="telephone" value="{{ $tq_student->telephone }}" id="telephone" autocomplete="off" placeholder="请输入联系方式" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="address">现住址</label>
                         <div class="layui-input-block">
-                            <input type="text" name="name" value="{{ $tq_student->name }}" autocomplete="off" placeholder="请输入学员姓名" class="layui-input">
+                            <input type="text" name="name" value="{{ $tq_student->address }}" id="address" autocomplete="off" placeholder="请输入现住址" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="qq">QQ号</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="qq" value="{{ $tq_student->qq }}" id="qq" autocomplete="off" placeholder="请输入QQ号" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label" for="wechat">微信</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="wechat" value="{{ $tq_student->wechat }}" id="wechat" autocomplete="off" placeholder="请输入微信" class="layui-input">
+                        </div>
+
+                        <label class="layui-form-label" for="level">学员等级</label>
+                        <div class="layui-input-inline">
+                            <select name="level" id="level">
+                                <option @if($tq_student->level == 1) selected @endif value="1">1</option>
+                                <option @if($tq_student->level == 2) selected @endif value="2">2</option>
+                                <option @if($tq_student->level == 3) selected @endif value="3">3</option>
+                                <option @if($tq_student->level == 4) selected @endif value="4">4</option>
+                                <option @if($tq_student->level == 5) selected @endif value="5">5</option>
+                            </select>
+                        </div>
+
+                        <label class="layui-form-label" for="department-id">所属部门</label>
+                        <div class="layui-input-inline">
+                            <select name="department_id" id="department-id">
+                                @foreach($departments as $department)
+                                    <option @if($tq_student->department_id == $department->id) selected @endif value="{{ $department->id }}">{{ $department->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label" for="address">现住址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="{{ $tq_student->address }}" id="address" autocomplete="off" placeholder="请输入现住址" class="layui-input">
                         </div>
                     </div>
 
