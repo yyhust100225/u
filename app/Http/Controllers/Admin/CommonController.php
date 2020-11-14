@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class CommonController extends Controller
 {
+    // 当前路由方法
+    protected $request_action_name;
+
     /**
      * 后台控制器基类构造方法
      * CommonController constructor.
@@ -16,17 +19,18 @@ class CommonController extends Controller
      */
     public function __construct(Request $request)
     {
-
+        // 获取当前路由方法
+        $this->request_action_name = $request->route()->getActionMethod();
     }
 
     /**
      * 返回ajax响应结果
      * @param $operation
-     * @param Request $request
+     * @param null $request
      * @param int $status
      * @return JsonResponse
      */
-    protected function returnOperationResponse($operation, Request $request, $status = 200)
+    protected function returnOperationResponse($operation, $request = null, int $status = 200)
     {
         if($operation) {
             $response = [
@@ -61,10 +65,54 @@ class CommonController extends Controller
     }
 
     /**
+     * 返回表格数据格式
+     * @param array $data
+     * @param string $resource_class_name
+     * @return JsonResponse
+     */
+    protected function returnTableData(array $data, string $resource_class_name)
+    {
+        return response()->json([
+            'code' => RESPONSE_SUCCESS,
+            'msg' => trans('request.success'),
+            'count' => $data['count'],
+            'data' => $resource_class_name::collection($data['data']),
+        ], 200);
+    }
+
+    /**
      * 获取当前访问请求用户
      */
     protected function user()
     {
         return Auth::user();
+    }
+
+    /**
+     * 获取表格搜索条件
+     * @param $conditions
+     * @param array $where
+     * @return array|mixed
+     */
+    protected function makeSearchConditions($conditions, $where = [])
+    {
+        if(!empty($conditions)) {
+            foreach ($conditions as $condition) {
+                if (empty($condition['value'])) continue;
+                $field = explode('|', $condition['name']);
+                switch ($field[0]) {
+                    case 'like':
+                        {
+                            $where[$field[1]] = ['like', '%' . $condition['value'] . '%'];
+                        }
+                        break;
+                    default:
+                    {
+                        $where[$field[0]] = $condition['value'];
+                    }
+                }
+            }
+        }
+        return $where;
     }
 }

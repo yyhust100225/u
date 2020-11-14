@@ -42,7 +42,7 @@
                             <label class="layui-form-label">考试大类</label>
                             <div class="layui-input-block">
                                 @foreach($exam_categories as $exam_category)
-                                    <input @if(in_array($exam_category->id, $statement->exam_categories)) checked @endif type="checkbox" name="exam_categories[{{ $exam_category->id }}]" title="{{ $exam_category->name }}" lay-skin="primary" />
+                                    <input @if(in_array($exam_category->id, $statement->exam_category_ids)) checked @endif type="checkbox" name="exam_categories[{{ $exam_category->id }}]" title="{{ $exam_category->name }}" lay-skin="primary" />
                                 @endforeach
                             </div>
                         </div>
@@ -189,7 +189,7 @@
         name: 'exams',
         data: [
             @foreach($exams as $exam)
-                {name: '{{ $exam->name }}', value: {{ $exam->id }} @if(in_array($exam->id, $statement->exams)) ,selected: true @endif},
+                {name: '{{ $exam->name }}', value: {{ $exam->id }} @if(in_array($exam->id, $statement->exam_ids)) ,selected: true @endif},
             @endforeach
         ]
     })

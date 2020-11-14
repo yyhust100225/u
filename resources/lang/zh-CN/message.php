@@ -13,5 +13,9 @@ return [
 
     'table' => [
         'time slot' => ':start 至 :end',
-    ]
+    ],
+
+    'db' => [
+        'tq sync error' => 'TQ同步出错, 请排查原因',
+    ],
 ];

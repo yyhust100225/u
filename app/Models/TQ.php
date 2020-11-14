@@ -112,6 +112,7 @@ use Illuminate\Support\Carbon;
 class TQ extends Common
 {
     protected $table = 'tq_students';
+    public $timestamps = false;
 
     use HasFactory;
 }

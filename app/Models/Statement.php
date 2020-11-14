@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Maps\MapStatementToExamCategories;
 use App\Models\Maps\MapStatementToExams;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -49,13 +50,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Statement whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Statement whereUpdatedAt($value)
  * @mixin \Eloquent
- * @property-read \App\Models\Department $department
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ExamCategory[] $exam_categories
+ * @property-read Department $department
+ * @property-read Collection|ExamCategory[] $exam_categories
  * @property-read int|null $exam_categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exam[] $exams
+ * @property-read Collection|Exam[] $exams
  * @property-read int|null $exams_count
- * @property-read \App\Models\PrintedMatter $printed_matter
- * @property-read \App\Models\Printer $printer
+ * @property-read PrintedMatter $printed_matter
+ * @property-read Printer $printer
  */
 class Statement extends Common
 {

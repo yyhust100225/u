@@ -27,9 +27,8 @@ class StatementController extends ProjectDepartmentController
 {
     public function __construct(Request $request)
     {
-        $action = $request->route()->getActionMethod();
-        $this->middleware('can:' . $action . ',' . Statement::class);
         parent::__construct($request);
+        $this->middleware('can:' . $this->request_action_name . ',' . Statement::class);
     }
 
     /**
@@ -132,7 +131,6 @@ class StatementController extends ProjectDepartmentController
     /**
      * 编辑账单
      * @param $id
-     * @param Request $request
      * @param Statement $statement
      * @param Printer $printer
      * @param ExamCategory $exam_category
@@ -141,13 +139,13 @@ class StatementController extends ProjectDepartmentController
      * @param PrintedMatter $printed_matter
      * @return Application|Factory|View
      */
-    public function edit($id, Request $request, Statement $statement, Printer $printer, ExamCategory $exam_category, Exam $exam, Department $department, PrintedMatter $printed_matter)
+    public function edit($id, Statement $statement, Printer $printer, ExamCategory $exam_category, Exam $exam, Department $department, PrintedMatter $printed_matter)
     {
         $statement = $statement->newQuery()->find($id);
-        $statement->exam_categories = $statement->exam_categories->map(function($exam_category){
+        $statement->exam_category_ids = $statement->exam_categories->map(function($exam_category){
             return $exam_category->id;
         })->toArray();
-        $statement->exams = $statement->exams->map(function($exam){
+        $statement->exam_ids = $statement->exams->map(function($exam){
             return $exam->id;
         })->toArray();
 

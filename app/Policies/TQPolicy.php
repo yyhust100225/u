@@ -25,4 +25,15 @@ class TQPolicy extends CommonPolicy
     {
         return $this->list($user);
     }
+
+    // 编辑学员信息权限
+    public function edit(User $user)
+    {
+        return $this->list($user);
+    }
+
+    public function update(User $user)
+    {
+        return $this->edit($user);
+    }
 }

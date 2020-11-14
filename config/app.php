@@ -1,5 +1,8 @@
 <?php
 
+use App\Facades\Api;
+use App\Providers\RequestServiceProvider;
+
 return [
 
     /*
@@ -177,6 +180,7 @@ return [
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         App\Providers\FileServiceProvider::class,
+        RequestServiceProvider::class,
     ],
 
     /*
@@ -226,5 +230,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Api' => Api::class,
     ],
 ];

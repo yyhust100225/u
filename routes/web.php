@@ -274,5 +274,7 @@ Route::namespace('Admin')->group(function(){
         Route::get('TQ_students', 'TQController@list')->name('TQ_students.list');
         Route::get('TQ_students/data', 'TQController@data')->name('TQ_students.data');
         Route::post('TQ_students/sync', 'TQController@sync')->name('TQ_students.sync');
+        Route::get('TQ_students/edit', 'TQController@edit')->name('TQ_students.edit');
+        Route::put('TQ_students/update', 'TQController@update')->name('TQ_students.update');
     });
 });

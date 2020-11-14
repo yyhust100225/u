@@ -17,8 +17,13 @@ class TQStudentResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'tq_id' => $this->tq_id,
             'name' => $this->name,
-            'created_at' => $this->created_at->toDateTimeString(),
+            'mobile' => $this->mobile,
+            'level' => $this->level,
+            'remark' => $this->remark,
+            'insert_time' => $this->insert_time,
+            'create_time' => $this->create_time,
         ];
     }
 }

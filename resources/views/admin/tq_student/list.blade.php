@@ -23,7 +23,15 @@
                     <form class="" id="table-search-form" style="margin-bottom: 10px;">
 
                         <div class="layui-inline">
-                            <input class="layui-input" name="name" autocomplete="off" placeholder="考试名称">
+                            <label>
+                                <input class="layui-input" name="tq_id" autocomplete="off" placeholder="TQ ID" />
+                            </label>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label>
+                                <input class="layui-input" name="like|name" autocomplete="off" placeholder="考生姓名" />
+                            </label>
                         </div>
 
                         <button type="button" class="layui-btn" data-type="reload">搜索</button>
@@ -39,7 +47,6 @@
 
                     <script type="text/html" id="table-bar">
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
 
                 </div>
@@ -57,6 +64,7 @@
         TQ_students: {
             data: '{{ route_uri('TQ_students.data') }}',
             sync: '{{ route_uri('TQ_students.sync') }}',
+            edit: '{{ route_uri('TQ_students.edit') }}',
         }
     };
 
@@ -76,9 +84,13 @@
             toolbar: '#table-toolbar',
             url: route(routes.TQ_students.data),
             cols: [[
-                {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '考试名称'},
-                {field:'created_at', title: '创建时间', width:'15%'},
+                {field:'tq_id', title: 'TQ_ID', width:'8%', sort: true, fixed: 'left'},
+                {field:'name', title: '学员姓名', width:'8%'},
+                {field:'mobile', title: '手机号', width:'8%'},
+                {field:'level', title: '客户级别', width:'8%'},
+                {field:'remark', title: '备注'},
+                {field:'insert_time', title: '录入TQ时间', width:'12%'},
+                {field:'create_time', title: '同步时间', width:'12%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
@@ -95,9 +107,15 @@
                         dataType: 'json',
                         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                         success: function(res) {
-                            console.log(res);
+                            if(res.code === {{ REQUEST_SUCCESS }}) {
+                                layer.msg(res.message, {time: 1500}, function(){
+                                    table.reload('data-table');
+                                });
+                            } else {
+                                layer.msg(res.message);
+                            }
                         }, error: function(e) {
-                            console.log(e);
+                            layer.msg(e.responseJSON.message);
                         }
                     });
                 }break;
@@ -111,9 +129,7 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.TQ_students.edit, {id: obj.data.id}), function(){
-                        table.reload('data-table');
-                    });
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.TQ_students.edit, {id: obj.data.id}));
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
@@ -146,7 +162,8 @@
 
         active = {
             reload: function(){
-                var data = $('#table-search-form').serialize();
+                var data = $('#table-search-form').serializeArray();
+                console.log(JSON.stringify(data));
                 table.reload('data-table', {
                     page: {curr: 1},
                     where: {where:data, action:'search'}

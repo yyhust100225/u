@@ -15,22 +15,23 @@ class CreateTqStudentsTable extends Migration
     {
         Schema::create('tq_students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('tq_id')->comment('TQ ID号');
+            $table->string('tq_id', 32)->comment('TQ学员信息ID号');
+            $table->string('admin_uin', 32)->comment('校区TQ总账户号');
+            $table->string('uin', 32)->comment('资源所属人TQ号');
+            $table->string('creator_uin', 255)->comment('资源录入人TQ号');
             $table->string('address', 255)->default('')->comment('学员现居地址');
             $table->string('mobile', 32)->default('')->comment('学员联系方式');
             $table->string('name', 255)->comment('学员姓名');
             $table->string('qq', 16)->comment('学员QQ号');
             $table->char('level')->default('A')->comment('客户级别');
             $table->text('remark')->nullable()->comment('最近备注');
-            $table->unsignedTinyInteger('gender')->default(0)->comment('客户性别 0男 1女');
+            $table->unsignedTinyInteger('gender')->default(1)->comment('客户性别 1男 2女');
             $table->string('telephone', 64)->default('')->comment('客户联系方式');
             $table->string('wechat', 255)->default('')->comment('客户微信号');
-            $table->string('creator_uin', 255)->comment('录入人uin');
-            $table->date('insert_date')->comment('录入日期');
-            $table->date('last_contact_date')->nullable()->comment('上次联系日期');
+            $table->dateTime('insert_time')->comment('资源录入时间');
+            $table->dateTime('last_contact_time')->nullable()->comment('上次联系时间');
             $table->unsignedInteger('phone_calls')->default(0)->comment('去电次数');
-            $table->string('uin', 32)->comment('客户uin');
-            $table->date('update_time')->nullable()->comment('最后更新日期');
+            $table->dateTime('update_time')->nullable()->comment('最后更新时间');
             $table->unsignedInteger('department_id')->default(0)->comment('所属部门');
             $table->unsignedTinyInteger('party_number')->default(0)->comment('是否为党员 0非党员 1党员');
             $table->string('attestation', 255)->default('')->comment('资格证');
@@ -58,8 +59,10 @@ class CreateTqStudentsTable extends Migration
             $table->unsignedInteger('resource_method')->default(0)->comment('获取资源方式');
             $table->unsignedInteger('belongs_to_department')->default(0)->comment('资源归属部门');
             $table->unsignedInteger('tq_synchronization')->default(2)->comment('是否从TQ中录入本地库 1否 2是');
-            $table->unsignedInteger('user_id')->comment('录入人');
-            $table->timestamps();
+            $table->unsignedInteger('user_id')->comment('同步账户ID');
+            $table->timestamp('create_time')->useCurrent()->comment('录入时间');
+            $table->index('uin');
+            $table->unique('tq_id');
         });
     }
 
