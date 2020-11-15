@@ -4,11 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
 use App\Http\Resources\TQStudentResource;
-<<<<<<< Updated upstream
-=======
 use App\Models\City;
 use App\Models\Department;
->>>>>>> Stashed changes
 use App\Models\TQ;
 use App\Facades\Api;
 use Exception;
@@ -122,26 +119,21 @@ class TQController extends ProjectDepartmentController
      * 编辑TQ学员信息
      * @param Request $request
      * @param TQ $tq
+     * @param Department $department
+     * @param City $city
      * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-<<<<<<< Updated upstream
-    public function edit(Request $request, TQ $tq)
-    {
-=======
+
     public function edit(Request $request, TQ $tq, Department $department, City $city)
     {
         $departments = $department->all();
         $cities = $city->all();
->>>>>>> Stashed changes
         $tq_student = $tq->newQuery()->find($request->input('id'));
 
         return view('admin.tq_student.edit', [
             'tq_student' => $tq_student,
-<<<<<<< Updated upstream
-=======
             'departments' => $departments,
             'cities' => $cities,
->>>>>>> Stashed changes
         ]);
     }
 

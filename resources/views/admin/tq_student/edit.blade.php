@@ -21,11 +21,6 @@
                 <form class="layui-form" action="">
                     @csrf
                     <div class="layui-form-item">
-<<<<<<< Updated upstream
-                        <label class="layui-form-label">学员姓名</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="name" value="{{ $tq_student->name }}" autocomplete="off" placeholder="请输入学员姓名" class="layui-input">
-=======
                         <label class="layui-form-label" for="name">学员姓名</label>
                         <div class="layui-input-inline">
                             <input type="text" name="name" value="{{ $tq_student->name }}" id="name" autocomplete="off" placeholder="请输入学员姓名" class="layui-input">
@@ -269,7 +264,6 @@
                             <div class="layui-input-block">
                                 <textarea name="remark" id="remark" class="layui-textarea">{{ $tq_student->remark }}</textarea>
                             </div>
->>>>>>> Stashed changes
                         </div>
                     </div>
 
