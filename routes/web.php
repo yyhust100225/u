@@ -264,6 +264,15 @@ Route::namespace('Admin')->group(function(){
         Route::delete('class_type_discounts/delete', 'ClassTypeController@discountDelete')->name('class_type_discounts.delete');
         Route::get('class_type_discounts/{id}', 'ClassTypeController@discounts')->name('class_type_discounts.list');
 
+        // 班级管理
+        Route::get('class_courses', 'ClassCourseController@list')->name('class_courses.list');
+        Route::get('class_courses/data', 'ClassCourseController@data')->name('class_courses.data');
+        Route::get('class_courses/create', 'ClassCourseController@create')->name('class_courses.create');
+        Route::post('class_courses/store', 'ClassCourseController@store')->name('class_courses.store');
+        Route::get('class_courses/edit/{id}', 'ClassCourseController@edit')->name('class_courses.edit');
+        Route::put('class_courses/update', 'ClassCourseController@update')->name('class_courses.update');
+        Route::delete('class_courses/delete', 'ClassCourseController@delete')->name('class_courses.delete');
+
         /**
          * =====================================
          * 学员管理                            *

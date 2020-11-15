@@ -172,6 +172,11 @@
                                 <a lay-href="class_types">班型管理</a>
                             </dd>
                         </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="class_courses">
+                                <a lay-href="class_courses">班级管理</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     {{-- 学员管理 --}}

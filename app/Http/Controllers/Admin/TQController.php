@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
 use App\Http\Resources\TQStudentResource;
+<<<<<<< Updated upstream
+=======
+use App\Models\City;
+use App\Models\Department;
+>>>>>>> Stashed changes
 use App\Models\TQ;
 use App\Facades\Api;
 use Exception;
@@ -119,12 +124,24 @@ class TQController extends ProjectDepartmentController
      * @param TQ $tq
      * @return Application|Factory|\Illuminate\Contracts\View\View
      */
+<<<<<<< Updated upstream
     public function edit(Request $request, TQ $tq)
     {
+=======
+    public function edit(Request $request, TQ $tq, Department $department, City $city)
+    {
+        $departments = $department->all();
+        $cities = $city->all();
+>>>>>>> Stashed changes
         $tq_student = $tq->newQuery()->find($request->input('id'));
 
         return view('admin.tq_student.edit', [
             'tq_student' => $tq_student,
+<<<<<<< Updated upstream
+=======
+            'departments' => $departments,
+            'cities' => $cities,
+>>>>>>> Stashed changes
         ]);
     }
 
@@ -144,6 +161,39 @@ class TQController extends ProjectDepartmentController
         }
 
         $tq_student->name = strval($request->input('name'));
+        $tq_student->address = strval($request->input('address'));
+        $tq_student->mobile = strval($request->input('mobile'));
+        $tq_student->qq = strval($request->input('qq'));
+        $tq_student->wechat = strval($request->input('wechat'));
+        $tq_student->level = intval($request->input('level'));
+        $tq_student->remark = strval($request->input('remark'));
+        $tq_student->gender = intval($request->input('gender'));
+        $tq_student->telephone = strval($request->input('telephone'));
+        $tq_student->department_id = intval($request->input('department_id'));
+        $tq_student->party_number = intval($request->input('party_number'));
+        $tq_student->attestation = strval($request->input('attestation'));
+        $tq_student->school = strval($request->input('school'));
+        $tq_student->major = strval($request->input('major'));
+        $tq_student->company = strval($request->input('company'));
+        $tq_student->job = strval($request->input('job'));
+        $tq_student->ID_card_no = strval($request->input('ID_card_no'));
+        $tq_student->examination = strval($request->input('examination'));
+        $tq_student->class_type = strval($request->input('class_type'));
+        $tq_student->political = strval($request->input('political'));
+        $tq_student->english_level = strval($request->input('english_level'));
+        $tq_student->current_address = strval($request->input('current_address'));
+        $tq_student->resource_owner = strval($request->input('resource_owner'));
+        $tq_student->resource_activity = strval($request->input('resource_activity'));
+        $tq_student->way_to_visit = intval($request->input('way_to_visit'));
+        $tq_student->exam_type = intval($request->input('exam_type'));
+        $tq_student->belong_to = intval($request->input('belong_to'));
+        $tq_student->education = intval($request->input('education'));
+        $tq_student->identity = intval($request->input('identity'));
+        $tq_student->common_tested = intval($request->input('common_tested'));
+        $tq_student->trained = intval($request->input('trained'));
+        $tq_student->resource_method = intval($request->input('resource_method'));
+        $tq_student->belongs_to_department = intval($request->input('belongs_to_department'));
+        $tq_student->update_time = Carbon::now()->toDateTimeString();
 
         return $this->returnOperationResponse($tq_student->save());
     }

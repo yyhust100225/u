@@ -2,12 +2,13 @@
 
 namespace App\Exceptions;
 
-use Exception;
-use Illuminate\Auth\AuthenticationException;
+use App\Mail\ServerErrorLog;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Mail;
+use Prophecy\Exception\Doubler\MethodNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -19,7 +20,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        ModelNotFoundException::class,
+        MethodNotFoundException::class
     ];
 
     /**
@@ -43,13 +45,15 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         parent::report($exception);
+        // 给管理员报告 发送邮件
+        Mail::to('hust_yy0817@163.com')->send(New ServerErrorLog($exception));
     }
 
     /**
      * Render an exception into an HTTP response.
      * @param Request $request
      * @param Throwable $exception
-     * @return JsonResponse|\Illuminate\Http\Response|string|Response
+     * @return JsonResponse|\Illuminate\Http\Response|Response
      * @throws Throwable
      */
     public function render($request, Throwable $exception)

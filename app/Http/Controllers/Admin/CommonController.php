@@ -98,7 +98,7 @@ class CommonController extends Controller
     {
         if(!empty($conditions)) {
             foreach ($conditions as $condition) {
-                if (empty($condition['value'])) continue;
+                if (is_null($condition['value']) || $condition['value'] === '') continue;
                 $field = explode('|', $condition['name']);
                 switch ($field[0]) {
                     case 'like':

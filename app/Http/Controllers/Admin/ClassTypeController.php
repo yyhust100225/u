@@ -9,7 +9,6 @@ use App\Http\Requests\UpdateClassType;
 use App\Http\Requests\UpdateClassTypeDiscount;
 use App\Http\Resources\ClassTypeDiscountResource;
 use App\Http\Resources\ClassTypeResource;
-use App\Models\ClassAnnouncement;
 use App\Models\ClassExamination;
 use App\Models\ClassType;
 use App\Models\ClassTypeDiscount;
@@ -32,11 +31,9 @@ class ClassTypeController extends ProjectDepartmentController
 
     /**
      * 班型列表页
-     * @param Request $request
-     * @param ClassType $class_type
      * @return Application|Factory|View
      */
-    public function list(Request $request, ClassType $class_type)
+    public function list()
     {
         return view('admin.class_type.list');
     }

@@ -9,24 +9,24 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "alibabacloud/sdk": "^1.8",
         "barryvdh/laravel-ide-helper": "^2.8",
         "doctrine/dbal": " ~2.3",
         "fideloper/proxy": "^4.0",
+        "guzzlehttp/guzzle": "^7.2",
+        "ixudra/curl": "6.*",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "mews/purifier": "^3.3",
-        "predis/predis": "^1.1",
-        "ixudra/curl": "6.*",
-        "ext-json": "*"
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.9.1",
         "mockery/mockery": "^1.0",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^8.0",
-        "guzzlehttp/guzzle": "^7.0.1"
+        "phpunit/phpunit": "^8.0"
     },
     "config": {
         "optimize-autoloader": true,

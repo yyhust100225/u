@@ -23,7 +23,7 @@ class CreateTqStudentsTable extends Migration
             $table->string('mobile', 32)->default('')->comment('学员联系方式');
             $table->string('name', 255)->comment('学员姓名');
             $table->string('qq', 16)->comment('学员QQ号');
-            $table->char('level')->default('A')->comment('客户级别');
+            $table->unsignedTinyInteger('level')->default(5)->comment('客户级别');
             $table->text('remark')->nullable()->comment('最近备注');
             $table->unsignedTinyInteger('gender')->default(1)->comment('客户性别 1男 2女');
             $table->string('telephone', 64)->default('')->comment('客户联系方式');
@@ -50,7 +50,7 @@ class CreateTqStudentsTable extends Migration
             $table->date('visit_back_date')->nullable()->comment('回访日期');
             $table->date('call_back_date')->nullable()->comment('回拨日期');
             $table->unsignedInteger('way_to_visit')->default(0)->comment('来访途径');
-            $table->unsignedTinyInteger('exam_type')->default(0)->comment('考试方式 0笔试 1面试');
+            $table->unsignedTinyInteger('exam_type')->default(0)->comment('考试方式 1面试 2笔试');
             $table->unsignedInteger('belong_to')->default(0)->comment('归属地');
             $table->unsignedInteger('education')->default(0)->comment('学历');
             $table->unsignedInteger('identity')->default(0)->comment('考生身份');

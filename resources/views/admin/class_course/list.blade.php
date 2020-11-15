@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>考试列表</title>
+    <title>班级列表</title>
     <meta name="renderer" content="webkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,21 +17,13 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">TQ学员信息</div>
+                <div class="layui-card-header">班级列表</div>
                 <div class="layui-card-body">
 
                     <form class="" id="table-search-form" style="margin-bottom: 10px;">
 
                         <div class="layui-inline">
-                            <label>
-                                <input class="layui-input" name="like|tq_id" autocomplete="off" placeholder="TQ ID" />
-                            </label>
-                        </div>
-
-                        <div class="layui-inline">
-                            <label>
-                                <input class="layui-input" name="like|name" autocomplete="off" placeholder="考生姓名" />
-                            </label>
+                            <input class="layui-input" name="like|name" autocomplete="off" placeholder="班级名称">
                         </div>
 
                         <button type="button" class="layui-btn" data-type="reload">搜索</button>
@@ -41,12 +33,14 @@
 
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="sync">同步TQ学员信息</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="create">新增班级</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="refresh" ><i class="layui-icon layui-icon-refresh-3"></i></button>
                         </div>
                     </script>
 
                     <script type="text/html" id="table-bar">
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
 
                 </div>
@@ -60,11 +54,12 @@
 <script>
 
     // 页面路由
-    let routes = {
-        TQ_students: {
-            data: '{{ route_uri('TQ_students.data') }}',
-            sync: '{{ route_uri('TQ_students.sync') }}',
-            edit: '{{ route_uri('TQ_students.edit') }}',
+    var routes = {
+        class_courses: {
+            data: '{{ route_uri('class_courses.data') }}',
+            create: '{{ route_uri('class_courses.create') }}',
+            edit: '{{ route_uri('class_courses.edit') }}',
+            delete: '{{ route_uri('class_courses.delete') }}',
         }
     };
 
@@ -82,15 +77,15 @@
             elem: '#data-table',
             id: 'data-table',
             toolbar: '#table-toolbar',
-            url: route(routes.TQ_students.data),
+            url: route(routes.class_courses.data),
             cols: [[
-                {field:'tq_id', title: 'TQ_ID', width:'8%', sort: true, fixed: 'left'},
-                {field:'name', title: '学员姓名', width:'8%'},
-                {field:'mobile', title: '手机号', width:'8%'},
-                {field:'level', title: '客户级别', width:'8%'},
-                {field:'remark', title: '备注'},
-                {field:'insert_time', title: '录入TQ时间', width:'12%'},
-                {field:'create_time', title: '同步时间', width:'12%'},
+                {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
+                {field:'name', title: '班级名称'},
+                {field:'examination_name', title: '考试名称'},
+                {field:'class_type_name', title: '班型名称'},
+                {field:'class_course_type_name', title: '开课类型', width: '8%'},
+                {field:'department_name', title: '开课校区', width: '10%'},
+                {field:'created_at', title: '创建时间', width:'12%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
@@ -100,24 +95,8 @@
 
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
-                case 'sync': {
-                    $.ajax({
-                        type: 'POST',
-                        url: route(routes.TQ_students.sync),
-                        dataType: 'json',
-                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                        success: function(res) {
-                            if(res.code === {{ REQUEST_SUCCESS }}) {
-                                layer.msg(res.message, {time: 1500}, function(){
-                                    table.reload('data-table');
-                                });
-                            } else {
-                                layer.msg(res.message);
-                            }
-                        }, error: function(e) {
-                            layer.msg(e.responseJSON.message);
-                        }
-                    });
+                case 'create': {
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_courses.create));
                 }break;
                 case 'refresh': {
                     table.reload('data-table');
@@ -129,13 +108,13 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.TQ_students.edit, {id: obj.data.id}));
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_courses.edit, {id: obj.data.id}));
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: route(routes.TQ_students.delete),
+                            url: route(routes.class_courses.delete),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,
@@ -162,8 +141,7 @@
 
         active = {
             reload: function(){
-                var data = $('#table-search-form').serializeArray();
-                console.log(JSON.stringify(data));
+                var data = $('#table-search-form').serialize();
                 table.reload('data-table', {
                     page: {curr: 1},
                     where: {where:data, action:'search'}
