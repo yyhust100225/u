@@ -79,13 +79,13 @@
             toolbar: '#table-toolbar',
             url: route(routes.class_courses.data),
             cols: [[
-                {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '班级名称'},
-                {field:'examination_name', title: '考试名称'},
-                {field:'class_type_name', title: '班型名称'},
-                {field:'class_course_type_name', title: '开课类型', width: '8%'},
-                {field:'department_name', title: '开课校区', width: '10%'},
-                {field:'created_at', title: '创建时间', width:'12%'},
+                // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
+                {field:'name', align:'center', title: '班级名称'},
+                {field:'examination_name', align:'center', title: '考试名称'},
+                {field:'class_type_name', align:'center', title: '班型名称'},
+                {field:'class_course_type_name', align:'center', title: '开课类型', width: '8%'},
+                {field:'department_name', align:'center', title: '开课校区', width: '10%'},
+                {field:'created_at', align:'center', title: '创建时间', width:'12%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
@@ -141,7 +141,7 @@
 
         active = {
             reload: function(){
-                var data = $('#table-search-form').serialize();
+                var data = $('#table-search-form').serializeArray();
                 table.reload('data-table', {
                     page: {curr: 1},
                     where: {where:data, action:'search'}

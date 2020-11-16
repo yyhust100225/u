@@ -108,6 +108,14 @@ use Illuminate\Support\Carbon;
  * @method static Builder|TQ whereWayToVisit($value)
  * @method static Builder|TQ whereWechat($value)
  * @mixin Eloquent
+ * @property string $admin_uin 校区TQ总账户号
+ * @property string $insert_time 资源录入时间
+ * @property string|null $last_contact_time 上次联系时间
+ * @property string $create_time 录入时间
+ * @method static Builder|TQ whereAdminUin($value)
+ * @method static Builder|TQ whereCreateTime($value)
+ * @method static Builder|TQ whereInsertTime($value)
+ * @method static Builder|TQ whereLastContactTime($value)
  */
 class TQ extends Common
 {

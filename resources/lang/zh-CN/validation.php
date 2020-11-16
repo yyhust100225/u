@@ -242,5 +242,14 @@ return [
         'type_id' => '所属班型',
         'type_discount_name' => '班型优惠名称',
         'type_discount_amount' => '班型优惠金额',
+
+        // 班级管理
+        'class_course_name' => '班级名称',
+        'class_type_id' => '所属班型',
+        'class_course_type_id' => '开课类型',
+        'class_course_department_id' => '开课校区',
+        'class_course_address' => '开课地址',
+        'class_course_date' => '开课时间',
+        'max_person_num' => '封班人数',
     ],
 ];

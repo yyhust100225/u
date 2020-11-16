@@ -162,8 +162,7 @@
 
         active = {
             reload: function(){
-                var data = $('#table-search-form').serializeArray();
-                console.log(JSON.stringify(data));
+                let data = $('#table-search-form').serializeArray();
                 table.reload('data-table', {
                     page: {curr: 1},
                     where: {where:data, action:'search'}

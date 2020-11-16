@@ -108,6 +108,15 @@
                     </div>
 
                     <div class="layui-form-item">
+                        <div class="layui-col-md8">
+                            <label class="layui-form-label" for="remark">备注</label>
+                            <div class="layui-input-block">
+                                <textarea name="remark" id="remark" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -131,24 +140,18 @@
         }
     };
 
-    layui.use(['form', 'laydatePro'], function(){
+    layui.config({
+        base: '/layuiadmin/layui/lay/modules/'
+    }).use(['form', 'laydatePro'], function(){
         let form = layui.form;
         let laydate = layui.laydate;
         let $ = layui.$;
-
-        // laydate.render({
-        //     elem: '#class-course-date',
-        //     theme: '#393D49',
-        //     type: 'date',
-        //     trigger: 'click'
-        // });
 
         laydate.render({
             elem: '#class-course-date',
             trigger: 'click',
             multiple: ',',
-            theme: '#393D49',
-            circleMark: true
+            theme: '#393D49'
         });
 
         laydate.render({
@@ -182,8 +185,12 @@
                             return false;
                         });
                     }
+                    else if(e.status === 419 || e.status === 401) {
+                        layer.msg(e.responseJSON.message, {time: 1000}, function(){
+                            parent.parent.window.location = "{{ route('login.form') }}";
+                        });
+                    }
                     else {
-                        console.log(e);
                         layer.msg(e.responseJSON.message);
                     }
                 }
