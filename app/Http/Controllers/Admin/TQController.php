@@ -202,7 +202,6 @@ class TQController extends ProjectDepartmentController
             'ctime' => $this->timestamp,
             'sign' => $this->makeSign(),
         ];
-
         return Api::post($this->token_url, $data);
     }
 
