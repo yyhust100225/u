@@ -285,5 +285,18 @@ Route::namespace('Admin')->group(function(){
         Route::post('TQ_students/sync', 'TQController@sync')->name('TQ_students.sync');
         Route::get('TQ_students/edit', 'TQController@edit')->name('TQ_students.edit');
         Route::put('TQ_students/update', 'TQController@update')->name('TQ_students.update');
+
+        // 学员管理
+        Route::get('students', 'StudentController@list')->name('students.list');
+        Route::get('students/data', 'StudentController@data')->name('students.data');
+        Route::get('students/create', 'StudentController@create')->name('students.create');
+        Route::get('students/class_courses', 'StudentController@classCourses')->name('students.class_courses');
+        Route::get('students/class_courses/data', 'StudentController@classCoursesData')->name('students.class_courses.data');
+        Route::get('students/search', 'StudentController@search')->name('students.search');
+        Route::get('students/searched', 'StudentController@searched')->name('students.searched');
+        Route::post('students/store', 'StudentController@store')->name('students.store');
+        Route::get('students/edit/{id}', 'StudentController@edit')->name('students.edit');
+        Route::put('students/update', 'StudentController@update')->name('students.update');
+        Route::delete('students/delete', 'StudentController@delete')->name('students.delete');
     });
 });

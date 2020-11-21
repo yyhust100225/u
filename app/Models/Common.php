@@ -30,9 +30,21 @@ class Common extends Model
         $model = $this->newQuery();
 
         foreach($where as $field => $value) {
-            if(is_array($value)) {
+
+            // 组合或条件查询
+            if($field === 'logic:or') {
+                $model->orWhere(function($query) use($value){
+                    foreach($value as $key => $item) {
+                        $query->where($key, $item);
+                    }
+                });
+            } else if(is_array($value)) {
                 if($value[0] == 'in')
                     $model->whereIn($field, $value[1]);
+                else if($value[0] == 'or:in')
+                    $model->orWhereIn($field, $value[1]);
+                else if($value[0] == 'or')
+                    $model->orWhere($field, $value[1]);
                 else
                     $model->where($field, $value[0], $value[1]);
             }

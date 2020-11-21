@@ -186,6 +186,11 @@
                             <cite>学员管理</cite>
                         </a>
                         <dl class="layui-nav-child">
+                            <dd data-name="students">
+                                <a lay-href="students">学员报名</a>
+                            </dd>
+                        </dl>
+                        <dl class="layui-nav-child">
                             <dd data-name="TQ_students">
                                 <a lay-href="TQ_students">TQ学员信息</a>
                             </dd>
