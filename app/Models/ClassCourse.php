@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ClassCourse whereRemark($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ClassCourse whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Department $department
  */
 class ClassCourse extends Common
 {

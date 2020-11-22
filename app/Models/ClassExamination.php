@@ -55,4 +55,10 @@ class ClassExamination extends Common
     {
         return $this->hasMany(ClassExaminationDiscount::class, 'examination_id');
     }
+
+    public function discountsWithName()
+    {
+        $discounts = $this->discounts()->with('type')->get();
+        return $discounts;
+    }
 }

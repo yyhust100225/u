@@ -7,10 +7,8 @@ use App\Http\Requests\StoreClassExamination;
 use App\Http\Requests\StoreClassExaminationDiscount;
 use App\Http\Requests\UpdateClassExamination;
 use App\Http\Requests\UpdateClassExaminationDiscount;
+use App\Http\Resources\ClassExaminationDiscountResource;
 use App\Http\Resources\ClassExaminationResource;
-use App\Http\Resources\ClassTypeDiscountResource;
-use App\Http\Resources\ClassTypeResource;
-use App\Models\City;
 use App\Models\ClassAnnouncement;
 use App\Models\ClassExamination;
 use App\Models\ClassExaminationDiscount;
@@ -20,7 +18,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -217,7 +214,7 @@ class ClassExaminationController extends ProjectDepartmentController
             'code' => RESPONSE_SUCCESS,
             'msg' => trans('request.success'),
             'count' => $class_examination_discounts['count'],
-            'data' => ClassTypeDiscountResource::collection($class_examination_discounts['data']),
+            'data' => ClassExaminationDiscountResource::collection($class_examination_discounts['data']),
         ], 200);
     }
 

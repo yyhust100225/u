@@ -289,7 +289,7 @@ Route::namespace('Admin')->group(function(){
         // 学员管理
         Route::get('students', 'StudentController@list')->name('students.list');
         Route::get('students/data', 'StudentController@data')->name('students.data');
-        Route::get('students/create', 'StudentController@create')->name('students.create');
+        Route::get('students/create/{id}', 'StudentController@create')->name('students.create');
         Route::get('students/class_courses', 'StudentController@classCourses')->name('students.class_courses');
         Route::get('students/class_courses/data', 'StudentController@classCoursesData')->name('students.class_courses.data');
         Route::get('students/search', 'StudentController@search')->name('students.search');

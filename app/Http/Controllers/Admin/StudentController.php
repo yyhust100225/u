@@ -93,17 +93,26 @@ class StudentController extends CommonController
 
     /**
      * 创建新班级
+     * @param $id
      * @param Department $department
      * @param User $user
+     * @param TQ $tq
      * @return Application|Factory|View
      */
-    public function create(Department $department, User $user)
+    public function create($id, Department $department, User $user, TQ $tq)
     {
+        try {
+            $tq_student = $tq->newQuery()->findOrFail($id);
+        } catch (Throwable $exception) {
+            Log::error(trans('message.log.an empty query occurred'), ['class' => __CLASS__, 'id' => $id]);
+            abort(404);
+        }
         $departments = $department->all();
         $users = $user->all();
         return view('admin.student.create', [
             'departments' => $departments,
             'users' => $users,
+            'tq_student' => $tq_student,
         ]);
     }
 
@@ -136,33 +145,41 @@ class StudentController extends CommonController
      * 存储新班级
      * @param StoreStudent $request
      * @param Student $student
-     * @param StudentDate $student_date
+     * @param StudentDiscount $student_discount
      * @return JsonResponse
      */
-    public function store(StoreStudent $request, Student $student, StudentDate $student_date)
+    public function store(StoreStudent $request, Student $student, StudentDiscount $student_discount)
     {
-        $dates = explode(',', strval($request->input('student_date')));
+        dd($request->all());
 
         try {
-            DB::transaction(function() use($request, $student, $dates, $student_date) {
+            DB::transaction(function() use($request, $student) {
+                $student->tq_id = strval($request->input('tq_id'));
                 $student->name = strval($request->input('name'));
-                $student->class_type_id = intval($request->input('class_type_id'));
-                $student->student_type_id = intval($request->input('student_type_id'));
-                $student->department_id = intval($request->input('department_id'));
-                $student->address = strval($request->input('address'));
-                $student->day_num = count($dates);
-                $student->max_person_num = intval($request->input('max_person_num'));
-                $student->in_hotel = intval($request->input('in_hotel'));
-                $student->in_hotel_date = $student->in_hotel == 1 ? $request->input('in_hotel_date') : null;
+                $student->mobile = strval($request->input('mobile'));
+                $student->ID_card_no = strval($request->input('ID_card_no'));
                 $student->remark = strval($request->input('remark'));
+                $student->class_course_id = intval($request->input('class_course_id'));
+                $student->class_open_date = $request->input('class_open_date');
+                $student->admission_ticket_no = strval($request->input('admission_ticket_no'));
+                $student->applicant_company = strval($request->input('applicant_company'));
+                $student->applicant_job = strval($request->input('applicant_job'));
+                $student->applicant_num = intval($request->input('applicant_num'));
+                $student->applicant_percent_molecule = intval($request->input('applicant_percent_molecule'));
+                $student->applicant_percent_denominator = intval($request->input('applicant_percent_denominator'));
+                $student->rank = intval($request->input('rank'));
+                $student->difference = intval($request->input('difference'));
+                $student->person_in_charge = intval($request->input('person_in_charge'));
+                $student->campus = intval($request->input('campus'));
+                $student->receivable_amount = floatval($request->input('receivable_amount'));
+                $student->discount_amount = floatval($request->input('discount_amount'));
+                $student->paid_amount = floatval($request->input('paid_amount'));
+                $student->written_examination_refund = floatval($request->input('written_examination_refund'));
+                $student->interview_refund = floatval($request->input('interview_refund'));
+                $student->user_id = $this->user()->getAuthIdentifier();
                 $student->save();
 
-                foreach($dates as $date) {
-                    $student_date->insert([
-                        'student_id' => $student->id,
-                        'student_date' => $date,
-                    ]);
-                }
+
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());

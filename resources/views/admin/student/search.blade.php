@@ -94,7 +94,7 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.create));
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.create, {id: obj.data.id}));
                 }break;
                 default:break;
             }

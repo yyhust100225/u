@@ -24,7 +24,7 @@
                         <div class="layui-col-md4">
                             <label class="layui-form-label" for="name">学员名称</label>
                             <div class="layui-input-block">
-                                <input type="text" name="name" id="name" autocomplete="off" placeholder="请输入学员名称" class="layui-input">
+                                <input type="text" name="name" value="{{ $tq_student->name }}" id="name" autocomplete="off" placeholder="请输入学员名称" class="layui-input">
                             </div>
                         </div>
 
@@ -38,7 +38,7 @@
                         <div class="layui-col-md4">
                             <label class="layui-form-label" for="mobile">学员电话</label>
                             <div class="layui-input-block">
-                                <input type="text" name="mobile" id="mobile" autocomplete="off" placeholder="请输入学员电话" class="layui-input">
+                                <input type="text" name="mobile" value="{{ $tq_student->mobile }}" id="mobile" autocomplete="off" placeholder="请输入学员电话" class="layui-input">
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="layui-col-md12">
                             <label class="layui-form-label" for="remark">学员备注</label>
                             <div class="layui-input-block">
-                                <textarea class="layui-textarea" name="remark" id="remark"></textarea>
+                                <textarea class="layui-textarea" name="remark" id="remark">{{ $tq_student->remark }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -56,7 +56,26 @@
                         <div class="layui-col-md8">
                             <label class="layui-form-label" for="class-course-id">考试/班型</label>
                             <div class="layui-input-block">
-                                <input readonly type="text" name="class_course_id" id="class-course-id" placeholder="请选择考试+班型" class="layui-input" />
+                                <input type="hidden" name="class_course_id" id="class-course-id">
+                                <input readonly type="text" name="class_course" id="class-course" placeholder="请选择考试+班型" class="layui-input" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-col-md5">
+                            <label class="layui-form-label" for="class-examination-discounts">考试优惠</label>
+                            <div class="layui-input-block">
+                                <div id="class-examination-discounts"></div>
+                                <input type="hidden" name="class_examination_discount_ids" value="" id="class-examination-discount-ids" />
+                            </div>
+                        </div>
+
+                        <div class="layui-col-md5">
+                            <label class="layui-form-label" for="class-type-discounts">班型优惠</label>
+                            <div class="layui-input-block">
+                                <div id="class-type-discounts"></div>
+                                <input type="hidden" name="class_type_discount_ids" value="" />
                             </div>
                         </div>
                     </div>
@@ -158,17 +177,17 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" for="receivable-amount">应收金额</label>
                             <div class="layui-input-inline">
-                                <input readonly="readonly" type="text" name="receivable_amount" id="receivable-amount" class="layui-input" />
+                                <input readonly="readonly" type="text" name="receivable_amount" value="0.00" id="receivable-amount" class="layui-input" />
                             </div>
 
                             <label class="layui-form-label" for="discount-amount">优惠金额</label>
                             <div class="layui-input-inline">
-                                <input readonly="readonly" type="text" name="discount_amount" id="discount-amount" class="layui-input" />
+                                <input readonly="readonly" type="text" name="discount_amount" value="0.00" id="discount-amount" class="layui-input" />
                             </div>
 
                             <label class="layui-form-label" for="paid-amount">实缴金额</label>
                             <div class="layui-input-inline">
-                                <input readonly="readonly" type="text" name="paid_amount" id="paid-amount" class="layui-input" />
+                                <input readonly="readonly" type="text" name="paid_amount" value="0.00" id="paid-amount" class="layui-input" />
                             </div>
                         </div>
                     </div>
@@ -177,12 +196,12 @@
                         <div class="layui-inline">
                             <label class="layui-form-label" for="written-examination-refund">笔试退费</label>
                             <div class="layui-input-inline">
-                                <input readonly="readonly" type="text" name="written_examination_refund" id="written-examination-refund" class="layui-input" />
+                                <input readonly="readonly" type="text" name="written_examination_refund" value="0.00" id="written-examination-refund" class="layui-input" />
                             </div>
 
                             <label class="layui-form-label" for="interview-refund">面试退费</label>
                             <div class="layui-input-inline">
-                                <input readonly="readonly" type="text" name="interview_refund" id="interview-refund" class="layui-input" />
+                                <input readonly="readonly" type="text" name="interview_refund" value="0.00" id="interview-refund" class="layui-input" />
                             </div>
                             <div class="layui-form-mid layui-word-aux">非协议班退费为：<span>0.00</span>元</div>
                         </div>
@@ -190,7 +209,8 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                            <input type="hidden" name="tq_id" value="{{ $tq_student->id }}" />
+                            <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -201,8 +221,9 @@
     </div>
 </div>
 
-<script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/xm-select.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
 
     // 页面路由
@@ -213,7 +234,7 @@
         }
     };
 
-    var course;
+    var course; // 考试班型班级信息
 
     layui.config({
         base: '/layuiadmin/layui/lay/modules/'
@@ -223,25 +244,61 @@
         let $ = layui.$;
 
         laydate.render({
-            elem: '#class-course-date',
+            elem: '#class-open-date',
+            type: 'date',
             trigger: 'click',
-            multiple: ',',
             theme: '#393D49'
         });
 
-        laydate.render({
-            elem: '#in-hotel-date',
-            theme: '#393D49',
-            type: 'date',
-            trigger: 'click'
-        });
-
         // 选择班级+班型
-        $('input#class-course-id').on('click', function(){
+        $('input#class-course').on('click', function(){
             makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.class_courses), function(){
-                let html = '所属考试: ' + course.examination_name + ', 所属班型: ' + course.class_type_name + ', 所属班级: ' + course.name;
-                $('input#class-course-id').val(html);
+                // 关闭选择对话
+                if(typeof course === 'undefined')
+                    return false;
 
+                // 选定考试班型班级后, 初始化选择各项金额
+                let html = '所属考试: ' + course.examination_name + ', 所属班型: ' + course.class_type_name + ', 所属班级: ' + course.name;
+                $('input#class-course').val(html);
+                $('input#class-course-id').val(course.id);
+                $('input#receivable-amount').val(parseFloat(course.total_tuition).toFixed(2));
+                $('input#paid-amount').val(parseFloat(course.total_tuition).toFixed(2));
+                $('input#written-examination-refund').val(parseFloat(course.written_examination_refund).toFixed(2));
+                $('input#interview-refund').val(parseFloat(course.interview_refund).toFixed(2));
+
+                // 考试优惠计算
+                let class_examination_discounts_options = new Array();
+                $.each(course.class_examination_discounts, function(k,v){
+                    let name = v.type.name + '(优惠:' + v.amount + '元)';
+                    class_examination_discounts_options.push({name: name, value: v.id, amount: v.amount});
+                });
+                let class_examination_discounts_select = multi_select_init('class-examination-discounts', 'class_examination_discounts_ids', class_examination_discounts_options, function(data){
+                    calculate_amount(data.change[0].amount, data.isAdd);
+                    let current_ids_str = $('input#class-examination-discount-ids').val();
+                    let new_ids = current_ids_str === '' ? new Array() : current_ids_str.split('|');
+                    // 增加优惠
+                    console.log('---------------------------------------------');
+                    console.log(new_ids);
+                    if(data.isAdd) {
+                        new_ids.push((data.change[0].value).toString())
+                    } else {
+                        array_remove((data.change[0].value).toString(), new_ids);
+                    }
+                    console.log(new_ids);
+                    console.log('---------------------------------------------');
+                    $('input#class-examination-discount-ids').val(new_ids.join('|'));
+                    console.log($('input#class-examination-discount-ids').val());
+                });
+
+                // 班型优惠计算
+                let class_type_discounts_options = new Array();
+                $.each(course.class_type_discounts, function(k,v){
+                    let name = v.name + '(优惠:' + v.amount + '元)';
+                    class_type_discounts_options.push({name: name, value: v.id, amount: v.amount});
+                });
+                let class_type_discounts_select = multi_select_init('class-type-discounts', 'class_type_discounts_ids', class_type_discounts_options, function(data){
+                    calculate_amount(data.change[0].amount, data.isAdd);
+                });
             });
         });
 
@@ -281,13 +338,40 @@
             });
             return false;
         });
-        form.on('radio(in-hotel)', function(data){
-            if(data.value === '1') {
-                $('div#item-in-hotel-date').removeClass('layui-hide');
-            } else if(data.value === '0') {
-                $('div#item-in-hotel-date').addClass('layui-hide');
+
+        // 初始化优惠条件多选框
+        let class_examination_discounts_init = multi_select_init('class-examination-discounts', 'class_examination_discounts_ids', []);
+        let class_type_discounts_init = multi_select_init('class-type-discounts', 'class_type_discounts_ids', []);
+
+        /**
+         * 计算优惠价格
+         * @param discount_amount 本次操作优惠价格
+         * @param is_add 加或减
+         * @returns {boolean}
+         */
+        let calculate_amount = function(discount_amount, is_add)
+        {
+            if(parseFloat(discount_amount).toFixed(2) === 0.00)
+                return false;
+            // 现有优惠价格
+            let current_discount_amount = $('input#discount-amount').val();
+            // 原价格
+            let original_amount = $('input#receivable-amount').val();
+            // 实际应缴价格
+            let real_amount = $('input#paid-amount').val();
+            // 合计优惠价格
+            let total_discount_amount;
+            if(is_add) {
+                real_amount = floatObj.subtract(real_amount, discount_amount);
+                total_discount_amount = floatObj.add(current_discount_amount, discount_amount);
+            } else {
+                real_amount = floatObj.add(real_amount, discount_amount);
+                total_discount_amount = floatObj.subtract(current_discount_amount, discount_amount);
             }
-        });
+            $('input#discount-amount').val(parseFloat(total_discount_amount).toFixed(2));
+            $('input#paid-amount').val(parseFloat(real_amount).toFixed(2));
+            return true;
+        }
     });
 </script>
 
