@@ -295,11 +295,10 @@
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
-                        var index = parent.layer.getFrameIndex(window.name);
-                        var p_index = parent.parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
-                            parent.layer.close(index);
-                            parent.active.reload.call(this);
+                            parent.layer.close(2);
+                            parent.parent.layer.close(1);
+                            parent.parent.active.reload.call(this);
                         });
                     } else {
                         layer.msg(res.message);
