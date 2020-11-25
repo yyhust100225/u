@@ -71,6 +71,12 @@ class Student extends Common
 {
     use HasFactory;
 
+    // 关联课程表
+    public function class_course()
+    {
+        return $this->belongsTo(ClassCourse::class, 'class_course_id');
+    }
+
     // 关联班型表
     public function class_type()
     {

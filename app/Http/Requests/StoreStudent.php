@@ -25,14 +25,14 @@ class StoreStudent extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:2', Rule::unique('students')],
+            'name' => ['required', 'min:2'],
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => trans('validation.attributes.class_course_name'),
+            'name' => trans('validation.attributes.student_name'),
         ];
     }
 }

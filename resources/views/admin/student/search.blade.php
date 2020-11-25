@@ -94,7 +94,9 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
+                    let index = parent.layer.getFrameIndex(window.name);
                     makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.create, {id: obj.data.id}));
+                    parent.layer.close(index);
                 }break;
                 default:break;
             }

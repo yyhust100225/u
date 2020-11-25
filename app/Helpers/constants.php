@@ -30,3 +30,9 @@ define('NOTICE_REJECT', 4);     // 审核驳回
 // 学员管理 - TQ
 define('TQ_SYNC_NOT_ALLOWED', 1);
 define('TQ_SYNC_ALLOWED', 2);
+
+/** 开班管理 **/
+
+// 优惠类型
+define('CLASS_EXAMINATION_DISCOUNT', 1);
+define('CLASS_TYPE_DISCOUNT', 2);

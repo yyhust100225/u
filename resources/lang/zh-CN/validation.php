@@ -251,5 +251,8 @@ return [
         'class_course_address' => '开课地址',
         'class_course_date' => '开课时间',
         'max_person_num' => '封班人数',
+
+        // 学员管理
+        'student_name' => '学员姓名',
     ],
 ];

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CommonController extends Controller
 {
@@ -19,6 +20,7 @@ class CommonController extends Controller
      */
     public function __construct(Request $request)
     {
+        DB::connection()->enableQueryLog();
         // 获取当前路由方法
         $this->request_action_name = $request->route()->getActionMethod();
     }

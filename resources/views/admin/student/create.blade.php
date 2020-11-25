@@ -67,7 +67,6 @@
                             <label class="layui-form-label" for="class-examination-discounts">考试优惠</label>
                             <div class="layui-input-block">
                                 <div id="class-examination-discounts"></div>
-                                <input type="hidden" name="class_examination_discount_ids" value="" id="class-examination-discount-ids" />
                             </div>
                         </div>
 
@@ -75,7 +74,6 @@
                             <label class="layui-form-label" for="class-type-discounts">班型优惠</label>
                             <div class="layui-input-block">
                                 <div id="class-type-discounts"></div>
-                                <input type="hidden" name="class_type_discount_ids" value="" />
                             </div>
                         </div>
                     </div>
@@ -209,7 +207,7 @@
 
                     <div class="layui-form-item">
                         <div class="layui-input-block">
-                            <input type="hidden" name="tq_id" value="{{ $tq_student->id }}" />
+                            <input type="hidden" name="tq_id" value="{{ $tq_student->tq_id }}" />
                             <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
@@ -272,22 +270,8 @@
                     let name = v.type.name + '(优惠:' + v.amount + '元)';
                     class_examination_discounts_options.push({name: name, value: v.id, amount: v.amount});
                 });
-                let class_examination_discounts_select = multi_select_init('class-examination-discounts', 'class_examination_discounts_ids', class_examination_discounts_options, function(data){
+                let class_examination_discounts_select = multi_select_init('class-examination-discounts', 'class_examination_discount_ids', class_examination_discounts_options, function(data){
                     calculate_amount(data.change[0].amount, data.isAdd);
-                    let current_ids_str = $('input#class-examination-discount-ids').val();
-                    let new_ids = current_ids_str === '' ? new Array() : current_ids_str.split('|');
-                    // 增加优惠
-                    console.log('---------------------------------------------');
-                    console.log(new_ids);
-                    if(data.isAdd) {
-                        new_ids.push((data.change[0].value).toString())
-                    } else {
-                        array_remove((data.change[0].value).toString(), new_ids);
-                    }
-                    console.log(new_ids);
-                    console.log('---------------------------------------------');
-                    $('input#class-examination-discount-ids').val(new_ids.join('|'));
-                    console.log($('input#class-examination-discount-ids').val());
                 });
 
                 // 班型优惠计算
@@ -296,7 +280,7 @@
                     let name = v.name + '(优惠:' + v.amount + '元)';
                     class_type_discounts_options.push({name: name, value: v.id, amount: v.amount});
                 });
-                let class_type_discounts_select = multi_select_init('class-type-discounts', 'class_type_discounts_ids', class_type_discounts_options, function(data){
+                let class_type_discounts_select = multi_select_init('class-type-discounts', 'class_type_discount_ids', class_type_discounts_options, function(data){
                     calculate_amount(data.change[0].amount, data.isAdd);
                 });
             });
@@ -312,9 +296,10 @@
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
                         var index = parent.layer.getFrameIndex(window.name);
+                        var p_index = parent.parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
                             parent.layer.close(index);
-                            // parent.active.reload.call(this);
+                            parent.active.reload.call(this);
                         });
                     } else {
                         layer.msg(res.message);
@@ -340,8 +325,8 @@
         });
 
         // 初始化优惠条件多选框
-        let class_examination_discounts_init = multi_select_init('class-examination-discounts', 'class_examination_discounts_ids', []);
-        let class_type_discounts_init = multi_select_init('class-type-discounts', 'class_type_discounts_ids', []);
+        let class_examination_discounts_init = multi_select_init('class-examination-discounts', 'class_examination_discount_ids', []);
+        let class_type_discounts_init = multi_select_init('class-type-discounts', 'class_type_discount_ids', []);
 
         /**
          * 计算优惠价格

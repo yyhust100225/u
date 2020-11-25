@@ -9,7 +9,6 @@ use App\Http\Resources\ClassCourseResource;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TQStudentResource;
 use App\Models\ClassCourse;
-use App\Models\ClassExamination;
 use App\Models\Student;
 use App\Models\StudentDiscount;
 use App\Models\ClassType;
@@ -54,14 +53,12 @@ class StudentController extends CommonController
         // 制作搜索条件
         $where = $this->makeSearchConditions($request->input('where'));
         // 查询我的 或 我录入的学员信息
-        $where['logic:or'] = array(
-            'user_id' => $this->user()->getAuthIdentifier(),
-            'person_in_charge' => $this->user()->getAuthIdentifier(),
-        );
+        $where['user_id'] = $this->user()->getAuthIdentifier();
+        $where['person_in_charge'] = ['or', $this->user()->getAuthIdentifier()];
         // 查询数据
-        $tq_students = $student->selectData($request->input('page'), $request->input('limit'), $where);
+        $students = $student->selectData($request->input('page'), $request->input('limit'), $where);
         // 返回表格数据响应
-        return $this->returnTableData($tq_students, StudentResource::class);
+        return $this->returnTableData($students, StudentResource::class);
     }
 
     /**
@@ -150,10 +147,9 @@ class StudentController extends CommonController
      */
     public function store(StoreStudent $request, Student $student, StudentDiscount $student_discount)
     {
-        dd($request->all());
-
         try {
-            DB::transaction(function() use($request, $student) {
+            DB::transaction(function() use($request, $student, $student_discount) {
+                // 存储学员信息
                 $student->tq_id = strval($request->input('tq_id'));
                 $student->name = strval($request->input('name'));
                 $student->mobile = strval($request->input('mobile'));
@@ -179,7 +175,18 @@ class StudentController extends CommonController
                 $student->user_id = $this->user()->getAuthIdentifier();
                 $student->save();
 
+                // 存储学员优惠
+                $class_examination_discount_ids = is_null($request->input('class_examination_discount_ids')) ? [] : explode(',' ,strval($request->input('class_examination_discount_ids')));
+                $class_type_discount_ids = is_null($request->input('class_type_discount_ids')) ? [] : explode(',' ,strval($request->input('class_type_discount_ids')));
 
+                $student_discounts = [];
+                foreach($class_examination_discount_ids as $class_examination_discount_id) {
+                    $student_discounts = ['student_id' => $student->id, 'discount_id' => $class_examination_discount_id, 'discount_type' => CLASS_EXAMINATION_DISCOUNT];
+                }
+                foreach($class_type_discount_ids as $class_type_discount_id) {
+                    $student_discounts = ['student_id' => $student->id, 'discount_id' => $class_type_discount_id, 'discount_type' => CLASS_TYPE_DISCOUNT];
+                }
+                $student_discount->newQuery()->insert($student_discounts);
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());

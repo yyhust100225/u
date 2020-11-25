@@ -81,10 +81,6 @@
             cols: [[
                 // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
                 {field:'name', align:'center', title: '学员信息名称'},
-                {field:'examination_name', align:'center', title: '考试名称'},
-                {field:'class_type_name', align:'center', title: '班型名称'},
-                {field:'student_type_name', align:'center', title: '开课类型', width: '8%'},
-                {field:'department_name', align:'center', title: '开课校区', width: '10%'},
                 {field:'created_at', align:'center', title: '创建时间', width:'12%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],

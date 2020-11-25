@@ -15,7 +15,7 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('tq_id')->comment('TQ学员信息ID');
+            $table->string('tq_id')->comment('TQ学员信息ID');
             $table->string('name', 255)->comment('学员姓名');
             $table->string('mobile', 32)->default('')->comment('学员手机号');
             $table->string('ID_card_no', 32)->default('')->comment('学员身份证号');
