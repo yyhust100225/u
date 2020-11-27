@@ -13,6 +13,7 @@ return [
 
     'table' => [
         'time slot' => ':start 至 :end',
+        'full class course name' => '所属考试: :examination_name, 所属班型: :class_type_name, 所属班级: :class_course_name',
     ],
 
     'db' => [

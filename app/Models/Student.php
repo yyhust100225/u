@@ -100,4 +100,16 @@ class Student extends Common
     {
         return $this->belongsTo(Department::class, 'department_id');
     }
+
+    // 查询学员所享优惠
+    public function discounts()
+    {
+        return $this->hasMany(StudentDiscount::class, 'student_id');
+    }
+
+    // 验证TQID是否唯一
+    public function tqIdExists($tq_id)
+    {
+        return $this->where('tq_id', $tq_id)->exists();
+    }
 }

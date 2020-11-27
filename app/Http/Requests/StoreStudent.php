@@ -26,6 +26,8 @@ class StoreStudent extends FormRequest
     {
         return [
             'name' => ['required', 'min:2'],
+            'tq_id' => ['required', Rule::unique('students')],
+            'class_course_id' => ['required', 'integer', 'min:1'],
         ];
     }
 
@@ -33,6 +35,8 @@ class StoreStudent extends FormRequest
     {
         return [
             'name' => trans('validation.attributes.student_name'),
+            'tq_id' => trans('validation.attributes.tq_id'),
+            'class_course_id' => trans('validation.attributes.class_course_id'),
         ];
     }
 }

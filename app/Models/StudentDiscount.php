@@ -25,4 +25,10 @@ class StudentDiscount extends Common
 {
     use HasFactory;
     public $timestamps = false;
+
+    // 删除学员所享优惠
+    public function deleteDiscounts($student_id)
+    {
+        return $this->where('student_id', $student_id)->delete();
+    }
 }

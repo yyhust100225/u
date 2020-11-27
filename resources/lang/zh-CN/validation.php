@@ -131,6 +131,7 @@ return [
     'publish_date_format' => ':attribute 必须是 yyyy-MM-dd 日期格式',
     'book_sale_name_null' => '销售记录姓名不能为空, 如不需要, 请删除该行',
     'at_least_one' => '请至少选择一人推送要讯',
+    'tq_id_exists' => 'TQID已存在, 请选择其他学员录入',
 
     /*
     |--------------------------------------------------------------------------
@@ -254,5 +255,7 @@ return [
 
         // 学员管理
         'student_name' => '学员姓名',
+        'tq_id' => 'TQ学员信息ID',
+        'class_course_id' => '学员报班',
     ],
 ];

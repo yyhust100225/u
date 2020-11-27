@@ -16,110 +16,199 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">创建新班级</div>
+                <div class="layui-card-header">编辑学员</div>
                 <div class="layui-card-body">
                     <form class="layui-form" action="">
                         @csrf
                         <div class="layui-form-item">
-                            <div class="layui-col-md8">
-                                <label class="layui-form-label" for="name">班级名称</label>
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="name">学员名称</label>
                                 <div class="layui-input-block">
-                                    <input type="text" name="name" value="{{ $class_course->name }}" id="name" autocomplete="off" placeholder="请输入班级名称" class="layui-input">
+                                    <input type="text" name="name" value="{{ $student->name }}" id="name" autocomplete="off" placeholder="请输入学员名称" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="ID-card-no">身份证号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="ID_card_no" value="{{ $student->ID_card_no }}" id="ID-card-no" autocomplete="off" placeholder="请输入身份证号" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="mobile">学员电话</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="mobile" value="{{ $student->mobile }}" id="mobile" autocomplete="off" placeholder="请输入学员电话" class="layui-input">
                                 </div>
                             </div>
                         </div>
 
                         <div class="layui-form-item">
-                            <div class="layui-col-md6">
-                                <label class="layui-form-label" for="class-type-id">所属班型</label>
+                            <div class="layui-col-md12">
+                                <label class="layui-form-label" for="remark">学员备注</label>
                                 <div class="layui-input-block">
-                                    <select name="class_type_id" id="class-type-id" lay-search>
-                                        <option value="">请选择所属班型</option>
-                                        @foreach($class_types as $class_type)
-                                            <option @if($class_type->id == $class_course->class_type_id) selected @endif value="{{ $class_type->id }}">{{ $class_type->name }}</option>
+                                    <textarea class="layui-textarea" name="remark" id="remark">{{ $student->remark }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-col-md8">
+                                <label class="layui-form-label" for="class-course-id">考试/班型</label>
+                                <div class="layui-input-block">
+                                    <input type="hidden" name="class_course_id" value="{{ $student->class_course_id }}" id="class-course-id">
+                                    <input readonly type="text" name="class_course" value="{{ $student->class_course_name }}" id="class-course" placeholder="请选择考试+班型" class="layui-input" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-col-md5">
+                                <label class="layui-form-label" for="class-examination-discounts">考试优惠</label>
+                                <div class="layui-input-block">
+                                    <div id="class-examination-discounts"></div>
+                                </div>
+                            </div>
+
+                            <div class="layui-col-md5">
+                                <label class="layui-form-label" for="class-type-discounts">班型优惠</label>
+                                <div class="layui-input-block">
+                                    <div id="class-type-discounts"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="class-open-date">开课日期</label>
+                                <div class="layui-input-block">
+                                    <input type="text" readonly="readonly" name="class_open_date" value="{{ $student->class_open_date }}" id="class-open-date" autocomplete="off" placeholder="请输入开课日期" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="admission-ticket-no">准考证号</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="admission_ticket_no" value="{{ $student->admission_ticket_no }}" id="admission-ticket-no" autocomplete="off" placeholder="请输入准考证号" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="applicant-company">报考单位</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="applicant_company" value="{{ $student->applicant_company }}" id="applicant-company" autocomplete="off" placeholder="请输入报考单位" class="layui-input">
+                                </div>
+                            </div>
+
+                            <div class="layui-col-md4">
+                                <label class="layui-form-label" for="applicant-job">报考职位</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="applicant_job" value="{{ $student->applicant_job }}" id="applicant-job" autocomplete="off" placeholder="请输入报考职位" class="layui-input">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="applicant-num">招考人数</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="applicant_num" value="{{ $student->applicant_num }}" id="applicant-num" autocomplete="off" placeholder="请输入招考人数" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" for="applicant-percent-molecule">招考比例</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="applicant_percent_molecule" value="{{ $student->applicant_percent_molecule }}" id="applicant-percent-molecule" autocomplete="off" placeholder="请输入招考比例分子" class="layui-input">
+                                </div>
+                                <div class="layui-form-mid">/</div>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="applicant_percent_denominator" value="{{ $student->applicant_percent_denominator }}" id="applicant-percent-denominator" autocomplete="off" placeholder="请输入招考比例分母" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="rank">排名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="rank" value="{{ $student->rank }}" id="rank" autocomplete="off" placeholder="请输入排名" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">提示: 攻擂/守擂</div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="difference">分差</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="difference" value="{{ $student->difference }}" id="difference" autocomplete="off" placeholder="请输入分差" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" for="person-in-charge">咨询负责人</label>
+                                <div class="layui-input-inline">
+                                    <select name="person_in_charge" id="person-in-charge" lay-search>
+                                        <option value="">请选择咨询负责人</option>
+                                        @foreach($users as $user)
+                                            <option @if($user->id == $student->person_in_charge) selected @endif value="{{ $user->id }}">{{ $user->username }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <label class="layui-form-label" for="campus">归属地</label>
+                                <div class="layui-input-inline">
+                                    <select name="campus" id="campus" lay-search>
+                                        <option value="">请选择归属地</option>
+                                        @foreach($departments as $department)
+                                            <option @if($department->id == $student->campus) selected @endif value="{{ $department->id }}">{{ $department->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-
-                            <span class="layui-hide">hahahaha</span>
                         </div>
 
                         <div class="layui-form-item">
-                            <label class="layui-form-label" for="class-course-type-id">开课类型</label>
-                            <div class="layui-input-inline">
-                                <select name="class_course_type_id" id="class-course-type-id">
-                                    <option value="">请选择开课类型</option>
-                                    @foreach($class_course_types as $class_course_type)
-                                        <option @if($class_course_type->id == $class_course->class_course_type_id) selected @endif value="{{ $class_course_type->id }}">{{ $class_course_type->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label" for="receivable-amount">应收金额</label>
+                                <div class="layui-input-inline">
+                                    <input readonly="readonly" type="text" name="receivable_amount" value="{{ $student->receivable_amount }}" id="receivable-amount" class="layui-input" />
+                                </div>
 
-                            <label class="layui-form-label" for="department-id">开课校区</label>
-                            <div class="layui-input-inline">
-                                <select name="department_id" id="department-id">
-                                    <option value="">请选择开课校区</option>
-                                    @foreach($departments as $department)
-                                        <option @if($department->id == $class_course->department_id) selected @endif value="{{ $department->id }}">{{ $department->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                                <label class="layui-form-label" for="discount-amount">优惠金额</label>
+                                <div class="layui-input-inline">
+                                    <input readonly="readonly" type="text" name="discount_amount" value="{{ $student->discount_amount }}" id="discount-amount" class="layui-input" />
+                                </div>
 
-                        <div class="layui-form-item">
-                            <div class="layui-col-md8">
-                                <label class="layui-form-label" for="address">开课具体地点</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="address" value="{{ $class_course->address }}" id="address" autocomplete="off" placeholder="请输入开课具体地点" class="layui-input">
+                                <label class="layui-form-label" for="paid-amount">实缴金额</label>
+                                <div class="layui-input-inline">
+                                    <input readonly="readonly" type="text" name="paid_amount" value="{{ $student->paid_amount }}" id="paid-amount" class="layui-input" />
                                 </div>
                             </div>
                         </div>
 
                         <div class="layui-form-item">
-                            <div class="layui-col-md8">
-                                <label class="layui-form-label" for="class-course-date">开课具体日期</label>
-                                <div class="layui-input-block">
-                                    <input type="text" readonly name="class_course_date" id="class-course-date" autocomplete="off" placeholder="请选择开课具体日期" class="layui-input">
+                            <div class="layui-inline">
+                                <label class="layui-form-label" for="written-examination-refund">笔试退费</label>
+                                <div class="layui-input-inline">
+                                    <input readonly="readonly" type="text" name="written_examination_refund" value="{{ $student->written_examination_refund }}" id="written-examination-refund" class="layui-input" />
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" for="max-person-num">封班人数</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="max_person_num" value="{{ $class_course->max_person_num }}" id="max-person-num" autocomplete="off" placeholder="请输入封班人数" class="layui-input">
-                            </div>
-                        </div>
-
-                        <div class="layui-form-item">
-                            <label class="layui-form-label" for="in-hotel">学员是否住宿</label>
-                            <div class="layui-input-inline">
-                                <input type="radio" @if($class_course->in_hotel == 0) checked @endif name="in_hotel" value="0" id="in-hotel" title="否" lay-filter="in-hotel" />
-                                <input type="radio" @if($class_course->in_hotel == 1) checked @endif name="in_hotel" value="1" id="in-hotel" title="是" lay-filter="in-hotel" />
-                            </div>
-                        </div>
-
-                        <div class="layui-form-item @if($class_course->in_hotel == 0) layui-hide @endif" id="item-in-hotel-date">
-                            <label class="layui-form-label" for="in-hotel-date">学员入住日期</label>
-                            <div class="layui-input-inline">
-                                <input type="text" readonly name="in_hotel_date" id="in-hotel-date" placeholder="请选择学员入住日期" class="layui-input" />
-                            </div>
-                        </div>
-
-                        <div class="layui-form-item">
-                            <div class="layui-col-md8">
-                                <label class="layui-form-label" for="remark">备注</label>
-                                <div class="layui-input-block">
-                                    <textarea name="remark" id="remark" class="layui-textarea">{{ $class_course->remark }}</textarea>
+                                <label class="layui-form-label" for="interview-refund">面试退费</label>
+                                <div class="layui-input-inline">
+                                    <input readonly="readonly" type="text" name="interview_refund" value="{{ $student->interview_refund }}" id="interview-refund" class="layui-input" />
                                 </div>
+                                <div class="layui-form-mid layui-word-aux">非协议班退费为：<span>0.00</span>元</div>
                             </div>
                         </div>
 
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <input type="hidden" name="id" value="{{ $class_course->id }}" />
-                                <button lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
+                                <input type="hidden" name="id" value="{{ $student->id }}" />
+                                <button type="button" lay-submit class="layui-btn" lay-filter="form-submit">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
@@ -130,50 +219,84 @@
     </div>
 </div>
 
-<script src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script type="text/javascript" src="{{ asset('layuiadmin/layui/layui.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/xm-select.js') }}"></script>
+<script type="text/javascript" src="{{ asset('assets/js/custom.js') }}"></script>
 <script>
 
     // 页面路由
     let routes = {
-        class_courses: {
-            update: '{{ route_uri('class_courses.update') }}',
+        students: {
+            update: '{{ route_uri('students.update') }}',
+            class_courses: '{{ route_uri('students.class_courses') }}',
         }
     };
 
+    var course; // 考试班型班级信息
+
     layui.config({
         base: '/layuiadmin/layui/lay/modules/'
-    }).use(['form', 'laydatePro'], function(){
+    }).use(['form', 'laydate'], function(){
         let form = layui.form;
         let laydate = layui.laydate;
         let $ = layui.$;
 
         laydate.render({
-            elem: '#class-course-date',
+            elem: '#class-open-date',
+            type: 'date',
             trigger: 'click',
-            multiple: ',',
-            value: '{{ $class_course_dates }}',
             theme: '#393D49'
         });
 
-        laydate.render({
-            elem: '#in-hotel-date',
-            theme: '#393D49',
-            type: 'date',
-            value: "{{ $class_course->in_hotel_date }}",
-            trigger: 'click'
+        // 选择班级+班型
+        $('input#class-course').on('click', function(){
+            makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.class_courses), function(){
+                // 关闭选择对话
+                if(typeof course === 'undefined')
+                    return false;
+
+                // 选定考试班型班级后, 初始化选择各项金额
+                let html = '所属考试: ' + course.examination_name + ', 所属班型: ' + course.class_type_name + ', 所属班级: ' + course.name;
+                $('input#class-course').val(html);
+                $('input#class-course-id').val(course.id);
+                $('input#receivable-amount').val(parseFloat(course.total_tuition).toFixed(2));
+                $('input#paid-amount').val(parseFloat(course.total_tuition).toFixed(2));
+                $('input#written-examination-refund').val(parseFloat(course.written_examination_refund).toFixed(2));
+                $('input#interview-refund').val(parseFloat(course.interview_refund).toFixed(2));
+                $('input#discount-amount').val(parseFloat(0.00).toFixed(2));
+
+                // 考试优惠计算
+                let class_examination_discounts_options = new Array();
+                $.each(course.class_examination_discounts, function(k,v){
+                    let name = v.type.name + '(优惠:' + v.amount + '元)';
+                    class_examination_discounts_options.push({name: name, value: v.id, amount: v.amount});
+                });
+                let class_examination_discounts_select = multi_select_init('class-examination-discounts', 'class_examination_discount_ids', class_examination_discounts_options, function(data){
+                    calculate_amount(data.change[0].amount, data.isAdd);
+                });
+
+                // 班型优惠计算
+                let class_type_discounts_options = new Array();
+                $.each(course.class_type_discounts, function(k,v){
+                    let name = v.name + '(优惠:' + v.amount + '元)';
+                    class_type_discounts_options.push({name: name, value: v.id, amount: v.amount});
+                });
+                let class_type_discounts_select = multi_select_init('class-type-discounts', 'class_type_discount_ids', class_type_discounts_options, function(data){
+                    calculate_amount(data.change[0].amount, data.isAdd);
+                });
+            });
         });
 
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'PUT',
-                url: route(routes.class_courses.update),
+                url: route(routes.students.update),
                 data: obj.field,
                 dataType: 'json',
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
-                        var index = parent.layer.getFrameIndex(window.name);
+                        let index = parent.layer.getFrameIndex(window.name);
                         layer.msg(res.message, {time: 1000}, function(){
                             parent.layer.close(index);
                             parent.active.reload.call(this);
@@ -200,13 +323,52 @@
             });
             return false;
         });
-        form.on('radio(in-hotel)', function(data){
-            if(data.value === '1') {
-                $('div#item-in-hotel-date').removeClass('layui-hide');
-            } else if(data.value === '0') {
-                $('div#item-in-hotel-date').addClass('layui-hide');
-            }
+
+        // 初始化优惠条件多选框
+        let class_examination_discounts_init = multi_select_init('class-examination-discounts', 'class_examination_discount_ids', [
+            @foreach($class_examination_discounts as $class_examination_discount)
+                {name: '{{ $class_examination_discount->type->name }}(优惠:'+ {{ $class_examination_discount->amount }} +'元)', value: {{ $class_examination_discount->id }}, amount: {{ $class_examination_discount->amount }} @if(in_array($class_examination_discount->id, $student->class_examination_discount_ids)) ,selected: true @endif },
+            @endforeach
+        ], function(data){
+            calculate_amount(data.change[0].amount, data.isAdd);
         });
+        let class_type_discounts_init = multi_select_init('class-type-discounts', 'class_type_discount_ids', [
+            @foreach($class_type_discounts as $class_type_discount)
+                {name: '{{ $class_type_discount->name }}(优惠:'+ {{ $class_type_discount->amount }} +'元)', value: {{ $class_type_discount->id }}, amount: {{ $class_type_discount->amount }} @if(in_array($class_type_discount->id, $student->class_type_discount_ids)) ,selected: true @endif },
+            @endforeach
+        ], function(data){
+            calculate_amount(data.change[0].amount, data.isAdd);
+        });
+
+        /**
+         * 计算优惠价格
+         * @param discount_amount 本次操作优惠价格
+         * @param is_add 加或减
+         * @returns {boolean}
+         */
+        let calculate_amount = function(discount_amount, is_add)
+        {
+            if(parseFloat(discount_amount).toFixed(2) === 0.00)
+                return false;
+            // 现有优惠价格
+            let current_discount_amount = $('input#discount-amount').val();
+            // 原价格
+            let original_amount = $('input#receivable-amount').val();
+            // 实际应缴价格
+            let real_amount = $('input#paid-amount').val();
+            // 合计优惠价格
+            let total_discount_amount;
+            if(is_add) {
+                real_amount = floatObj.subtract(real_amount, discount_amount);
+                total_discount_amount = floatObj.add(current_discount_amount, discount_amount);
+            } else {
+                real_amount = floatObj.add(real_amount, discount_amount);
+                total_discount_amount = floatObj.subtract(current_discount_amount, discount_amount);
+            }
+            $('input#discount-amount').val(parseFloat(total_discount_amount).toFixed(2));
+            $('input#paid-amount').val(parseFloat(real_amount).toFixed(2));
+            return true;
+        }
     });
 </script>
 

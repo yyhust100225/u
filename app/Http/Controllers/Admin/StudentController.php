@@ -34,7 +34,7 @@ class StudentController extends CommonController
     }
 
     /**
-     * 班级列表页
+     * 学员列表页
      * @return Application|Factory|View
      */
     public function list()
@@ -43,7 +43,7 @@ class StudentController extends CommonController
     }
 
     /**
-     * 班级列表数据
+     * 学员列表数据
      * @param Request $request
      * @param Student $student
      * @return JsonResponse
@@ -89,14 +89,15 @@ class StudentController extends CommonController
     }
 
     /**
-     * 创建新班级
+     * 创建新学员
      * @param $id
+     * @param Student $student
      * @param Department $department
      * @param User $user
      * @param TQ $tq
      * @return Application|Factory|View
      */
-    public function create($id, Department $department, User $user, TQ $tq)
+    public function create($id, Student $student, Department $department, User $user, TQ $tq)
     {
         try {
             $tq_student = $tq->newQuery()->findOrFail($id);
@@ -104,6 +105,12 @@ class StudentController extends CommonController
             Log::error(trans('message.log.an empty query occurred'), ['class' => __CLASS__, 'id' => $id]);
             abort(404);
         }
+
+        // 判断TQID是否已录入
+        if($student->tqIdExists($tq_student->tq_id)) {
+            abort(403, trans('validation.tq_id_exists'));
+        }
+
         $departments = $department->all();
         $users = $user->all();
         return view('admin.student.create', [
@@ -114,7 +121,7 @@ class StudentController extends CommonController
     }
 
     /**
-     * 选择班级表格表单
+     * 选择学员表格表单
      * @return Application|Factory|\Illuminate\Contracts\View\View
      */
     public function classCourses()
@@ -123,7 +130,7 @@ class StudentController extends CommonController
     }
 
     /**
-     * 查询班级数据
+     * 查询学员数据
      * @param Request $request
      * @param ClassCourse $class_course
      * @return JsonResponse
@@ -139,7 +146,7 @@ class StudentController extends CommonController
     }
 
     /**
-     * 存储新班级
+     * 存储新学员
      * @param StoreStudent $request
      * @param Student $student
      * @param StudentDiscount $student_discount
@@ -181,10 +188,10 @@ class StudentController extends CommonController
 
                 $student_discounts = [];
                 foreach($class_examination_discount_ids as $class_examination_discount_id) {
-                    $student_discounts = ['student_id' => $student->id, 'discount_id' => $class_examination_discount_id, 'discount_type' => CLASS_EXAMINATION_DISCOUNT];
+                    $student_discounts[] = ['student_id' => $student->id, 'discount_id' => $class_examination_discount_id, 'discount_type' => CLASS_EXAMINATION_DISCOUNT];
                 }
                 foreach($class_type_discount_ids as $class_type_discount_id) {
-                    $student_discounts = ['student_id' => $student->id, 'discount_id' => $class_type_discount_id, 'discount_type' => CLASS_TYPE_DISCOUNT];
+                    $student_discounts[] = ['student_id' => $student->id, 'discount_id' => $class_type_discount_id, 'discount_type' => CLASS_TYPE_DISCOUNT];
                 }
                 $student_discount->newQuery()->insert($student_discounts);
             });
@@ -197,70 +204,108 @@ class StudentController extends CommonController
     }
 
     /**
-     * 编辑班级
+     * 编辑学员
      * @param $id
      * @param Student $student
-     * @param ClassType $class_type
-     * @param StudentType $student_type
      * @param Department $department
+     * @param User $user
      * @return Application|Factory|View
      */
-    public function edit($id, Student $student, ClassType $class_type, StudentType $student_type, Department $department)
+    public function edit($id, Student $student, Department $department, User $user)
     {
-        $student = $student->newQuery()->findOrFail($id);
-        $student_dates = implode(",", $student->student_dates()->toArray());
-        $class_types = $class_type->allUsable();
-        $student_types = $student_type->all();
-        $departments = $department->all();
+        try {
+            $student = $student->newQuery()->findOrFail($id);
+        } catch (Throwable $exception) {
+            Log::error(trans('message.log.an empty query occurred'), ['class' => __CLASS__, 'id' => $id]);
+            abort(404);
+        }
 
+        // 当前学生考试+班型+班级名称
+        $student->class_course_name = trans('message.table.full class course name', [
+            'examination_name' => $student->class_course->class_type->examination->name,
+            'class_type_name' => $student->class_course->class_type->name,
+            'class_course_name' => $student->class_course->name,
+        ]);
+
+        // 学生已享优惠
+        $student->class_examination_discount_ids = $student->discounts->where('discount_type', CLASS_EXAMINATION_DISCOUNT)->pluck('discount_id')->toArray();
+        $student->class_type_discount_ids = $student->discounts->where('discount_type', CLASS_TYPE_DISCOUNT)->pluck('discount_id')->toArray();
+
+        // 考试优惠
+        $class_examination_discounts = $student->class_course->class_type->examination->discountsWithName();
+        $class_type_discounts = $student->class_course->class_type->discounts;
+
+        $departments = $department->all();
+        $users = $user->all();
         return view('admin.student.edit', [
-            'student' => $student,
-            'class_types' => $class_types,
-            'student_types' => $student_types,
             'departments' => $departments,
-            'student_dates' => $student_dates
+            'users' => $users,
+            'student' => $student,
+            'class_examination_discounts' => $class_examination_discounts,
+            'class_type_discounts' => $class_type_discounts,
         ]);
     }
 
     /**
-     * 更新班级
+     * 更新学员
      * @param UpdateStudent $request
      * @param Student $student
-     * @param StudentDate $student_date
+     * @param StudentDiscount $student_discount
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function update(UpdateStudent $request, Student $student, StudentDate $student_date)
+    public function update(UpdateStudent $request, Student $student, StudentDiscount $student_discount)
     {
         try {
             $student = $student->newQuery()->find($request->input('id'));
         } catch(ModelNotFoundException $exception) {
+            Log::error(trans('message.log.an empty query occurred'), ['class' => __CLASS__, 'id' => $request->input('id')]);
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        $dates = explode(',', strval($request->input('student_date')));
-
         try {
-            DB::transaction(function() use($request, $student, $dates, $student_date) {
+            DB::transaction(function() use($request, $student, $student_discount) {
+                // 存储学员信息
+                $student->tq_id = strval($request->input('tq_id'));
                 $student->name = strval($request->input('name'));
-                $student->class_type_id = intval($request->input('class_type_id'));
-                $student->student_type_id = intval($request->input('student_type_id'));
-                $student->department_id = intval($request->input('department_id'));
-                $student->address = strval($request->input('address'));
-                $student->day_num = count($dates);
-                $student->max_person_num = intval($request->input('max_person_num'));
-                $student->in_hotel = intval($request->input('in_hotel'));
-                $student->in_hotel_date = $student->in_hotel == 1 ? $request->input('in_hotel_date') : null;
+                $student->mobile = strval($request->input('mobile'));
+                $student->ID_card_no = strval($request->input('ID_card_no'));
                 $student->remark = strval($request->input('remark'));
+                $student->class_course_id = intval($request->input('class_course_id'));
+                $student->class_open_date = $request->input('class_open_date');
+                $student->admission_ticket_no = strval($request->input('admission_ticket_no'));
+                $student->applicant_company = strval($request->input('applicant_company'));
+                $student->applicant_job = strval($request->input('applicant_job'));
+                $student->applicant_num = intval($request->input('applicant_num'));
+                $student->applicant_percent_molecule = intval($request->input('applicant_percent_molecule'));
+                $student->applicant_percent_denominator = intval($request->input('applicant_percent_denominator'));
+                $student->rank = intval($request->input('rank'));
+                $student->difference = intval($request->input('difference'));
+                $student->person_in_charge = intval($request->input('person_in_charge'));
+                $student->campus = intval($request->input('campus'));
+                $student->receivable_amount = floatval($request->input('receivable_amount'));
+                $student->discount_amount = floatval($request->input('discount_amount'));
+                $student->paid_amount = floatval($request->input('paid_amount'));
+                $student->written_examination_refund = floatval($request->input('written_examination_refund'));
+                $student->interview_refund = floatval($request->input('interview_refund'));
+                $student->user_id = $this->user()->getAuthIdentifier();
                 $student->save();
 
-                $student_date->deleteFromId($student->id);
-                foreach($dates as $date) {
-                    $student_date->insert([
-                        'student_id' => $student->id,
-                        'student_date' => $date,
-                    ]);
+                // 删除原有优惠
+                $student_discount->deleteDiscounts($student->id);
+
+                // 存储学员优惠
+                $class_examination_discount_ids = is_null($request->input('class_examination_discount_ids')) ? [] : explode(',' ,strval($request->input('class_examination_discount_ids')));
+                $class_type_discount_ids = is_null($request->input('class_type_discount_ids')) ? [] : explode(',' ,strval($request->input('class_type_discount_ids')));
+
+                $student_discounts = [];
+                foreach($class_examination_discount_ids as $class_examination_discount_id) {
+                    $student_discounts[] = ['student_id' => $student->id, 'discount_id' => $class_examination_discount_id, 'discount_type' => CLASS_EXAMINATION_DISCOUNT];
                 }
+                foreach($class_type_discount_ids as $class_type_discount_id) {
+                    $student_discounts[] = ['student_id' => $student->id, 'discount_id' => $class_type_discount_id, 'discount_type' => CLASS_TYPE_DISCOUNT];
+                }
+                $student_discount->newQuery()->insert($student_discounts);
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());
@@ -271,14 +316,14 @@ class StudentController extends CommonController
     }
 
     /**
-     * 删除班级
+     * 删除学员
      * @param Request $request
      * @param Student $student
-     * @param StudentDate $student_date
+     * @param StudentDiscount $student_discount
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function delete(Request $request, Student $student, StudentDate $student_date)
+    public function delete(Request $request, Student $student, StudentDiscount $student_discount)
     {
         try {
             $student = $student->newQuery()->find($request->input('id'));
@@ -287,15 +332,14 @@ class StudentController extends CommonController
         }
 
         try {
-            DB::transaction(function() use($request, $student, $student_date) {
-                $student_date->deleteFromId($student->id);
+            DB::transaction(function() use($request, $student, $student_discount) {
+                $student_discount->deleteDiscounts($student->id);
                 $student->delete();
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());
             return $this->returnFailedResponse(trans('request.failed'), 500);
         }
-
         return $this->returnOperationResponse(true, $request);
     }
 }
