@@ -346,12 +346,11 @@
             // 合计优惠价格
             let total_discount_amount;
             if(is_add) {
-                real_amount = floatObj.subtract(real_amount, discount_amount);
                 total_discount_amount = floatObj.add(current_discount_amount, discount_amount);
             } else {
-                real_amount = floatObj.add(real_amount, discount_amount);
                 total_discount_amount = floatObj.subtract(current_discount_amount, discount_amount);
             }
+            real_amount = floatObj.subtract(original_amount, total_discount_amount);
             $('input#discount-amount').val(parseFloat(total_discount_amount).toFixed(2));
             $('input#paid-amount').val(parseFloat(real_amount).toFixed(2));
             return true;

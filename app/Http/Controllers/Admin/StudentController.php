@@ -11,7 +11,6 @@ use App\Http\Resources\TQStudentResource;
 use App\Models\ClassCourse;
 use App\Models\Student;
 use App\Models\StudentDiscount;
-use App\Models\ClassType;
 use App\Models\Department;
 use App\Models\TQ;
 use App\Models\User;

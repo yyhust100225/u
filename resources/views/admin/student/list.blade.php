@@ -79,10 +79,22 @@
             toolbar: '#table-toolbar',
             url: route(routes.students.data),
             cols: [[
+                { align :"center",title:"学员信息",colspan:2},
+                { align :"center",title:"报班信息",colspan:5},
+                // { align :"center",title:"缴费信息",colspan:14}
+                {field:'created_at', align:'center', title: '创建时间', width:'12%', rowspan: 2},
+                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar', rowspan: 2}
+            ],[
                 // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', align:'center', title: '学员信息名称'},
-                {field:'created_at', align:'center', title: '创建时间', width:'12%'},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                {field:'name', align:'center', title: '学员姓名'},
+                {field:'mobile', align:'center', title: '学员电话'},
+                {field:'examination_and_class_type', align:'center', title: '考试+班型'},
+                {field:'class_detail', align:'center', title: '报班明细'},
+                {field:'class_open_date', align:'center', title: '开课日期'},
+                {field:'', align:'center', title: '是否入班', templet: function(data){
+                    return '未入班';
+                }},
+                {field:'', align:'center', title: '班级名称'},
             ]],
             page: true,
             limit: 14,
