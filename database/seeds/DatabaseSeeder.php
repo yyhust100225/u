@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
 //            RolesTableSeeder::class,
 //            PermissionsTableSeeder::class,
 //            \Database\Seeders\AnnouncementTypeSeeder::class,
-        \Database\Seeders\ClassCourseTypesTableSeeder::class,
+//        \Database\Seeders\ClassCourseTypesTableSeeder::class,
+//        \Database\Seeders\CourseFeesTableSeeder::class,
+            \Database\Seeders\TeacherGroupsTableSeeder::class,
         ]);
     }
 }

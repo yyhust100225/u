@@ -197,6 +197,19 @@
                         </dl>
                     </li>
 
+                    {{-- 教务管理 --}}
+                    <li data-name="home" class="layui-nav-item">
+                        <a href="javascript:" lay-tips="教务管理" lay-direction="2">
+                            <i class="layui-icon layui-icon-template-1"></i>
+                            <cite>教务管理</cite>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd data-name="teachers">
+                                <a lay-href="teachers">讲师档案</a>
+                            </dd>
+                        </dl>
+                    </li>
+
                     {{-- 行政结构 --}}
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="行政结构" lay-direction="2">
@@ -212,7 +225,7 @@
                     {{-- 人事部 --}}
                     <li data-name="home" class="layui-nav-item">
                         <a href="javascript:;" lay-tips="人事部" lay-direction="2">
-                            <i class="layui-icon layui-icon-user"></i>
+                            <i class="layui-icon layui-icon-star-fill"></i>
                             <cite>人事部</cite>
                         </a>
                         <dl class="layui-nav-child">

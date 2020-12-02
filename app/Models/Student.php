@@ -66,6 +66,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Student whereUserId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Student whereWrittenExaminationRefund($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\ClassCourse $class_course
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\StudentDiscount[] $discounts
+ * @property-read int|null $discounts_count
  */
 class Student extends Common
 {

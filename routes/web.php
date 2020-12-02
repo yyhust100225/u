@@ -298,5 +298,20 @@ Route::namespace('Admin')->group(function(){
         Route::get('students/edit/{id}', 'StudentController@edit')->name('students.edit');
         Route::put('students/update', 'StudentController@update')->name('students.update');
         Route::delete('students/delete', 'StudentController@delete')->name('students.delete');
+
+        /**
+         * =====================================
+         * 教务管理                            *
+         * =====================================
+         */
+
+        // 教师档案
+        Route::get('teachers', 'TeacherController@list')->name('teachers.list');
+        Route::get('teachers/data', 'TeacherController@data')->name('teachers.data');
+        Route::get('teachers/create', 'TeacherController@create')->name('teachers.create');
+        Route::post('teachers/store', 'TeacherController@store')->name('teachers.store');
+        Route::get('teachers/edit/{id}', 'TeacherController@edit')->name('teachers.edit');
+        Route::put('teachers/update', 'TeacherController@update')->name('teachers.update');
+        Route::delete('teachers/delete', 'TeacherController@delete')->name('teachers.delete');
     });
 });
