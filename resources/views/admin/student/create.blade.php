@@ -250,6 +250,7 @@
 
         // 选择班级+班型
         $('input#class-course').on('click', function(){
+            course = undefined;
             makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.class_courses), function(){
                 // 关闭选择对话
                 if(typeof course === 'undefined')
@@ -260,12 +261,13 @@
                 $('input#class-course').val(html);
                 $('input#class-course-id').val(course.id);
                 $('input#receivable-amount').val(parseFloat(course.total_tuition).toFixed(2));
+                $('input#discount-amount').val(0.00);
                 $('input#paid-amount').val(parseFloat(course.total_tuition).toFixed(2));
                 $('input#written-examination-refund').val(parseFloat(course.written_examination_refund).toFixed(2));
                 $('input#interview-refund').val(parseFloat(course.interview_refund).toFixed(2));
 
                 // 考试优惠计算
-                let class_examination_discounts_options = new Array();
+                let class_examination_discounts_options = [];
                 $.each(course.class_examination_discounts, function(k,v){
                     let name = v.type.name + '(优惠:' + v.amount + '元)';
                     class_examination_discounts_options.push({name: name, value: v.id, amount: v.amount});
@@ -275,7 +277,7 @@
                 });
 
                 // 班型优惠计算
-                let class_type_discounts_options = new Array();
+                let class_type_discounts_options = [];
                 $.each(course.class_type_discounts, function(k,v){
                     let name = v.name + '(优惠:' + v.amount + '元)';
                     class_type_discounts_options.push({name: name, value: v.id, amount: v.amount});
@@ -335,14 +337,12 @@
          */
         let calculate_amount = function(discount_amount, is_add)
         {
-            if(parseFloat(discount_amount).toFixed(2) === 0.00)
+            if(parseFloat(discount_amount).toFixed(2) === '0.00')
                 return false;
             // 现有优惠价格
             let current_discount_amount = $('input#discount-amount').val();
             // 原价格
             let original_amount = $('input#receivable-amount').val();
-            // 实际应缴价格
-            let real_amount = $('input#paid-amount').val();
             // 合计优惠价格
             let total_discount_amount;
             if(is_add) {
@@ -350,7 +350,7 @@
             } else {
                 total_discount_amount = floatObj.subtract(current_discount_amount, discount_amount);
             }
-            real_amount = floatObj.subtract(original_amount, total_discount_amount);
+            let real_amount = floatObj.subtract(original_amount, total_discount_amount);
             $('input#discount-amount').val(parseFloat(total_discount_amount).toFixed(2));
             $('input#paid-amount').val(parseFloat(real_amount).toFixed(2));
             return true;

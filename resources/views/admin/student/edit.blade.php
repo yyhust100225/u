@@ -250,6 +250,7 @@
 
         // 选择班级+班型
         $('input#class-course').on('click', function(){
+            course = undefined;
             makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.class_courses), function(){
                 // 关闭选择对话
                 if(typeof course === 'undefined')

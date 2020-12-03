@@ -25,7 +25,7 @@ class UpdateTeacher extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:2', Rule::unique('teachers')->ignore($this->input('id'))],
+            'name' => ['required', 'min:2'],
         ];
     }
 

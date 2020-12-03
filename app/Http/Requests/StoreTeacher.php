@@ -25,7 +25,7 @@ class StoreTeacher extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:2', Rule::unique('teachers')],
+            'name' => ['required', 'min:2'],
         ];
     }
 

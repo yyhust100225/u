@@ -6,11 +6,11 @@ use App\Exceptions\DataNotExistsException;
 use App\Http\Requests\StoreTeacher;
 use App\Http\Requests\UpdateTeacher;
 use App\Http\Resources\TeacherResource;
+use App\Models\CourseFee;
 use App\Models\Teacher;
-use App\Models\TeacherDate;
-use App\Models\TeacherType;
 use App\Models\ClassType;
 use App\Models\Department;
+use App\Models\TeacherGroup;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -56,20 +56,17 @@ class TeacherController extends CommonController
 
     /**
      * 创建新讲师
-     * @param ClassType $class_type
-     * @param TeacherType $teacher_type
-     * @param Department $department
+     * @param CourseFee $course_fee
+     * @param TeacherGroup $teacher_group
      * @return Application|Factory|View
      */
-    public function create(ClassType $class_type, TeacherType $teacher_type, Department $department)
+    public function create(CourseFee $course_fee, TeacherGroup $teacher_group)
     {
-        $class_types = $class_type->allUsable();
-        $teacher_types = $teacher_type->all();
-        $departments = $department->all();
+        $course_fees = $course_fee->all();
+        $teacher_groups = $teacher_group->all();
         return view('admin.teacher.create', [
-            'class_types' => $class_types,
-            'teacher_types' => $teacher_types,
-            'departments' => $departments,
+            'course_fees' => $course_fees,
+            'teacher_groups' => $teacher_groups,
         ]);
     }
 
@@ -77,65 +74,38 @@ class TeacherController extends CommonController
      * 存储新讲师
      * @param StoreTeacher $request
      * @param Teacher $teacher
-     * @param TeacherDate $teacher_date
      * @return JsonResponse
      */
-    public function store(StoreTeacher $request, Teacher $teacher, TeacherDate $teacher_date)
+    public function store(StoreTeacher $request, Teacher $teacher)
     {
-        $dates = explode(',', strval($request->input('teacher_date')));
+        $teacher->name = strval($request->input('name'));
+        $teacher->nickname = strval($request->input('nickname'));
+        $teacher->tel = strval($request->input('tel'));
+        $teacher->course_fee_id = intval($request->input('course_fee_id'));
+        $teacher->teacher_group_id = intval($request->input('teacher_group_id'));
+        $teacher->remark = strval($request->input('remark'));
+        $teacher->user_id = $this->user()->getAuthIdentifier();
 
-        try {
-            DB::transaction(function() use($request, $teacher, $dates, $teacher_date) {
-                $teacher->name = strval($request->input('name'));
-                $teacher->class_type_id = intval($request->input('class_type_id'));
-                $teacher->teacher_type_id = intval($request->input('teacher_type_id'));
-                $teacher->department_id = intval($request->input('department_id'));
-                $teacher->address = strval($request->input('address'));
-                $teacher->day_num = count($dates);
-                $teacher->max_person_num = intval($request->input('max_person_num'));
-                $teacher->in_hotel = intval($request->input('in_hotel'));
-                $teacher->in_hotel_date = $teacher->in_hotel == 1 ? $request->input('in_hotel_date') : null;
-                $teacher->remark = strval($request->input('remark'));
-                $teacher->save();
-
-                foreach($dates as $date) {
-                    $teacher_date->insert([
-                        'teacher_id' => $teacher->id,
-                        'teacher_date' => $date,
-                    ]);
-                }
-            });
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return $this->returnFailedResponse(trans('request.failed'), 500);
-        }
-
-        return $this->returnOperationResponse(true, $request);
+        return $this->returnOperationResponse($teacher->save(), $request);
     }
 
     /**
      * 编辑讲师
      * @param $id
      * @param Teacher $teacher
-     * @param ClassType $class_type
-     * @param TeacherType $teacher_type
-     * @param Department $department
+     * @param CourseFee $course_fee
+     * @param TeacherGroup $teacher_group
      * @return Application|Factory|View
      */
-    public function edit($id, Teacher $teacher, ClassType $class_type, TeacherType $teacher_type, Department $department)
+    public function edit($id, Teacher $teacher, CourseFee $course_fee, TeacherGroup $teacher_group)
     {
         $teacher = $teacher->newQuery()->findOrFail($id);
-        $teacher_dates = implode(",", $teacher->teacher_dates()->toArray());
-        $class_types = $class_type->allUsable();
-        $teacher_types = $teacher_type->all();
-        $departments = $department->all();
-
+        $course_fees = $course_fee->all();
+        $teacher_groups = $teacher_group->all();
         return view('admin.teacher.edit', [
             'teacher' => $teacher,
-            'class_types' => $class_types,
-            'teacher_types' => $teacher_types,
-            'departments' => $departments,
-            'teacher_dates' => $teacher_dates
+            'course_fees' => $course_fees,
+            'teacher_groups' => $teacher_groups,
         ]);
     }
 
@@ -143,11 +113,10 @@ class TeacherController extends CommonController
      * 更新讲师
      * @param UpdateTeacher $request
      * @param Teacher $teacher
-     * @param TeacherDate $teacher_date
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function update(UpdateTeacher $request, Teacher $teacher, TeacherDate $teacher_date)
+    public function update(UpdateTeacher $request, Teacher $teacher)
     {
         try {
             $teacher = $teacher->newQuery()->find($request->input('id'));
@@ -155,47 +124,24 @@ class TeacherController extends CommonController
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        $dates = explode(',', strval($request->input('teacher_date')));
+        $teacher->name = strval($request->input('name'));
+        $teacher->nickname = strval($request->input('nickname'));
+        $teacher->tel = strval($request->input('tel'));
+        $teacher->course_fee_id = intval($request->input('course_fee_id'));
+        $teacher->teacher_group_id = intval($request->input('teacher_group_id'));
+        $teacher->remark = strval($request->input('remark'));
 
-        try {
-            DB::transaction(function() use($request, $teacher, $dates, $teacher_date) {
-                $teacher->name = strval($request->input('name'));
-                $teacher->class_type_id = intval($request->input('class_type_id'));
-                $teacher->teacher_type_id = intval($request->input('teacher_type_id'));
-                $teacher->department_id = intval($request->input('department_id'));
-                $teacher->address = strval($request->input('address'));
-                $teacher->day_num = count($dates);
-                $teacher->max_person_num = intval($request->input('max_person_num'));
-                $teacher->in_hotel = intval($request->input('in_hotel'));
-                $teacher->in_hotel_date = $teacher->in_hotel == 1 ? $request->input('in_hotel_date') : null;
-                $teacher->remark = strval($request->input('remark'));
-                $teacher->save();
-
-                $teacher_date->deleteFromId($teacher->id);
-                foreach($dates as $date) {
-                    $teacher_date->insert([
-                        'teacher_id' => $teacher->id,
-                        'teacher_date' => $date,
-                    ]);
-                }
-            });
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return $this->returnFailedResponse(trans('request.failed'), 500);
-        }
-
-        return $this->returnOperationResponse(true, $request);
+        return $this->returnOperationResponse($teacher->save(), $request);
     }
 
     /**
      * 删除讲师
      * @param Request $request
      * @param Teacher $teacher
-     * @param TeacherDate $teacher_date
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function delete(Request $request, Teacher $teacher, TeacherDate $teacher_date)
+    public function delete(Request $request, Teacher $teacher)
     {
         try {
             $teacher = $teacher->newQuery()->find($request->input('id'));
@@ -203,16 +149,6 @@ class TeacherController extends CommonController
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        try {
-            DB::transaction(function() use($request, $teacher, $teacher_date) {
-                $teacher_date->deleteFromId($teacher->id);
-                $teacher->delete();
-            });
-        } catch (Throwable $e) {
-            Log::error($e->getMessage());
-            return $this->returnFailedResponse(trans('request.failed'), 500);
-        }
-
-        return $this->returnOperationResponse(true, $request);
+        return $this->returnOperationResponse($teacher->delete(), $request);
     }
 }
