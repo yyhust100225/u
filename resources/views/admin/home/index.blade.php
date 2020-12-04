@@ -208,6 +208,11 @@
                                 <a lay-href="teachers">讲师档案</a>
                             </dd>
                         </dl>
+                        <dl class="layui-nav-child">
+                            <dd data-name="subjects">
+                                <a lay-href="subjects">科目管理</a>
+                            </dd>
+                        </dl>
                     </li>
 
                     {{-- 行政结构 --}}

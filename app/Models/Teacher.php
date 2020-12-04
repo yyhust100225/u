@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Teacher whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Teacher whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\CourseFee $course_fee
+ * @property-read \App\Models\TeacherGroup $group
  */
 class Teacher extends Common
 {

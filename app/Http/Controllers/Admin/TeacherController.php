@@ -49,9 +49,9 @@ class TeacherController extends CommonController
         // 制作搜索条件
         $where = $this->makeSearchConditions($request->input('where'));
         // 查询数据
-        $tq_students = $teacher->selectData($request->input('page'), $request->input('limit'), $where);
+        $teachers = $teacher->selectData($request->input('page'), $request->input('limit'), $where);
         // 返回表格数据响应
-        return $this->returnTableData($tq_students, TeacherResource::class);
+        return $this->returnTableData($teachers, TeacherResource::class);
     }
 
     /**

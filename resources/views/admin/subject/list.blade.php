@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>班级列表</title>
+    <title>科目列表</title>
     <meta name="renderer" content="webkit">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -17,14 +17,13 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">班级列表</div>
+                <div class="layui-card-header">科目列表</div>
                 <div class="layui-card-body">
 
                     <form class="" id="table-search-form" style="margin-bottom: 10px;">
-
                         <div class="layui-inline">
                             <label>
-                                <input class="layui-input" name="like|name" autocomplete="off" placeholder="班级名称">
+                                <input class="layui-input" name="like|name" autocomplete="off" placeholder="科目名称">
                             </label>
                         </div>
 
@@ -35,7 +34,7 @@
 
                     <script type="text/html" id="table-toolbar">
                         <div class="layui-btn-container">
-                            <button class="layui-btn layui-btn-sm" lay-event="create">新增班级</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="create">新增科目</button>
                             <button class="layui-btn layui-btn-sm" lay-event="refresh" ><i class="layui-icon layui-icon-refresh-3"></i></button>
                         </div>
                     </script>
@@ -57,11 +56,11 @@
 
     // 页面路由
     var routes = {
-        class_courses: {
-            data: '{{ route_uri('class_courses.data') }}',
-            create: '{{ route_uri('class_courses.create') }}',
-            edit: '{{ route_uri('class_courses.edit') }}',
-            delete: '{{ route_uri('class_courses.delete') }}',
+        subjects: {
+            data: '{{ route_uri('subjects.data') }}',
+            create: '{{ route_uri('subjects.create') }}',
+            edit: '{{ route_uri('subjects.edit') }}',
+            delete: '{{ route_uri('subjects.delete') }}',
         }
     };
 
@@ -79,15 +78,11 @@
             elem: '#data-table',
             id: 'data-table',
             toolbar: '#table-toolbar',
-            url: route(routes.class_courses.data),
+            url: route(routes.subjects.data),
             cols: [[
                 // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', align:'center', title: '班级名称'},
-                {field:'examination_name', align:'center', title: '考试名称'},
-                {field:'class_type_name', align:'center', title: '班型名称'},
-                {field:'class_course_type_name', align:'center', title: '开课类型', width: '8%'},
-                {field:'department_name', align:'center', title: '开课校区', width: '10%'},
-                {field:'created_at', align:'center', title: '创建时间', width:'12%'},
+                {field:'name', align: 'center', title: '科目姓名'},
+                {field:'created_at', align: 'center', title: '创建时间', width:'15%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
@@ -98,7 +93,7 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_courses.create));
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.subjects.create));
                 }break;
                 case 'refresh': {
                     table.reload('data-table');
@@ -110,13 +105,13 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_courses.edit, {id: obj.data.id}));
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.subjects.edit, {id: obj.data.id}));
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
                         $.ajax({
                             type: 'DELETE',
-                            url: route(routes.class_courses.delete),
+                            url: route(routes.subjects.delete),
                             data: {id: obj.data.id},
                             dataType: 'json',
                             async: false,

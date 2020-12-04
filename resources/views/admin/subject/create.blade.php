@@ -16,55 +16,33 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <div class="layui-card-header">创建新讲师</div>
+                <div class="layui-card-header">创建新科目</div>
                 <div class="layui-card-body">
                 <form class="layui-form" action="">
                     @csrf
                     <div class="layui-form-item">
-                        <label class="layui-form-label" for="name">讲师姓名</label>
+                        <label class="layui-form-label" for="name">科目姓名</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="name" id="name" autocomplete="off" placeholder="请输入讲师名称" class="layui-input">
-                        </div>
-
-                        <label class="layui-form-label" for="nickname">讲师艺名</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="nickname" id="nickname" autocomplete="off" placeholder="请输入讲师艺名" class="layui-input">
+                            <input type="text" name="name" id="name" autocomplete="off" placeholder="请输入科目名称" class="layui-input">
                         </div>
                     </div>
 
                     <div class="layui-form-item">
-                        <div class="layui-col-md6">
-                            <label class="layui-form-label" for="tel">联系方式</label>
+                        <div class="layui-col-md12">
+                            <label class="layui-form-label">科目讲师</label>
                             <div class="layui-input-block">
-                                <input type="text" name="tel" id="tel" autocomplete="off" placeholder="请输入讲师联系方式" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <div class="layui-col-md6">
-                            <label class="layui-form-label" for="course-fee-id">课时费</label>
-                            <div class="layui-input-block">
-                                <select name="course_fee_id" id="course-fee-id">
-                                    <option value="">请选择讲师课时费</option>
-                                    @foreach($course_fees as $course_fee)
-                                        <option value="{{ $course_fee->id }}">{{ $course_fee->name }} : {{ $course_fee->fee }}元</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <div class="layui-col-md6">
-                            <label class="layui-form-label" for="teacher-group-id">讲师分组</label>
-                            <div class="layui-input-block">
-                                <select name="teacher_group_id" id="teacher-group-id">
-                                    <option value="">请选择讲师分组</option>
-                                    @foreach($teacher_groups as $teacher_group)
-                                        <option value="{{ $teacher_group->id }}">{{ $teacher_group->name }}</option>
-                                    @endforeach
-                                </select>
+                                @foreach($teacher_groups as $teacher_group)
+                                    @if(!$teacher_group->teachers->isEmpty())
+                                        <fieldset class="layui-elem-field">
+                                            <legend>{{ $teacher_group->name }}</legend>
+                                            <div class="layui-field-box">
+                                                @foreach($teacher_group->teachers as $teacher)
+                                                    <input type="checkbox" name="teacher_ids[]" value="{{ $teacher->id }}" title="{{ $teacher->name }}[{{ $teacher->course_fee->name }}:{{ $teacher->course_fee->fee }}元]">
+                                                @endforeach
+                                            </div>
+                                        </fieldset>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -97,9 +75,9 @@
 
     // 页面路由
     let routes = {
-        teachers: {
-            list: '{{ route_uri('teachers.list') }}',
-            store: '{{ route_uri('teachers.store') }}',
+        subjects: {
+            list: '{{ route_uri('subjects.list') }}',
+            store: '{{ route_uri('subjects.store') }}',
         }
     };
 
@@ -110,7 +88,7 @@
         form.on('submit(form-submit)', function(obj){
             $.ajax({
                 type: 'POST',
-                url: route(routes.teachers.store),
+                url: route(routes.subjects.store),
                 data: obj.field,
                 dataType: 'json',
                 async: false,

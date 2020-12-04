@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreTeacher extends FormRequest
+class UpdateSubject extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,18 +25,14 @@ class StoreTeacher extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'min:2'],
-            'course_fee_id' => ['required', 'integer', 'min:1'],
-            'teacher_group_id' => ['required', 'integer', 'min:1'],
+            'name' => ['required', 'min:2', Rule::unique('subjects')->ignore($this->input('id'))],
         ];
     }
 
     public function attributes()
     {
         return [
-            'name' => trans('validation.attributes.teacher_name'),
-            'course_fee_id' => trans('validation.attributes.course_fee_id'),
-            'teacher_group_id' => trans('validation.attributes.teacher_group_id'),
+            'name' => trans('validation.attributes.subject_name'),
         ];
     }
 }

@@ -21,10 +21,9 @@
                 <div class="layui-card-body">
 
                     <form class="" id="table-search-form" style="margin-bottom: 10px;">
-
                         <div class="layui-inline">
                             <label>
-                                <input class="layui-input" name="name" autocomplete="off" placeholder="教师名称">
+                                <input class="layui-input" name="like|name" autocomplete="off" placeholder="教师名称">
                             </label>
                         </div>
 
@@ -81,9 +80,12 @@
             toolbar: '#table-toolbar',
             url: route(routes.teachers.data),
             cols: [[
-                {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', title: '教师姓名'},
-                {field:'created_at', title: '创建时间', width:'15%'},
+                // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
+                {field:'name', align: 'center', title: '教师姓名'},
+                {field:'tel', align: 'center', title: '联系方式'},
+                {field:'course_fee', align: 'center', title: '课时费'},
+                {field:'group', align: 'center', title: '分组'},
+                {field:'created_at', align: 'center', title: '创建时间', width:'15%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
@@ -94,9 +96,7 @@
         table.on('toolbar(data-table)', function(obj){
             switch (obj.event) {
                 case 'create': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.teachers.create), function(){
-                        table.reload('data-table');
-                    });
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.teachers.create));
                 }break;
                 case 'refresh': {
                     table.reload('data-table');
@@ -108,9 +108,7 @@
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
                 case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.teachers.edit, {id: obj.data.id}), function(){
-                        table.reload('data-table');
-                    });
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.teachers.edit, {id: obj.data.id}));
                 }break;
                 case 'delete': {
                     layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
@@ -143,7 +141,7 @@
 
         active = {
             reload: function(){
-                var data = $('#table-search-form').serialize();
+                var data = $('#table-search-form').serializeArray();
                 table.reload('data-table', {
                     page: {curr: 1},
                     where: {where:data, action:'search'}

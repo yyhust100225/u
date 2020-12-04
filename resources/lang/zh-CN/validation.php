@@ -260,5 +260,9 @@ return [
 
         // 教务管理
         'teacher_name' => '讲师姓名',
+        'course_fee_id' => '课时费用',
+        'teacher_group_id' => '讲师分组',
+        'subject_name' => '科目名称',
+
     ],
 ];

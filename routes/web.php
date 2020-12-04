@@ -313,5 +313,14 @@ Route::namespace('Admin')->group(function(){
         Route::get('teachers/edit/{id}', 'TeacherController@edit')->name('teachers.edit');
         Route::put('teachers/update', 'TeacherController@update')->name('teachers.update');
         Route::delete('teachers/delete', 'TeacherController@delete')->name('teachers.delete');
+
+        // 科目管理
+        Route::get('subjects', 'SubjectController@list')->name('subjects.list');
+        Route::get('subjects/data', 'SubjectController@data')->name('subjects.data');
+        Route::get('subjects/create', 'SubjectController@create')->name('subjects.create');
+        Route::post('subjects/store', 'SubjectController@store')->name('subjects.store');
+        Route::get('subjects/edit/{id}', 'SubjectController@edit')->name('subjects.edit');
+        Route::put('subjects/update', 'SubjectController@update')->name('subjects.update');
+        Route::delete('subjects/delete', 'SubjectController@delete')->name('subjects.delete');
     });
 });
