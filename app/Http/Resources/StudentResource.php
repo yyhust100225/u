@@ -19,8 +19,8 @@ class StudentResource extends JsonResource
             'name' => $this->name,
             'mobile' => $this->mobile,
             'examination_and_class_type' => trans('message.table.examination and class type', [
-                'examination_name' => $this->class_course->class_type->examination->name,
-                'class_type_name' => $this->class_course->class_type->name,
+                'examination_name' => $this->class_type->examination->name,
+                'class_type_name' => $this->class_type->name,
             ]),
             'class_open_date' => $this->class_open_date,
 

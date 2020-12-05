@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $mobile 学员手机号
  * @property string $ID_card_no 学员身份证号
  * @property string $remark 学员备注
- * @property int $class_course_id 报名班级ID
+ * @property int $class_type_id 报名班型ID
  * @property string|null $class_open_date 开课日期
  * @property string $admission_ticket_no 准考证号
  * @property string $applicant_company 报考单位
@@ -74,28 +74,10 @@ class Student extends Common
 {
     use HasFactory;
 
-    // 关联课程表
-    public function class_course()
-    {
-        return $this->belongsTo(ClassCourse::class, 'class_course_id');
-    }
-
     // 关联班型表
     public function class_type()
     {
         return $this->belongsTo(ClassType::class, 'class_type_id');
-    }
-
-    // 关联课程类型表
-    public function class_course_type()
-    {
-        return $this->belongsTo(ClassCourseType::class, 'class_course_type_id');
-    }
-
-    // 关联课程日期
-    public function class_course_dates()
-    {
-        return $this->hasMany(ClassCourseDate::class, 'class_course_id')->pluck('class_course_date');
     }
 
     // 关联开课校区

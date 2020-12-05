@@ -6,9 +6,11 @@ use App\Exceptions\DataNotExistsException;
 use App\Http\Requests\StoreStudent;
 use App\Http\Requests\UpdateStudent;
 use App\Http\Resources\ClassCourseResource;
+use App\Http\Resources\ClassTypeResource;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TQStudentResource;
 use App\Models\ClassCourse;
+use App\Models\ClassType;
 use App\Models\Student;
 use App\Models\StudentDiscount;
 use App\Models\Department;
@@ -120,28 +122,28 @@ class StudentController extends CommonController
     }
 
     /**
-     * 选择学员表格表单
+     * 选择学院报名班型表单
      * @return Application|Factory|\Illuminate\Contracts\View\View
      */
-    public function classCourses()
+    public function classTypes()
     {
-        return view('admin.student.class_courses');
+        return view('admin.student.class_types');
     }
 
     /**
-     * 查询学员数据
+     * 查询可报名班型数据
      * @param Request $request
-     * @param ClassCourse $class_course
+     * @param ClassType $class_type
      * @return JsonResponse
      */
-    public function classCoursesData(Request $request, ClassCourse $class_course)
+    public function classTypesData(Request $request, ClassType $class_type): JsonResponse
     {
         // 制作搜索条件
         $where = $this->makeSearchConditions($request->input('where'));
         // 查询数据
-        $class_courses = $class_course->selectData($request->input('page'), $request->input('limit'), $where);
+        $class_types = $class_type->selectData($request->input('page'), $request->input('limit'), $where);
         // 返回表格数据响应
-        return $this->returnTableData($class_courses, ClassCourseResource::class);
+        return $this->returnTableData($class_types, ClassTypeResource::class);
     }
 
     /**
@@ -161,7 +163,7 @@ class StudentController extends CommonController
                 $student->mobile = strval($request->input('mobile'));
                 $student->ID_card_no = strval($request->input('ID_card_no'));
                 $student->remark = strval($request->input('remark'));
-                $student->class_course_id = intval($request->input('class_course_id'));
+                $student->class_type_id = intval($request->input('class_type_id'));
                 $student->class_open_date = $request->input('class_open_date');
                 $student->admission_ticket_no = strval($request->input('admission_ticket_no'));
                 $student->applicant_company = strval($request->input('applicant_company'));
@@ -219,11 +221,10 @@ class StudentController extends CommonController
             abort(404);
         }
 
-        // 当前学生考试+班型+班级名称
-        $student->class_course_name = trans('message.table.full class course name', [
-            'examination_name' => $student->class_course->class_type->examination->name,
-            'class_type_name' => $student->class_course->class_type->name,
-            'class_course_name' => $student->class_course->name,
+        // 当前学生考试+班型名称
+        $student->class_type_name = trans('message.table.full class type name', [
+            'examination_name' => $student->class_type->examination->name,
+            'class_type_name' => $student->class_type->name,
         ]);
 
         // 学生已享优惠
@@ -231,8 +232,8 @@ class StudentController extends CommonController
         $student->class_type_discount_ids = $student->discounts->where('discount_type', CLASS_TYPE_DISCOUNT)->pluck('discount_id')->toArray();
 
         // 考试优惠
-        $class_examination_discounts = $student->class_course->class_type->examination->discountsWithName();
-        $class_type_discounts = $student->class_course->class_type->discounts;
+        $class_examination_discounts = $student->class_type->examination->discountsWithName();
+        $class_type_discounts = $student->class_type->discounts;
 
         $departments = $department->all();
         $users = $user->all();
@@ -265,12 +266,11 @@ class StudentController extends CommonController
         try {
             DB::transaction(function() use($request, $student, $student_discount) {
                 // 存储学员信息
-                $student->tq_id = strval($request->input('tq_id'));
                 $student->name = strval($request->input('name'));
                 $student->mobile = strval($request->input('mobile'));
                 $student->ID_card_no = strval($request->input('ID_card_no'));
                 $student->remark = strval($request->input('remark'));
-                $student->class_course_id = intval($request->input('class_course_id'));
+                $student->class_type_id = intval($request->input('class_type_id'));
                 $student->class_open_date = $request->input('class_open_date');
                 $student->admission_ticket_no = strval($request->input('admission_ticket_no'));
                 $student->applicant_company = strval($request->input('applicant_company'));
@@ -287,7 +287,6 @@ class StudentController extends CommonController
                 $student->paid_amount = floatval($request->input('paid_amount'));
                 $student->written_examination_refund = floatval($request->input('written_examination_refund'));
                 $student->interview_refund = floatval($request->input('interview_refund'));
-                $student->user_id = $this->user()->getAuthIdentifier();
                 $student->save();
 
                 // 删除原有优惠

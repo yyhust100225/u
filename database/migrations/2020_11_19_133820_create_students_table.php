@@ -20,7 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('mobile', 32)->default('')->comment('学员手机号');
             $table->string('ID_card_no', 32)->default('')->comment('学员身份证号');
             $table->text('remark')->comment('学员备注');
-            $table->unsignedInteger('class_course_id')->comment('报名班级ID');
+            $table->unsignedInteger('class_type_id')->comment('报名班型ID');
             $table->date('class_open_date')->nullable()->comment('开课日期');
             $table->string('admission_ticket_no', 255)->default('')->comment('准考证号');
             $table->string('applicant_company', 255)->default('')->comment('报考单位');
@@ -39,7 +39,7 @@ class CreateStudentsTable extends Migration
             $table->decimal('interview_refund', 10, 2)->default(0.00)->comment('面试退费金额');
             $table->unsignedInteger('user_id')->comment('录入人');
             $table->timestamps();
-            $table->index('class_course_id');
+            $table->index('class_type_id');
             $table->index('tq_id');
         });
     }

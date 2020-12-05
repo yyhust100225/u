@@ -57,7 +57,7 @@
     // 页面路由
     let routes = {
         students: {
-            class_courses_data: '{{ route_uri('students.class_courses.data') }}',
+            class_types_data: '{{ route_uri('students.class_types.data') }}',
         }
     };
 
@@ -76,13 +76,11 @@
             id: 'data-table',
             toolbar: '#table-toolbar',
             defaultToolbar: false,
-            url: route(routes.students.class_courses_data),
+            url: route(routes.students.class_types_data),
             cols: [[
                 {type: 'radio'},
-                {field:'id', align:'center', title: 'ID'},
-                {field:'examination_name', align:'center', title: '考试名称'},
-                {field:'class_type_name', align:'center', title: '班型名称'},
-                {field:'name', align:'center', title: '班级名称'},
+                {field:'examination', align:'center', title: '考试名称'},
+                {field:'name', align:'center', title: '班型名称'},
                 {field:'is_agreement_class', align:'center', title: '协议班', templet:function(data){
                     return '1' === data.is_agreement_class ? '是' : '否';
                 }},
@@ -97,7 +95,7 @@
             let checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'select': {
-                    parent.window.course = (checkStatus.data)[0];
+                    parent.window.class_type = (checkStatus.data)[0];
                     parent.layer.close(parent.layer.getFrameIndex(window.name));
                 }break;
                 default:break;

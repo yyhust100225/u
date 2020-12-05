@@ -15,6 +15,7 @@ return [
         'time slot' => ':start 至 :end',
         'examination and class type' => '所属考试: :examination_name, 所属班型: :class_type_name',
         'full class course name' => '所属考试: :examination_name, 所属班型: :class_type_name, 所属班级: :class_course_name',
+        'full class type name' => '所属考试: :examination_name, 所属班型: :class_type_name',
         'course_fee' => ':level : :fee元',
         'teacher_course_fee' => ':teacher[:level::fee元]'
     ],

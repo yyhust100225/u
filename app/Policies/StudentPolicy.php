@@ -37,14 +37,14 @@ class StudentPolicy extends CommonPolicy
         return $this->list($user);
     }
 
-    public function classCourses(User $user)
+    public function classTypes(User $user)
     {
         return $this->create($user);
     }
 
-    public function classCoursesData(User $user)
+    public function classTypesData(User $user)
     {
-        return $this->classCourses($user);
+        return $this->classTypes($user);
     }
 
     // 编辑学生信息权限

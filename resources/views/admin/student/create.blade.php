@@ -54,10 +54,10 @@
 
                     <div class="layui-form-item">
                         <div class="layui-col-md8">
-                            <label class="layui-form-label" for="class-course-id">考试/班型</label>
+                            <label class="layui-form-label" for="class-type-id">考试/班型</label>
                             <div class="layui-input-block">
-                                <input type="hidden" name="class_course_id" id="class-course-id">
-                                <input readonly type="text" name="class_course" id="class-course" placeholder="请选择考试+班型" class="layui-input" />
+                                <input type="hidden" name="class_type_id" id="class-type-id">
+                                <input readonly type="text" name="class_type" id="class-type" placeholder="请选择考试+班型" class="layui-input" />
                             </div>
                         </div>
                     </div>
@@ -228,11 +228,11 @@
     let routes = {
         students: {
             store: '{{ route_uri('students.store') }}',
-            class_courses: '{{ route_uri('students.class_courses') }}',
+            class_types: '{{ route_uri('students.class_types') }}',
         }
     };
 
-    var course; // 考试班型班级信息
+    var class_type; // 考试班型班级信息
 
     layui.config({
         base: '/layuiadmin/layui/lay/modules/'
@@ -249,26 +249,26 @@
         });
 
         // 选择班级+班型
-        $('input#class-course').on('click', function(){
-            course = undefined;
-            makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.class_courses), function(){
+        $('input#class-type').on('click', function(){
+            class_type = undefined;
+            makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.class_types), function(){
                 // 关闭选择对话
-                if(typeof course === 'undefined')
+                if(typeof class_type === 'undefined')
                     return false;
 
                 // 选定考试班型班级后, 初始化选择各项金额
-                let html = '所属考试: ' + course.examination_name + ', 所属班型: ' + course.class_type_name + ', 所属班级: ' + course.name;
-                $('input#class-course').val(html);
-                $('input#class-course-id').val(course.id);
-                $('input#receivable-amount').val(parseFloat(course.total_tuition).toFixed(2));
+                let html = '所属考试: ' + class_type.examination + ', 所属班型: ' + class_type.name;
+                $('input#class-type').val(html);
+                $('input#class-type-id').val(class_type.id);
+                $('input#receivable-amount').val(parseFloat(class_type.total_tuition).toFixed(2));
                 $('input#discount-amount').val(0.00);
-                $('input#paid-amount').val(parseFloat(course.total_tuition).toFixed(2));
-                $('input#written-examination-refund').val(parseFloat(course.written_examination_refund).toFixed(2));
-                $('input#interview-refund').val(parseFloat(course.interview_refund).toFixed(2));
+                $('input#paid-amount').val(parseFloat(class_type.total_tuition).toFixed(2));
+                $('input#written-examination-refund').val(parseFloat(class_type.written_examination_refund).toFixed(2));
+                $('input#interview-refund').val(parseFloat(class_type.interview_refund).toFixed(2));
 
                 // 考试优惠计算
                 let class_examination_discounts_options = [];
-                $.each(course.class_examination_discounts, function(k,v){
+                $.each(class_type.class_examination_discounts, function(k,v){
                     let name = v.type.name + '(优惠:' + v.amount + '元)';
                     class_examination_discounts_options.push({name: name, value: v.id, amount: v.amount});
                 });
@@ -278,7 +278,7 @@
 
                 // 班型优惠计算
                 let class_type_discounts_options = [];
-                $.each(course.class_type_discounts, function(k,v){
+                $.each(class_type.class_type_discounts, function(k,v){
                     let name = v.name + '(优惠:' + v.amount + '元)';
                     class_type_discounts_options.push({name: name, value: v.id, amount: v.amount});
                 });
@@ -297,9 +297,11 @@
                 async: false,
                 success: function(res){
                     if(res.code === {{ REQUEST_SUCCESS }}) {
+                        let index = parent.layer.getFrameIndex(window.name);
+                        let p_index = parent.parent.layer.getFrameIndex(parent.window.name);
                         layer.msg(res.message, {time: 1000}, function(){
-                            parent.layer.close(2);
-                            parent.parent.layer.close(1);
+                            parent.layer.close(index);
+                            parent.parent.layer.close(p_index);
                             parent.parent.active.reload.call(this);
                         });
                     } else {

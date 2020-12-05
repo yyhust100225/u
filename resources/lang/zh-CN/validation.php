@@ -256,7 +256,7 @@ return [
         // 学员管理
         'student_name' => '学员姓名',
         'tq_id' => 'TQ学员信息ID',
-        'class_course_id' => '学员报班',
+        'class_type' => '报班班型',
 
         // 教务管理
         'teacher_name' => '讲师姓名',

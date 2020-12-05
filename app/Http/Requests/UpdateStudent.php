@@ -26,7 +26,7 @@ class UpdateStudent extends FormRequest
     {
         return [
             'name' => ['required', 'min:2'],
-            'class_course_id' => ['required', 'integer', 'min:1'],
+            'class_type_id' => ['required', 'integer', 'min:1'],
         ];
     }
 
@@ -34,7 +34,7 @@ class UpdateStudent extends FormRequest
     {
         return [
             'name' => trans('validation.attributes.student_name'),
-            'class_course_id' => trans('validation.attributes.class_course_id'),
+            'class_type_id' => trans('validation.attributes.class_type'),
         ];
     }
 }

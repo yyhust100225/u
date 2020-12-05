@@ -290,8 +290,8 @@ Route::namespace('Admin')->group(function(){
         Route::get('students', 'StudentController@list')->name('students.list');
         Route::get('students/data', 'StudentController@data')->name('students.data');
         Route::get('students/create/{id}', 'StudentController@create')->name('students.create');
-        Route::get('students/class_courses', 'StudentController@classCourses')->name('students.class_courses');
-        Route::get('students/class_courses/data', 'StudentController@classCoursesData')->name('students.class_courses.data');
+        Route::get('students/class_types', 'StudentController@classTypes')->name('students.class_types');
+        Route::get('students/class_types/data', 'StudentController@classTypesData')->name('students.class_types.data');
         Route::get('students/search', 'StudentController@search')->name('students.search');
         Route::get('students/searched', 'StudentController@searched')->name('students.searched');
         Route::post('students/store', 'StudentController@store')->name('students.store');
