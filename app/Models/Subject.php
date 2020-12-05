@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Maps\MapSubjectToTeachers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -27,4 +28,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Subject extends Common
 {
     use HasFactory;
+
+    // 关联科目讲师
+    public function teachers(): \Illuminate\Database\Eloquent\Relations\HasManyThrough
+    {
+        return $this->hasManyThrough(Teacher::class, MapSubjectToTeachers::class, 'subject_id', 'id', 'id', 'teacher_id');
+    }
 }

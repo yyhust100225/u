@@ -16,6 +16,7 @@ return [
         'examination and class type' => '所属考试: :examination_name, 所属班型: :class_type_name',
         'full class course name' => '所属考试: :examination_name, 所属班型: :class_type_name, 所属班级: :class_course_name',
         'course_fee' => ':level : :fee元',
+        'teacher_course_fee' => ':teacher[:level::fee元]'
     ],
 
     'db' => [

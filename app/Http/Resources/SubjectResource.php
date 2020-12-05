@@ -14,9 +14,20 @@ class SubjectResource extends JsonResource
      */
     public function toArray($request)
     {
+        $teachers = $this->teachers;
+        $teacher_infos = [];
+        foreach($teachers as $teacher) {
+            $teacher_infos[] = trans('message.table.teacher_course_fee', [
+                'teacher' => $teacher->name,
+                'level' => $teacher->course_fee->name,
+                'fee' => $teacher->course_fee->fee,
+            ]);
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'teachers' => implode(',', $teacher_infos),
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }

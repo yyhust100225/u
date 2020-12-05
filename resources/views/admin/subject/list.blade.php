@@ -81,8 +81,9 @@
             url: route(routes.subjects.data),
             cols: [[
                 // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
-                {field:'name', align: 'center', title: '科目姓名'},
-                {field:'created_at', align: 'center', title: '创建时间', width:'15%'},
+                {field:'name', width: '10%', align: 'center', title: '科目姓名'},
+                {field:'teachers', align: 'center', title: '科目讲师'},
+                {field:'created_at', align: 'center', title: '创建时间', width:'12%'},
                 {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
             ]],
             page: true,

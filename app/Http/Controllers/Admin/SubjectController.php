@@ -107,19 +107,21 @@ class SubjectController extends CommonController
      * 编辑科目
      * @param $id
      * @param Subject $subject
-     * @param CourseFee $course_fee
-     * @param SubjectGroup $subject_group
+     * @param TeacherGroup $teacher_group
      * @return Application|Factory|View
      */
-    public function edit($id, Subject $subject, CourseFee $course_fee, SubjectGroup $subject_group)
+    public function edit($id, Subject $subject, TeacherGroup $teacher_group)
     {
         $subject = $subject->newQuery()->findOrFail($id);
-        $course_fees = $course_fee->all();
-        $subject_groups = $subject_group->all();
+        $teacher_ids = $subject->teachers->pluck('id')->toArray();
+        $teacher_groups = $teacher_group->with(['teachers' => function($query){
+            $query->with('course_fee');
+        }])->get();
+
         return view('admin.subject.edit', [
             'subject' => $subject,
-            'course_fees' => $course_fees,
-            'subject_groups' => $subject_groups,
+            'teacher_ids' => $teacher_ids,
+            'teacher_groups' => $teacher_groups,
         ]);
     }
 
@@ -127,10 +129,11 @@ class SubjectController extends CommonController
      * 更新科目
      * @param UpdateSubject $request
      * @param Subject $subject
+     * @param MapSubjectToTeachers $mstt
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function update(UpdateSubject $request, Subject $subject)
+    public function update(UpdateSubject $request, Subject $subject, MapSubjectToTeachers $mstt)
     {
         try {
             $subject = $subject->newQuery()->find($request->input('id'));
@@ -138,24 +141,39 @@ class SubjectController extends CommonController
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        $subject->name = strval($request->input('name'));
-        $subject->nickname = strval($request->input('nickname'));
-        $subject->tel = strval($request->input('tel'));
-        $subject->course_fee_id = intval($request->input('course_fee_id'));
-        $subject->subject_group_id = intval($request->input('subject_group_id'));
-        $subject->remark = strval($request->input('remark'));
+        try {
+            DB::transaction(function () use ($request, $subject, $mstt) {
+                $subject->name = strval($request->input('name'));
+                $subject->remark = strval($request->input('remark'));
+                $subject->user_id = $this->user()->getAuthIdentifier();
+                $subject->save();
 
-        return $this->returnOperationResponse($subject->save(), $request);
+                $mstt->deleteFromId($subject->id);
+                $teacher_ids = $request->input('teacher_ids');
+                foreach ($teacher_ids as $teacher_id) {
+                    $mstt->insert([
+                        'subject_id' => $subject->id,
+                        'teacher_id' => $teacher_id,
+                    ]);
+                }
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return $this->returnFailedResponse(trans('request.failed'), 500);
+        }
+
+        return $this->returnOperationResponse(true, $request);
     }
 
     /**
      * 删除科目
      * @param Request $request
      * @param Subject $subject
+     * @param MapSubjectToTeachers $mstt
      * @return JsonResponse
      * @throws DataNotExistsException
      */
-    public function delete(Request $request, Subject $subject): JsonResponse
+    public function delete(Request $request, Subject $subject, MapSubjectToTeachers $mstt): JsonResponse
     {
         try {
             $subject = $subject->newQuery()->find($request->input('id'));
@@ -163,6 +181,16 @@ class SubjectController extends CommonController
             throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
         }
 
-        return $this->returnOperationResponse($subject->delete(), $request);
+        try {
+            DB::transaction(function () use ($request, $subject, $mstt) {
+                $mstt->deleteFromId($subject->id);
+                $subject->delete();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return $this->returnFailedResponse(trans('request.failed'), 500);
+        }
+
+        return $this->returnOperationResponse(true, $request);
     }
 }

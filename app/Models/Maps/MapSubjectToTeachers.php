@@ -22,4 +22,10 @@ use App\Models\Common;
 class MapSubjectToTeachers extends Common
 {
     use HasFactory;
+
+    // 删除指定科目映射教师ID
+    public function deleteFromId($subject_id): ?bool
+    {
+        return $this->where('subject_id', $subject_id)->delete();
+    }
 }
