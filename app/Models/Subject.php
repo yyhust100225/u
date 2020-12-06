@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Subject whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Subject whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Teacher[] $teachers
+ * @property-read int|null $teachers_count
  */
 class Subject extends Common
 {

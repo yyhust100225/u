@@ -30,6 +30,7 @@ class CreateStudentsTable extends Migration
             $table->unsignedInteger('applicant_percent_denominator')->default(1)->comment('招考比例分母');
             $table->unsignedInteger('rank')->default(1)->comment('排名');
             $table->unsignedInteger('difference')->default(0)->comment('分差');
+            $table->unsignedInteger('weighted_score')->default(0)->comment('笔试加权分');
             $table->unsignedInteger('person_in_charge')->comment('咨询负责人');
             $table->unsignedInteger('campus')->comment('所属校区');
             $table->decimal('receivable_amount', 10, 2)->default(0.00)->comment('应收款项');

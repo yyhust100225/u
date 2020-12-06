@@ -145,6 +145,11 @@
                         <div class="layui-input-inline">
                             <input type="text" name="difference" id="difference" autocomplete="off" placeholder="请输入分差" class="layui-input">
                         </div>
+
+                        <label class="layui-form-label" for="weighted-score">笔试加权分</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="weighted_score" id="weighted-score" autocomplete="off" placeholder="请输入笔试加权分" class="layui-input">
+                        </div>
                     </div>
 
                     <div class="layui-form-item">

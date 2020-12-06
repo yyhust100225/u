@@ -69,6 +69,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \App\Models\ClassCourse $class_course
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\StudentDiscount[] $discounts
  * @property-read int|null $discounts_count
+ * @property int $weighted_score 笔试加权分
+ * @method static \Illuminate\Database\Eloquent\Builder|Student whereClassTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Student whereWeightedScore($value)
  */
 class Student extends Common
 {
@@ -96,5 +99,11 @@ class Student extends Common
     public function tqIdExists($tq_id)
     {
         return $this->where('tq_id', $tq_id)->exists();
+    }
+
+    // 学员缴费记录
+    public function payments()
+    {
+        return $this->hasMany(StudentPayment::class, 'student_id');
     }
 }

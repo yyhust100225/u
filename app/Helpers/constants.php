@@ -36,3 +36,18 @@ define('TQ_SYNC_ALLOWED', 2);
 // 优惠类型
 define('CLASS_EXAMINATION_DISCOUNT', 1);
 define('CLASS_TYPE_DISCOUNT', 2);
+
+/** 学员管理 */
+
+// 学员报名缴费方式
+define('PAYMENT_METHOD_CASH', 1);
+define('PAYMENT_METHOD_REMITTANCE', 2);
+define('PAYMENT_METHOD_POS', 3);
+define('PAYMENT_METHOD_GPOS', 4);
+
+// 学院报名缴费类型
+define('PAYMENT_TYPE_DEPOSIT', 1);
+define('PAYMENT_TYPE_FULL', 2);
+define('PAYMENT_TYPE_MISCELLANEOUS', 3);
+define('PAYMENT_TYPE_SUPPLEMENT', 4);
+define('PAYMENT_TYPE_PROGRESS', 5);

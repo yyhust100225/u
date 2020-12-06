@@ -58,4 +58,16 @@ class StudentPolicy extends CommonPolicy
     {
         return $this->list($user);
     }
+
+    // 学生缴费记录
+    public function payment(User $user)
+    {
+        return $this->list($user);
+    }
+
+    // 学生缴费
+    public function pay(User $user)
+    {
+        return $this->payment($user);
+    }
 }

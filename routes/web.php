@@ -299,6 +299,9 @@ Route::namespace('Admin')->group(function(){
         Route::put('students/update', 'StudentController@update')->name('students.update');
         Route::delete('students/delete', 'StudentController@delete')->name('students.delete');
 
+        Route::get('students/payment/{id}', 'StudentController@payment')->name('students.payment');
+        Route::post('students/pay', 'StudentController@pay')->name('students.pay');
+
         /**
          * =====================================
          * 教务管理                            *

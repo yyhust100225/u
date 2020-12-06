@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\DataNotExistsException;
+use App\Http\Requests\PayStudent;
 use App\Http\Requests\StoreStudent;
 use App\Http\Requests\UpdateStudent;
 use App\Http\Resources\ClassCourseResource;
@@ -14,8 +15,11 @@ use App\Models\ClassType;
 use App\Models\Student;
 use App\Models\StudentDiscount;
 use App\Models\Department;
+use App\Models\StudentPayment;
+use App\Models\StudentPaymentDetail;
 use App\Models\TQ;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -173,6 +177,7 @@ class StudentController extends CommonController
                 $student->applicant_percent_denominator = intval($request->input('applicant_percent_denominator'));
                 $student->rank = intval($request->input('rank'));
                 $student->difference = intval($request->input('difference'));
+                $student->weighted_score = intval($request->input('weighted_score'));
                 $student->person_in_charge = intval($request->input('person_in_charge'));
                 $student->campus = intval($request->input('campus'));
                 $student->receivable_amount = floatval($request->input('receivable_amount'));
@@ -280,6 +285,7 @@ class StudentController extends CommonController
                 $student->applicant_percent_denominator = intval($request->input('applicant_percent_denominator'));
                 $student->rank = intval($request->input('rank'));
                 $student->difference = intval($request->input('difference'));
+                $student->weighted_score = intval($request->input('weighted_score'));
                 $student->person_in_charge = intval($request->input('person_in_charge'));
                 $student->campus = intval($request->input('campus'));
                 $student->receivable_amount = floatval($request->input('receivable_amount'));
@@ -304,6 +310,85 @@ class StudentController extends CommonController
                     $student_discounts[] = ['student_id' => $student->id, 'discount_id' => $class_type_discount_id, 'discount_type' => CLASS_TYPE_DISCOUNT];
                 }
                 $student_discount->newQuery()->insert($student_discounts);
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return $this->returnFailedResponse(trans('request.failed'), 500);
+        }
+
+        return $this->returnOperationResponse(true, $request);
+    }
+
+    public function payments()
+    {
+        
+    }
+
+    /**
+     * 学员缴费表单
+     * @param $id
+     * @param Student $student
+     * @param Department $department
+     * @return Application|Factory|\Illuminate\Contracts\View\View
+     */
+    public function payment($id, Student $student, Department $department)
+    {
+        try {
+            $student = $student->newQuery()->with('payments')->findOrFail($id);
+        } catch (Throwable $exception) {
+            Log::error(trans('message.log.an empty query occurred'), ['class' => __CLASS__, 'id' => $id]);
+            abort(404);
+        }
+
+        // 查询已缴金额
+        $student->already_paid_amount = $student->payments->isEmpty() ? 0.00 : $student->payments->sum('total_amount');
+
+        $today = Carbon::now()->toDateString();
+        $departments = $department->all();
+
+        return view('admin.student.payment', [
+            'student' => $student,
+            'today' => $today,
+            'departments' => $departments,
+        ]);
+    }
+
+    /**
+     * 学员缴费
+     * @param PayStudent $request
+     * @param StudentPayment $student_payment
+     * @param StudentPaymentDetail $student_payment_detail
+     * @return JsonResponse
+     */
+    public function pay(PayStudent $request, StudentPayment $student_payment, StudentPaymentDetail $student_payment_detail)
+    {
+        try {
+            DB::transaction(function () use ($request, $student_payment, $student_payment_detail) {
+                // 计算本次缴费总金额
+                $methods = $request->input('payment_method');
+                $pay_amounts = $request->input('payment_amount');
+                $total_amount = 0.00;
+                foreach($methods as $method) {
+                    $total_amount = bcadd($total_amount, $pay_amounts[$method], 2);
+                }
+
+                $student_payment->student_id = intval($request->input('student_id'));
+                $student_payment->total_amount = floatval($total_amount);
+                $student_payment->payment_date = $request->input('payment_date');
+                $student_payment->payment_place = intval($request->input('payment_place'));
+                $student_payment->bill_no = strval($request->input('bill_no'));
+                $student_payment->payment_type = intval($request->input('payment_type'));
+                $student_payment->remark = strval($request->input('remark'));
+                $student_payment->user_id = $this->user()->getAuthIdentifier();
+                $student_payment->save();
+
+                foreach ($methods as $method) {
+                    $student_payment_detail->insert([
+                        'payment_id' => $student_payment->id,
+                        'payment_method' => $method,
+                        'pay_amount' => $pay_amounts[$method],
+                    ]);
+                }
             });
         } catch (Throwable $e) {
             Log::error($e->getMessage());

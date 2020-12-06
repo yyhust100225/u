@@ -39,6 +39,7 @@
                     </script>
 
                     <script type="text/html" id="table-bar">
+                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="payment">缴费</a>
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
@@ -60,6 +61,7 @@
             search: '{{ route_uri('students.search') }}',
             edit: '{{ route_uri('students.edit') }}',
             delete: '{{ route_uri('students.delete') }}',
+            payment: '{{ route_uri('students.payment') }}',
         }
     };
 
@@ -83,7 +85,7 @@
                 { align :"center",title:"报班信息",colspan:5},
                 // { align :"center",title:"缴费信息",colspan:14}
                 {field:'created_at', align:'center', title: '创建时间', width:'12%', rowspan: 2},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar', rowspan: 2}
+                {fixed: 'right', title: '操作', width:180, align:'center', toolbar: '#table-bar', rowspan: 2}
             ],[
                 // {field:'id', title: 'ID', width:'4%', sort: true, fixed: 'left'},
                 {field:'name', align:'center', title: '学员姓名'},
@@ -142,6 +144,9 @@
                         });
                         layer.close(index);
                     });
+                }break;
+                case 'payment': {
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.payment, {id: obj.data.id}));
                 }break;
                 default:break;
             }
