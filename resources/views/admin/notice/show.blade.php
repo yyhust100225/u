@@ -86,8 +86,8 @@
                         </div>
 
                         <div class="layui-form-item layui-form-text">
-                            <label class="layui-form-label" for="content">要讯内容</label>
-                            <div class="layui-input-block">
+                            <label class="layui-form-label layui-form-pane-label" for="content">要讯内容</label>
+                            <div class="layui-input-block layui-form-pane-block">
                                 <div class="show-content">
                                     {!! $notice->content !!}
                                 </div>

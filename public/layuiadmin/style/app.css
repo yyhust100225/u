@@ -10,14 +10,6 @@ form.form-long-label-100 .layui-form-item div {
     margin-left: 130px;
 }
 
-.layui-form-pane .layui-form-label {
-    width: 180px;
-}
-
-.layui-form-pane .layui-input-block {
-    margin-left: 180px;
-}
-
 .table-data-status {
     height: 20px;
     border-radius: 10px;
@@ -45,6 +37,14 @@ form.layui-form label.layui-form-label {
 
 form.layui-form div.layui-input-block {
     margin-left: 120px;
+}
+
+.layui-form-pane label.layui-form-label:not(.layui-form-pane-label) {
+    width: 180px !important;
+}
+
+.layui-form-pane .layui-input-block:not(.layui-form-pane-block) {
+    margin-left: 180px !important;
 }
 
 /*form.layui-form div.layui-input-inline {*/

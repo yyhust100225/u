@@ -18,7 +18,7 @@
             <div class="layui-card">
                 <div class="layui-card-header">审核要讯</div>
                 <div class="layui-card-body">
-                    <form class="layui-form layui-form-pane" action="">
+                    <form class="layui-form-pane layui-form" action="">
                         @csrf
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="title">标题</label>
@@ -37,8 +37,8 @@
                         </div>
 
                         <div class="layui-form-item layui-form-text">
-                            <label class="layui-form-label" for="content">要讯内容</label>
-                            <div class="layui-input-block">
+                            <label class="layui-form-label layui-form-pane-label" for="content">要讯内容</label>
+                            <div class="layui-input-block layui-form-pane-block">
                                 <div class="show-content">
                                     {!! $notice->content !!}
                                 </div>
