@@ -59,7 +59,7 @@ class StudentPolicy extends CommonPolicy
         return $this->list($user);
     }
 
-    // 学生缴费记录
+    // 学生缴费表单
     public function payment(User $user)
     {
         return $this->list($user);
@@ -69,5 +69,16 @@ class StudentPolicy extends CommonPolicy
     public function pay(User $user)
     {
         return $this->payment($user);
+    }
+
+    // 学生缴费记录
+    public function payments(User $user)
+    {
+        return $this->list($user);
+    }
+
+    public function paymentsData(User $user)
+    {
+        return $this->payments($user);
     }
 }

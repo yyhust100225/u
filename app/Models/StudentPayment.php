@@ -52,4 +52,16 @@ class StudentPayment extends Common
     {
         return $this->hasMany(StudentPaymentDetail::class, 'payment_id');
     }
+
+    // 关联部门表
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'payment_place');
+    }
+
+    // 关联缴费详情表
+    public function payment_details()
+    {
+        return $this->hasMany(StudentPaymentDetail::class, 'payment_id');
+    }
 }

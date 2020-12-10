@@ -17,7 +17,19 @@ return [
         'full class course name' => '所属考试: :examination_name, 所属班型: :class_type_name, 所属班级: :class_course_name',
         'full class type name' => '所属考试: :examination_name, 所属班型: :class_type_name',
         'course_fee' => ':level : :fee元',
-        'teacher_course_fee' => ':teacher[:level::fee元]'
+        'teacher_course_fee' => ':teacher[:level::fee元]',
+        'pay' => [
+            'type_1' => '定金',
+            'type_2' => '全款',
+            'type_3' => '学杂费',
+            'type_4' => '补缴费',
+            'type_5' => '进度款',
+
+            'method_1' => '现金',
+            'method_2' => '汇款',
+            'method_3' => 'POS',
+            'method_4' => 'GPOS',
+        ]
     ],
 
     'db' => [

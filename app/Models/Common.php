@@ -96,4 +96,16 @@ class Common extends Model
             return $this->where(['status' => STATUS_ON])->orWhere($con)->get();
         }
     }
+
+    // 关联用户表
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    // 关联部门表
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 }

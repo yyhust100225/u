@@ -8,6 +8,7 @@ use App\Http\Requests\StoreStudent;
 use App\Http\Requests\UpdateStudent;
 use App\Http\Resources\ClassCourseResource;
 use App\Http\Resources\ClassTypeResource;
+use App\Http\Resources\StudentPaymentResource;
 use App\Http\Resources\StudentResource;
 use App\Http\Resources\TQStudentResource;
 use App\Models\ClassCourse;
@@ -319,9 +320,33 @@ class StudentController extends CommonController
         return $this->returnOperationResponse(true, $request);
     }
 
-    public function payments()
+    /**
+     * 学员缴费信息记录
+     * @param $id
+     * @return Application|Factory|\Illuminate\Contracts\View\View
+     */
+    public function payments($id)
     {
-        
+        return view('admin.student.payments', [
+            'student_id' => $id,
+        ]);
+    }
+
+    /**
+     * 学员缴费信息数据
+     * @param Request $request
+     * @param StudentPayment $student_payment
+     * @return JsonResponse
+     */
+    public function paymentsData(Request $request, StudentPayment $student_payment)
+    {
+        // 制作搜索条件
+        $student_id = intval($request->input('id'));
+        $where['student_id'] = $student_id;
+        // 查询数据
+        $student_payments = $student_payment->selectData($request->input('page'), $request->input('limit'), $where);
+        // 返回表格数据响应
+        return $this->returnTableData($student_payments, StudentPaymentResource::class);
     }
 
     /**

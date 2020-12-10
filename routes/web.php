@@ -301,6 +301,8 @@ Route::namespace('Admin')->group(function(){
 
         Route::get('students/payment/{id}', 'StudentController@payment')->name('students.payment');
         Route::post('students/pay', 'StudentController@pay')->name('students.pay');
+        Route::get('students/payments/{id}', 'StudentController@payments')->name('students.payments')->where('id', '[0-9]+');
+        Route::get('students/payments/data', 'StudentController@paymentsData')->name('students.payments.data');
 
         /**
          * =====================================
