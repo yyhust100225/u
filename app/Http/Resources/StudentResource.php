@@ -14,6 +14,8 @@ class StudentResource extends JsonResource
      */
     public function toArray($request)
     {
+        $already_paid_amount = $this->payments->sum('total_amount');
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -23,6 +25,11 @@ class StudentResource extends JsonResource
                 'class_type_name' => $this->class_type->name,
             ]),
             'class_open_date' => $this->class_open_date,
+            'receivable_amount' => $this->receivable_amount,
+            'discount_amount' => $this->discount_amount,
+            'paid_amount' => $this->paid_amount,
+            'already_paid_amount' => $already_paid_amount,
+            'paid_status' => bcsub($already_paid_amount, $this->paid_amount, 2),
 
             'created_at' => $this->created_at->toDateTimeString(),
         ];

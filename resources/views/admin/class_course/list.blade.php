@@ -41,6 +41,7 @@
                     </script>
 
                     <script type="text/html" id="table-bar">
+                        <a class="layui-btn layui-btn-xs layui-btn-pink" lay-event="in">学员入班</a>
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
@@ -62,6 +63,7 @@
             create: '{{ route_uri('class_courses.create') }}',
             edit: '{{ route_uri('class_courses.edit') }}',
             delete: '{{ route_uri('class_courses.delete') }}',
+            in: '{{ route_uri('class_courses.in') }}',
         }
     };
 
@@ -88,7 +90,7 @@
                 {field:'class_course_type_name', align:'center', title: '开课类型', width: '8%'},
                 {field:'department_name', align:'center', title: '开课校区', width: '10%'},
                 {field:'created_at', align:'center', title: '创建时间', width:'12%'},
-                {fixed: 'right', title: '操作', width:120, align:'center', toolbar: '#table-bar'}
+                {fixed: 'right', title: '操作', width:'13%', align:'center', toolbar: '#table-bar'}
             ]],
             page: true,
             limit: 14,
@@ -109,6 +111,9 @@
 
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
+                case 'in': {
+                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_courses.in, {id: obj.data.id}));
+                }break;
                 case 'edit': {
                     makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.class_courses.edit, {id: obj.data.id}));
                 }break;

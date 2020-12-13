@@ -29,8 +29,8 @@
                     </script>
 
                     <script type="text/html" id="table-bar">
-                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-{{--                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>--}}
+{{--                        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>--}}
+                        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
                     </script>
 
                 </div>
@@ -47,6 +47,7 @@
     var routes = {
         students: {
             payments_data: '{{ route_uri('students.payments.data') }}',
+            payments_delete: '{{ route_uri('students.payments.delete') }}',
         }
     };
 
@@ -69,7 +70,7 @@
             cols: [[
                 {field:'payment_date', width: '8%', align:'center', title: '缴费日期'},
                 {field:'payment_place', width: '8%', align:'center', title: '缴费地'},
-                {field:'bill_no', width: '8%', align:'center', title: '票据号'},
+                {field:'bill_no', edit: 'text', width: '8%', align:'center', title: '票据号'},
                 {field:'payment_type', width: '8%', align:'center', title: '缴费类型'},
                 {field:'total_amount', width: '8%', align:'center', title: '缴费金额'},
                 {field:'remark', width: '8%', align:'center', title: '备注'},
@@ -98,8 +99,30 @@
 
         table.on('tool(data-table)', function(obj){
             switch (obj.event) {
-                case 'edit': {
-                    makeLayerForm(layer, '{{ trans('tips.layer form title') }}', route(routes.students.payments_data, {id: obj.data.id}));
+                case 'delete': {
+                    layer.confirm('{{ trans('tips.table delete confirm') }}', function(index){
+                        $.ajax({
+                            type: 'DELETE',
+                            url: route(routes.students.payments_delete),
+                            data: {id: obj.data.id},
+                            dataType: 'json',
+                            async: false,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(res){
+                                if(res.code === {{ REQUEST_SUCCESS }}){
+                                    layer.msg(res.message, {time: 1000}, function(){
+                                        obj.del();
+                                    });
+                                }
+                            }, error: function(e){
+                                if(e.status === 404 || e.status === 500)
+                                    layer.msg(e.responseJSON.message);
+                            }
+                        });
+                        layer.close(index);
+                    });
                 }break;
                 default:break;
             }

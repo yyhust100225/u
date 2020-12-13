@@ -58,3 +58,7 @@ div.search-form-buttons .layui-btn+.layui-btn{
 form#table-search-form div.layui-form-item {
     margin-bottom: 10px;
 }
+
+.layui-btn-pink {
+    background-color: #ff6eac;
+}

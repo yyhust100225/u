@@ -257,6 +257,13 @@ return [
         'student_name' => '学员姓名',
         'tq_id' => 'TQ学员信息ID',
         'class_type' => '报班班型',
+        'pay' => [
+            'pay_invalid_amount' => '实际缴款金额不能为0, 请重试',
+            'pay_has_record' => '该学生已有交款记录, 这笔缴费无法为全款',
+            'pay_no_full' => '全款请一次性付清, 此次缴费金额不足',
+            'pay_rest' => '补缴请缴纳完成剩余款项',
+            'pay_over_required' => '此次缴费金额超出实缴金额',
+        ],
 
         // 教务管理
         'teacher_name' => '讲师姓名',

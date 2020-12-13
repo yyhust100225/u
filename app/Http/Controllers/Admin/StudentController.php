@@ -424,6 +424,33 @@ class StudentController extends CommonController
     }
 
     /**
+     * 删除缴费记录
+     * @param Request $request
+     * @param StudentPayment $student_payment
+     * @return JsonResponse
+     * @throws DataNotExistsException
+     */
+    public function paymentsDelete(Request $request, StudentPayment $student_payment)
+    {
+        try {
+            $student_payment = $student_payment->newQuery()->find($request->input('id'));
+        } catch(ModelNotFoundException $exception) {
+            throw new DataNotExistsException(trans('request.failed'), REQUEST_FAILED);
+        }
+
+        try {
+            DB::transaction(function() use($request, $student_payment) {
+                $student_payment->payment_details()->delete();
+                $student_payment->delete();
+            });
+        } catch (Throwable $e) {
+            Log::error($e->getMessage());
+            return $this->returnFailedResponse(trans('request.failed'), 500);
+        }
+        return $this->returnOperationResponse(true, $request);
+    }
+
+    /**
      * 删除学员
      * @param Request $request
      * @param Student $student

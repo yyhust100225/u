@@ -272,6 +272,8 @@ Route::namespace('Admin')->group(function(){
         Route::get('class_courses/edit/{id}', 'ClassCourseController@edit')->name('class_courses.edit');
         Route::put('class_courses/update', 'ClassCourseController@update')->name('class_courses.update');
         Route::delete('class_courses/delete', 'ClassCourseController@delete')->name('class_courses.delete');
+        Route::get('class_courses/in', 'ClassCourseController@in')->name('class_courses.in');
+        Route::post('class_courses/sign_in', 'ClassCourseController@signIn')->name('class_courses.sign_in');
 
         /**
          * =====================================
@@ -303,6 +305,7 @@ Route::namespace('Admin')->group(function(){
         Route::post('students/pay', 'StudentController@pay')->name('students.pay');
         Route::get('students/payments/{id}', 'StudentController@payments')->name('students.payments')->where('id', '[0-9]+');
         Route::get('students/payments/data', 'StudentController@paymentsData')->name('students.payments.data');
+        Route::delete('students/payments/delete', 'StudentController@paymentsDelete')->name('students.payments.delete');
 
         /**
          * =====================================

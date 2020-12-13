@@ -81,4 +81,9 @@ class StudentPolicy extends CommonPolicy
     {
         return $this->payments($user);
     }
+
+    public function paymentsDelete(User $user)
+    {
+        return $this->payments($user);
+    }
 }

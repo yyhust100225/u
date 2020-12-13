@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily', 'debug'],
+            'channels' => ['debug'],
             'ignore_exceptions' => false,
         ],
 

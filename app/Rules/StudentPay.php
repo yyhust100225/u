@@ -35,22 +35,29 @@ class StudentPay implements Rule
     {
         $total_amount = array_sum($value);
         $already_paid_amount = array_sum($this->student->payments->pluck('total_amount')->toArray());
-
-        switch($this->payment_type){
-            case PAYMENT_TYPE_FULL: {
-                if(!$this->student->payments->isEmpty())
-                    $this->message = 1;
-                else if($total_amount < $this->student->paid_amount)
-                    $this->message = 2;
-            }break;
-            case PAYMENT_TYPE_SUPPLEMENT: {
-                if(bcadd($total_amount, $already_paid_amount, 2) != $this->student->paid_amount)
-                    $this->message = 3;
-            }break;
-            default: {
-                if(bcadd($total_amount, $already_paid_amount, 2) > $this->student->paid_amount)
-                    $this->message = 4;
-            }break;
+        // 无效缴费金额
+        if($total_amount <= 0.00) {
+            $this->message = 1;
+        }
+        // 缴费超额
+        else if(bcadd($total_amount, $already_paid_amount, 2) > $this->student->paid_amount) {
+            $this->message = 5;
+        }
+        // 分情况判断
+        else {
+            switch ($this->payment_type) {
+                case PAYMENT_TYPE_FULL:{
+                    if (!$this->student->payments->isEmpty())
+                        $this->message = 2;
+                    else if ($total_amount < $this->student->paid_amount)
+                        $this->message = 3;
+                }break;
+                case PAYMENT_TYPE_SUPPLEMENT:{
+                    if (bcadd($total_amount, $already_paid_amount, 2) != $this->student->paid_amount)
+                        $this->message = 4;
+                }break;
+                default:break;
+            }
         }
 
         return $this->message === 0;
@@ -64,11 +71,11 @@ class StudentPay implements Rule
     public function message()
     {
         switch($this->message){
-            case 1: return '该学生已有交款记录, 这笔缴费无法为全款';
-            case 2: return '全款请一次性付清, 此次缴费金额不足';
-            case 3: return '补缴请缴纳完成剩余款项';
-            case 4: return '此次缴费金额超出实缴金额';
+            case 1: return trans('validation.attributes.pay.pay_invalid_amount');
+            case 2: return trans('validation.attributes.pay.pay_has_record');
+            case 3: return trans('validation.attributes.pay.pay_no_full');
+            case 4: return trans('validation.attributes.pay.pay_rest');
+            case 5: return trans('validation.attributes.pay.pay_over_required');
         }
-        return 'The validation error message.';
     }
 }
