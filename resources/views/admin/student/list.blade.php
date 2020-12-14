@@ -39,7 +39,9 @@
                     </script>
 
                     <script type="text/html" id="table-bar">
-                        <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="payment">缴费</a>
+                        @{{# if(d.paid_status != 0) { }}
+                            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="payment">缴费</a>
+                        @{{# } }}
                         <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="payments">缴费记录</a>
                         <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
                         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</a>
@@ -83,14 +85,15 @@
             toolbar: '#table-toolbar',
             url: route(routes.students.data),
             cols: [[
-                {align :"center",title:"学员信息",colspan:2},
-                {align: "center",title:"报班信息",colspan:5},
-                {align: "center",title:"缴费信息",colspan:5},
+                {align :"center", title:"学员信息", colspan:2},
+                {align: "center", title:"报班信息", colspan:5},
+                {align: "center", title:"缴费信息", colspan:7},
                 {field: 'created_at', align:'center', title: '创建时间', width:'12%', rowspan: 2},
                 {fixed: 'right', title: '操作', width:240, align:'center', toolbar: '#table-bar', rowspan: 2}
             ],[
                 {field:'name', align:'center', width: '10%', title: '学员姓名'},
                 {field:'mobile', align:'center', width: '10%', title: '学员电话'},
+
                 {field:'examination_and_class_type', align:'center', width: '30%', title: '考试+班型'},
                 {field:'class_detail', align:'center', width: '25%', title: '报班明细'},
                 {field:'class_open_date', align:'center', width: '8%', title: '开课日期'},
@@ -98,6 +101,7 @@
                     return '未入班';
                 }, hide: true},
                 {field:'', align:'center', width: '20%', title: '班级名称', hide: true},
+
                 {field:'receivable_amount', align:'center', width: '8%', title: '应缴金额'},
                 {field:'discount_amount', align:'center', width: '8%', title: '优惠金额'},
                 {field:'paid_amount', align:'center', width: '8%', title: '实缴金额'},
@@ -110,7 +114,6 @@
                     else
                         return '<span style="color: green">已缴齐</span>';
                 }},
-
             ]],
             page: true,
             limit: 14,

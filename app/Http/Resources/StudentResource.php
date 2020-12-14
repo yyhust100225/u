@@ -14,7 +14,7 @@ class StudentResource extends JsonResource
      */
     public function toArray($request)
     {
-        $already_paid_amount = $this->payments->sum('total_amount');
+        $already_paid_amount = bcadd($this->payments->sum('total_amount'), 0.00, 2);
 
         return [
             'id' => $this->id,
